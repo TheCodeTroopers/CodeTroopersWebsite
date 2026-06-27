@@ -1,0 +1,88 @@
+{
+  "items": [
+    {
+      "id": "gal-001",
+      "title": "Hackathon 2025 Kickoff",
+      "category": "hackathons",
+      "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=80",
+      "date": "2025-11-10"
+    },
+    {
+      "id": "gal-002",
+      "title": "Team Collaboration Session",
+      "category": "workshops",
+      "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
+      "date": "2025-10-05"
+    },
+    {
+      "id": "gal-003",
+      "title": "Web Dev Workshop Day 1",
+      "category": "workshops",
+      "image": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80",
+      "date": "2025-09-15"
+    },
+    {
+      "id": "gal-004",
+      "title": "Guest Lecture Audience",
+      "category": "guest-lectures",
+      "image": "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&q=80",
+      "date": "2025-08-20"
+    },
+    {
+      "id": "gal-005",
+      "title": "Project Showcase 2025",
+      "category": "competitions",
+      "image": "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80",
+      "date": "2025-12-05"
+    },
+    {
+      "id": "gal-006",
+      "title": "Coding Competition Finals",
+      "category": "competitions",
+      "image": "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=800&q=80",
+      "date": "2025-07-12"
+    },
+    {
+      "id": "gal-007",
+      "title": "Technical Talk — Cloud Computing",
+      "category": "technical-talks",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+      "date": "2025-06-18"
+    },
+    {
+      "id": "gal-008",
+      "title": "Club Group Photo 2025-26",
+      "category": "general",
+      "image": "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&q=80",
+      "date": "2025-08-01"
+    },
+    {
+      "id": "gal-009",
+      "title": "Award Ceremony",
+      "category": "general",
+      "image": "https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?w=800&q=80",
+      "date": "2025-12-20"
+    },
+    {
+      "id": "gal-010",
+      "title": "Innovation Lab Session",
+      "category": "workshops",
+      "image": "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&q=80",
+      "date": "2025-11-25"
+    },
+    {
+      "id": "gal-011",
+      "title": "Hackathon Winners",
+      "category": "hackathons",
+      "image": "https://images.unsplash.com/photo-1515187028965-36f2242312da?w=800&q=80",
+      "date": "2025-11-11"
+    },
+    {
+      "id": "gal-012",
+      "title": "Team Building Activity",
+      "category": "general",
+      "image": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80",
+      "date": "2025-09-01"
+    }
+  ]
+}

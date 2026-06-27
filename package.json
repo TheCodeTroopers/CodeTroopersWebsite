@@ -1,0 +1,17 @@
+{
+  "name": "codetroopers",
+  "version": "1.0.0",
+  "description": "Code Troopers — Learn. Build. Lead.",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install && npm --prefix server install && npm --prefix client install",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev",
+    "build": "npm --prefix client run build",
+    "start": "npm --prefix server start"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.3"
+  }
+}

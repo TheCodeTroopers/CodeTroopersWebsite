@@ -1,0 +1,32 @@
+{
+  "testimonials": [
+    {
+      "id": "test-001",
+      "name": "Priya Sharma",
+      "role": "3rd Year CSE Student",
+      "quote": "Code Troopers transformed my approach to learning. The workshops and mentorship helped me land my first internship at a product-based company.",
+      "avatar": "PS"
+    },
+    {
+      "id": "test-002",
+      "name": "Rahul Verma",
+      "role": "Hackathon Winner",
+      "quote": "The hackathon experience through Code Troopers was incredible. We learned more in 48 hours than in an entire semester of theory classes.",
+      "avatar": "RV"
+    },
+    {
+      "id": "test-003",
+      "name": "Dr. Ananya Reddy",
+      "role": "Faculty Coordinator",
+      "quote": "Code Troopers sets the gold standard for student technical clubs. Their SOP-driven approach ensures every event is professionally executed.",
+      "avatar": "AR"
+    },
+    {
+      "id": "test-004",
+      "name": "Karthik Menon",
+      "role": "Alumni — Software Engineer at Google",
+      "quote": "The skills I built as Workbench Head at Code Troopers directly prepared me for my career. Learn. Build. Lead. — it truly works.",
+      "avatar": "KM"
+    }
+  ]
+}

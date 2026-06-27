@@ -1,0 +1,148 @@
+{
+  "events": [
+    {
+      "id": "evt-001",
+      "title": "Full Stack Web Development Workshop",
+      "type": "workshops",
+      "description": "A comprehensive 3-day hands-on workshop covering React, Node.js, and MongoDB alternatives. Learn to build production-ready web applications from scratch with industry best practices.",
+      "venue": "Seminar Hall A, CSE Block",
+      "date": "2026-07-15",
+      "time": "09:00 AM - 04:00 PM",
+      "organizer": "Learning & Platform Development Team",
+      "banner": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=80",
+        "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&q=80"
+      ],
+      "status": "upcoming"
+    },
+    {
+      "id": "evt-002",
+      "title": "Git & GitHub Mastery Session",
+      "type": "workshops",
+      "description": "Master version control with Git and collaborative workflows on GitHub. Covers branching strategies, pull requests, and code reviews aligned with Code Troopers GitHub Policy.",
+      "venue": "Lab 301, CSE Block",
+      "date": "2026-05-20",
+      "time": "02:00 PM - 05:00 PM",
+      "organizer": "Workbench Team",
+      "banner": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&q=80"
+      ],
+      "status": "past"
+    },
+    {
+      "id": "evt-003",
+      "title": "Code Troopers Hackathon 2026",
+      "type": "hackathons",
+      "description": "48-hour intra-college hackathon challenging students to build innovative solutions. Themes include AI/ML, Web3, Sustainability, and Smart Campus. Prizes worth ₹50,000.",
+      "venue": "Main Auditorium & Innovation Lab",
+      "date": "2026-08-22",
+      "time": "08:00 AM (Day 1) - 06:00 PM (Day 3)",
+      "organizer": "Events & Operations Team",
+      "banner": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&q=80",
+        "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&q=80"
+      ],
+      "status": "upcoming"
+    },
+    {
+      "id": "evt-004",
+      "title": "InnovateX Inter-College Hackathon",
+      "type": "hackathons",
+      "description": "Inter-college 24-hour hackathon with 200+ participants from 15 colleges. Focus on real-world problem solving with industry mentors and startup incubation opportunities.",
+      "venue": "Convention Center",
+      "date": "2025-11-10",
+      "time": "09:00 AM - 09:00 AM (Next Day)",
+      "organizer": "Events & Operations Team",
+      "banner": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1515187028965-36f2242312da?w=600&q=80"
+      ],
+      "status": "past"
+    },
+    {
+      "id": "evt-005",
+      "title": "National Coding Championship",
+      "type": "competitions",
+      "description": "Competitive programming contest featuring algorithmic challenges. Top performers represent the college at national-level competitions.",
+      "venue": "Computer Lab 2, CSE Block",
+      "date": "2026-06-28",
+      "time": "10:00 AM - 01:00 PM",
+      "organizer": "Learning & Platform Development Team",
+      "banner": "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=800&q=80",
+      "gallery": [],
+      "status": "upcoming"
+    },
+    {
+      "id": "evt-006",
+      "title": "Project Showcase Competition",
+      "type": "competitions",
+      "description": "Annual showcase where project development teams present their semester projects to faculty judges and industry guests.",
+      "venue": "Project Exhibition Hall",
+      "date": "2025-12-05",
+      "time": "11:00 AM - 04:00 PM",
+      "organizer": "Project Development Teams",
+      "banner": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=600&q=80"
+      ],
+      "status": "past"
+    },
+    {
+      "id": "evt-007",
+      "title": "Cloud Computing & DevOps Talk",
+      "type": "technical-talks",
+      "description": "Technical session on cloud-native architecture, CI/CD pipelines, and DevOps practices using AWS and Docker. Led by senior club members with industry internship experience.",
+      "venue": "Seminar Hall B",
+      "date": "2026-04-12",
+      "time": "03:00 PM - 05:00 PM",
+      "organizer": "Workbench Team",
+      "banner": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+      "gallery": [],
+      "status": "past"
+    },
+    {
+      "id": "evt-008",
+      "title": "AI & Machine Learning Deep Dive",
+      "type": "technical-talks",
+      "description": "Explore the latest trends in AI/ML including LLMs, computer vision, and practical deployment strategies. Includes live demos and Q&A session.",
+      "venue": "Seminar Hall A",
+      "date": "2026-09-05",
+      "time": "02:00 PM - 05:00 PM",
+      "organizer": "Learning & Platform Development Team",
+      "banner": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80",
+      "gallery": [],
+      "status": "upcoming"
+    },
+    {
+      "id": "evt-009",
+      "title": "Industry Insights: Software Engineering Careers",
+      "type": "guest-lectures",
+      "description": "Guest lecture by a senior software engineer from a leading tech company covering career paths, interview preparation, and industry expectations.",
+      "venue": "Main Auditorium",
+      "date": "2026-03-18",
+      "time": "11:00 AM - 01:00 PM",
+      "organizer": "Events & Operations Team",
+      "banner": "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1560439513-74b063a55af4?w=600&q=80"
+      ],
+      "status": "past"
+    },
+    {
+      "id": "evt-010",
+      "title": "Startup Ecosystem & Entrepreneurship",
+      "type": "guest-lectures",
+      "description": "Entrepreneur and startup founder shares insights on building tech startups, fundraising, and the journey from idea to product-market fit.",
+      "venue": "Seminar Hall A",
+      "date": "2026-10-12",
+      "time": "10:00 AM - 12:00 PM",
+      "organizer": "Club Head Office",
+      "banner": "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80",
+      "gallery": [],
+      "status": "upcoming"
+    }
+  ]
+}

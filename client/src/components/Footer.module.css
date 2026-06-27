@@ -1,0 +1,134 @@
+.footer {
+  background: var(--dark);
+  color: var(--gray-300);
+  padding: 4rem 0 0;
+}
+
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--dark-light);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.logoIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--primary-light);
+  color: var(--white);
+  border-radius: var(--radius-md);
+  font-weight: 800;
+  font-size: 0.75rem;
+}
+
+.logoText {
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--white);
+  letter-spacing: 0.05em;
+}
+
+.tagline {
+  font-weight: 600;
+  color: var(--accent-light);
+  margin-bottom: 0.75rem;
+  font-size: 0.9375rem;
+}
+
+.desc {
+  font-size: 0.875rem;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.social {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.social a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--dark-light);
+  color: var(--gray-400);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  transition: all var(--transition);
+}
+
+.social a:hover {
+  background: var(--primary);
+  color: var(--white);
+}
+
+.links h4, .contact h4 {
+  color: var(--white);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+}
+
+.links a {
+  display: block;
+  font-size: 0.875rem;
+  padding: 0.375rem 0;
+  transition: color var(--transition);
+}
+
+.links a:hover {
+  color: var(--accent-light);
+}
+
+.contact p {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+.contact svg {
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 0;
+  font-size: 0.8125rem;
+  color: var(--gray-500);
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .bottom {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+}

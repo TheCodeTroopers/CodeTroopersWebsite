@@ -1,0 +1,110 @@
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.filterBtn {
+  padding: 0.5rem 1.25rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--gray-600);
+  background: var(--gray-100);
+  border-radius: 2rem;
+  transition: all var(--transition);
+}
+
+.filterBtn:hover { background: var(--gray-200); }
+
+.filterBtn.active {
+  background: var(--primary);
+  color: var(--white);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.item {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  aspect-ratio: 4/3;
+}
+
+.item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.item:hover img {
+  transform: scale(1.05);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent 50%, rgba(15, 23, 42, 0.85));
+  display: flex;
+  align-items: flex-end;
+  padding: 1.25rem;
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.item:hover .overlay {
+  opacity: 1;
+}
+
+.overlay span {
+  color: var(--white);
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(15, 23, 42, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  font-size: 2rem;
+  color: var(--white);
+  z-index: 2001;
+}
+
+.lightboxContent {
+  max-width: 900px;
+  width: 100%;
+  text-align: center;
+}
+
+.lightboxContent img {
+  max-height: 75vh;
+  width: auto;
+  margin: 0 auto;
+  border-radius: var(--radius-lg);
+}
+
+.lightboxContent p {
+  color: var(--white);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  margin-top: 1rem;
+}

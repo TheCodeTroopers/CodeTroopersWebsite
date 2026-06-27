@@ -1,0 +1,74 @@
+.controls {
+  margin-bottom: 3rem;
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--white);
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-xl);
+  margin-bottom: 1.25rem;
+  max-width: 500px;
+}
+
+.searchBox svg {
+  color: var(--gray-400);
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.searchBox input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 0.9375rem;
+  background: transparent;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.filterBtn {
+  padding: 0.5rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--gray-600);
+  background: var(--gray-100);
+  border-radius: 2rem;
+  transition: all var(--transition);
+}
+
+.filterBtn:hover {
+  background: var(--gray-200);
+}
+
+.filterBtn.active {
+  background: var(--primary);
+  color: var(--white);
+}
+
+.group {
+  margin-bottom: 3rem;
+}
+
+.groupTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--gray-200);
+}
+
+.loading, .empty {
+  text-align: center;
+  color: var(--gray-500);
+  padding: 3rem;
+  font-size: 1.0625rem;
+}

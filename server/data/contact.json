@@ -1,0 +1,41 @@
+{
+  "info": {
+    "email": "codetroopers@college.edu",
+    "phone": "+91 98765 43210",
+    "address": "CSE Department, College Campus, Karnataka, India",
+    "social": {
+      "linkedin": "https://linkedin.com/company/code-troopers",
+      "github": "https://github.com/code-troopers",
+      "instagram": "https://instagram.com/codetroopers",
+      "discord": "https://discord.gg/codetroopers",
+      "twitter": "https://twitter.com/codetroopers"
+    }
+  },
+  "faq": [
+    {
+      "question": "How can I join Code Troopers?",
+      "answer": "Membership is open to all students interested in technology. Watch for recruitment announcements at the start of each semester. The process includes application submission, screening, interview, team allocation, and a 30-day probation period."
+    },
+    {
+      "question": "What is the Workbench platform?",
+      "answer": "Workbench is Code Troopers' internal learning ecosystem — a platform for structured roadmaps, skill assessments, project tracking, and member progress. It is maintained by the Workbench Team."
+    },
+    {
+      "question": "Do I need prior coding experience?",
+      "answer": "No prior experience is required for general membership. We have structured learning pathways for beginners through advanced levels. Passion and commitment matter most."
+    },
+    {
+      "question": "What is the attendance requirement?",
+      "answer": "General members must maintain 75% attendance. Team Leads and Co-Leads must maintain 85%. Attendance includes meetings, workshops, club activities, and project reviews."
+    },
+    {
+      "question": "How are events organized?",
+      "answer": "All events follow the official Code Troopers Event Protocol — from planning and HOD approval to registration, attendance, documentation, and closure reports."
+    },
+    {
+      "question": "Can I propose a workshop or event?",
+      "answer": "Yes! Any member can propose an activity. Submit your idea to the Events & Operations Team lead, who will guide you through the approval workflow."
+    }
+  ],
+  "submissions": []
+}

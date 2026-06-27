@@ -1,0 +1,33 @@
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid var(--gray-200);
+  padding-bottom: 0;
+}
+
+.tab {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--gray-500);
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: all var(--transition);
+}
+
+.tab:hover {
+  color: var(--primary);
+}
+
+.activeTab {
+  color: var(--primary) !important;
+  border-bottom-color: var(--primary) !important;
+}
+
+.empty {
+  text-align: center;
+  color: var(--gray-500);
+  padding: 4rem 2rem;
+  font-size: 1.0625rem;
+}

@@ -1,0 +1,41 @@
+.header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  padding: calc(var(--navbar-height) + 3rem) 0 3rem;
+  text-align: center;
+  color: var(--white);
+}
+
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.breadcrumb {
+  font-size: 0.8125rem;
+  color: var(--gray-300);
+  margin-bottom: 1rem;
+}
+
+.label {
+  display: inline-block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-light);
+  margin-bottom: 0.75rem;
+}
+
+.header h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1.125rem;
+  color: var(--gray-300);
+  max-width: 600px;
+  margin: 0 auto;
+}

@@ -1,0 +1,84 @@
+{
+  "items": [
+    {
+      "id": "ach-001",
+      "title": "1st Place — InnovateX Hackathon 2025",
+      "category": "hackathon-wins",
+      "description": "Code Troopers team 'ByteForce' secured 1st place among 45 teams with their AI-powered campus navigation solution.",
+      "date": "2025-11-10",
+      "image": "https://images.unsplash.com/photo-1515187028965-36f2242312da?w=600&q=80"
+    },
+    {
+      "id": "ach-002",
+      "title": "2nd Place — State Level Coding Contest",
+      "category": "hackathon-wins",
+      "description": "Three club members ranked in the top 5 at the Karnataka State Coding Championship 2025.",
+      "date": "2025-09-22",
+      "image": "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=600&q=80"
+    },
+    {
+      "id": "ach-003",
+      "title": "Workbench Learning Platform",
+      "category": "projects",
+      "description": "Built an internal learning management platform serving 150+ members with structured roadmaps, assessments, and progress tracking.",
+      "date": "2025-12-01",
+      "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80"
+    },
+    {
+      "id": "ach-004",
+      "title": "Smart Attendance System",
+      "category": "projects",
+      "description": "PD Team 2 developed a QR-based attendance system adopted by the CSE department for club events and workshops.",
+      "date": "2025-10-15",
+      "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80"
+    },
+    {
+      "id": "ach-005",
+      "title": "AWS Cloud Practitioner — 12 Members",
+      "category": "certifications",
+      "description": "Twelve Code Troopers members earned AWS Cloud Practitioner certification through structured study groups and mock exams.",
+      "date": "2025-08-30",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80"
+    },
+    {
+      "id": "ach-006",
+      "title": "Google Developer Student Clubs Lead",
+      "category": "certifications",
+      "description": "Club Head certified as GDSC Lead, enabling cross-collaboration with Google's developer community programs.",
+      "date": "2025-07-01",
+      "image": "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=600&q=80"
+    },
+    {
+      "id": "ach-007",
+      "title": "500+ Workshop Participants Reached",
+      "category": "community-impact",
+      "description": "Code Troopers workshops and bootcamps have trained over 500 students across departments in the 2025-26 academic year.",
+      "date": "2026-03-01",
+      "image": "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=80"
+    },
+    {
+      "id": "ach-008",
+      "title": "Open Source Contributions — 200+ PRs",
+      "category": "community-impact",
+      "description": "Club members collectively merged 200+ pull requests across open source projects and internal repositories.",
+      "date": "2026-01-15",
+      "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&q=80"
+    },
+    {
+      "id": "ach-009",
+      "title": "Best Technical Club Award 2025",
+      "category": "awards",
+      "description": "Recognized as the Best Technical Club at the annual college cultural and technical fest for outstanding event quality and member growth.",
+      "date": "2025-12-20",
+      "image": "https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?w=600&q=80"
+    },
+    {
+      "id": "ach-010",
+      "title": "Excellence in Innovation — Dean's Award",
+      "category": "awards",
+      "description": "Received the Dean Research Excellence Award for the InnovateX Hackathon and its impact on student entrepreneurship.",
+      "date": "2025-11-15",
+      "image": "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=600&q=80"
+    }
+  ]
+}
