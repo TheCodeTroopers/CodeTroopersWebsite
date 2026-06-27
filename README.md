@@ -34,35 +34,86 @@ A modern full-stack website for the Code Troopers technical club — built with 
 
 ## Getting Started
 
-### 1. Install dependencies
+### Run locally (development)
+
+1. Install dependencies for root, server, and client:
 
 ```bash
 npm run install:all
 ```
 
-Or install individually:
-
-```bash
-cd server && npm install
-cd ../client && npm install
-```
-
-### 2. Start development servers
+2. Start both backend and frontend concurrently:
 
 ```bash
 npm run dev
 ```
 
-This starts:
-- **Backend** at `http://localhost:5000`
-- **Frontend** at `http://localhost:3000` (proxies `/api` to backend)
+Notes:
+- The root `dev` script uses `concurrently` and `npm --prefix` to start both services.
+- Backend: `http://localhost:5000` (API)
+- Frontend: `http://localhost:3000` (Vite). If 3000 is in use, Vite will try the next available port (e.g. 3001).
 
-### 3. Production build
+Run services individually (if you prefer separate terminals):
 
 ```bash
-npm run build    # Build React app
-npm start        # Start Express server
+# Start backend
+cd server
+npm run dev
+
+# Start frontend
+cd ../client
+npm run dev
 ```
+
+To run the backend on a different port (PowerShell):
+
+```powershell
+#$env:PORT=5001; npm --prefix server run dev
+# then run in the same shell:
+# npm --prefix server run dev
+```
+
+Or on Unix/macOS:
+
+```bash
+PORT=5001 npm --prefix server run dev
+```
+
+### Production build and start
+
+1. Build the React app:
+
+```bash
+npm run build
+```
+
+2. Start the Express server (serves API and static files if configured):
+
+```bash
+npm run start
+```
+
+### Troubleshooting
+
+- EADDRINUSE (port already in use): find and stop the process using the port.
+
+	Windows PowerShell:
+
+	```powershell
+	netstat -ano | findstr :5000
+	tasklist /FI "PID eq <pid>"
+	taskkill /PID <pid> /F
+	```
+
+	macOS / Linux:
+
+	```bash
+	lsof -i :5000
+	kill -9 <pid>
+	```
+
+- PowerShell `cd /d` note: when running scripts from PowerShell, the root `package.json` now uses `npm --prefix` so shell `cd` quirks are avoided.
+
 
 ## Pages
 
