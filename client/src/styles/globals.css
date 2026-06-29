@@ -11,12 +11,20 @@ html {
   font-size: 16px;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--text-primary);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
 body {
-  font-family: var(--font);
-  color: var(--dark);
-  background: var(--white);
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  background: var(--background);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 a {
@@ -43,7 +51,12 @@ button {
 input, textarea, select {
   font-family: inherit;
   font-size: inherit;
+  color: var(--text-primary);
 }
+
+/* ===========================
+   LAYOUT
+   =========================== */
 
 .container {
   max-width: var(--container-max);
@@ -56,94 +69,135 @@ input, textarea, select {
 }
 
 .section-alt {
-  background: var(--gray-50);
+  background: linear-gradient(180deg, var(--background) 0%, #13070a 100%);
 }
 
 .section-dark {
-  background: var(--dark);
-  color: var(--white);
+  background: var(--background);
+  color: var(--text-primary);
 }
+
+/* ===========================
+   SECTION HEADERS
+   =========================== */
 
 .section-header {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 3.5rem;
 }
 
 .section-label {
   display: inline-block;
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
   color: var(--accent);
   margin-bottom: 0.75rem;
+  font-family: var(--font-mono);
 }
 
 .section-title {
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 5vw, 2.75rem);
   font-weight: 800;
-  color: var(--dark);
+  color: var(--text-primary);
   margin-bottom: 1rem;
   line-height: 1.2;
 }
 
 .section-dark .section-title {
-  color: var(--white);
+  color: var(--text-primary);
 }
 
 .section-subtitle {
-  font-size: 1.125rem;
-  color: var(--gray-500);
+  font-size: 1.05rem;
+  color: var(--text-muted);
   max-width: 600px;
   margin: 0 auto;
 }
 
 .section-dark .section-subtitle {
-  color: var(--gray-400);
+  color: var(--text-muted);
 }
+
+/* ===========================
+   BUTTONS — Consistent system
+   =========================== */
 
 .btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
+  padding: 0.82rem 1.65rem;
   font-size: 0.9375rem;
-  font-weight: 600;
-  border-radius: var(--radius-lg);
-  transition: all var(--transition);
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    background var(--transition),
+    color var(--transition),
+    border-color var(--transition);
+  will-change: transform;
+  font-family: var(--font-body);
+  letter-spacing: 0.01em;
 }
 
+/* Primary — Gold gradient */
 .btn-primary {
-  background: var(--primary);
-  color: var(--white);
+  background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+  color: var(--background);
+  box-shadow: 0 8px 20px rgba(201, 151, 58, 0.2);
+  border: 1px solid rgba(232, 184, 90, 0.35);
 }
 
 .btn-primary:hover {
-  background: var(--primary-light);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(201, 151, 58, 0.35), var(--shadow-glow-gold);
 }
 
+/* Outline — Transparent with gold border */
 .btn-outline {
-  border: 2px solid var(--primary);
-  color: var(--primary);
-  background: transparent;
+  border: 2px solid rgba(201, 151, 58, 0.45);
+  color: var(--text-primary);
+  background: rgba(201, 151, 58, 0.05);
 }
 
 .btn-outline:hover {
-  background: var(--primary);
-  color: var(--white);
+  background: var(--secondary);
+  color: var(--background);
+  border-color: var(--secondary);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(201, 151, 58, 0.25);
 }
 
+/* White/CTA — Maroon gradient */
 .btn-white {
-  background: var(--white);
-  color: var(--primary);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: var(--text-primary);
+  border: 1px solid rgba(154, 40, 61, 0.4);
+  box-shadow: 0 8px 20px rgba(123, 28, 46, 0.25);
 }
 
 .btn-white:hover {
-  background: var(--gray-100);
-  transform: translateY(-2px);
+  background: linear-gradient(135deg, var(--primary-light) 0%, #b32f48 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(123, 28, 46, 0.4), var(--shadow-glow-maroon);
 }
+
+/* Accessibility focus */
+.btn:focus-visible,
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid rgba(232, 184, 90, 0.55);
+  outline-offset: 3px;
+}
+
+/* ===========================
+   GRID UTILITIES
+   =========================== */
 
 .grid-2 {
   display: grid;

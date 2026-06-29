@@ -10,17 +10,24 @@
   padding: 0.5rem 1.25rem;
   font-size: 0.8125rem;
   font-weight: 600;
-  color: var(--gray-600);
-  background: var(--gray-100);
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.04);
   border-radius: 2rem;
+  border: 1px solid var(--borders);
   transition: all var(--transition);
 }
 
-.filterBtn:hover { background: var(--gray-200); }
+.filterBtn:hover {
+  background: rgba(201, 151, 58, 0.08);
+  border-color: rgba(201, 151, 58, 0.25);
+  color: var(--accent);
+}
 
 .filterBtn.active {
-  background: var(--primary);
-  color: var(--white);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: var(--text-primary);
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(123, 28, 46, 0.3);
 }
 
 .grid {
@@ -30,12 +37,19 @@
 }
 
 .card {
-  background: var(--white);
+  background: var(--card-bg);
   border-radius: var(--radius-xl);
   overflow: hidden;
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--borders);
   box-shadow: var(--shadow-md);
   height: 100%;
+  transition: all var(--transition);
+}
+
+.card:hover {
+  border-color: rgba(201, 151, 58, 0.35);
+  box-shadow: 0 16px 36px rgba(13, 5, 7, 0.6), var(--shadow-glow-gold);
+  transform: translateY(-6px);
 }
 
 .imageWrap {
@@ -54,13 +68,15 @@
   top: 1rem;
   left: 1rem;
   padding: 0.25rem 0.75rem;
-  background: var(--primary);
-  color: var(--white);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: var(--text-primary);
   border-radius: 2rem;
   font-size: 0.6875rem;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
+  border: 1px solid rgba(154, 40, 61, 0.3);
+  box-shadow: 0 4px 12px rgba(123, 28, 46, 0.3);
 }
 
 .body {
@@ -71,12 +87,13 @@
   font-size: 1.0625rem;
   font-weight: 700;
   margin-bottom: 0.75rem;
-  color: var(--dark);
+  color: var(--text-primary);
+  font-family: var(--font-heading);
 }
 
 .body p {
   font-size: 0.875rem;
-  color: var(--gray-500);
+  color: var(--text-muted);
   line-height: 1.6;
   margin-bottom: 1rem;
 }

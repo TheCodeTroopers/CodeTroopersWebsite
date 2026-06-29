@@ -6,10 +6,10 @@
 }
 
 .form {
-  background: var(--white);
+  background: var(--card-bg);
   padding: 2rem;
   border-radius: var(--radius-xl);
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--borders);
   box-shadow: var(--shadow-md);
 }
 
@@ -17,7 +17,8 @@
   font-size: 1.25rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
-  color: var(--dark);
+  color: var(--text-primary);
+  font-family: var(--font-heading);
 }
 
 .field {
@@ -28,7 +29,7 @@
   display: block;
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--gray-700);
+  color: var(--text-secondary, var(--text-muted));
   margin-bottom: 0.375rem;
 }
 
@@ -36,46 +37,60 @@
 .field textarea {
   width: 100%;
   padding: 0.75rem 1rem;
-  border: 2px solid var(--gray-200);
+  border: 2px solid var(--borders);
   border-radius: var(--radius-md);
   font-size: 0.9375rem;
-  transition: border-color var(--transition);
-  background: var(--white);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--text-muted);
+  opacity: 0.7;
 }
 
 .field input:focus,
 .field textarea:focus {
   outline: none;
-  border-color: var(--primary);
+  border-color: rgba(201, 151, 58, 0.5);
+  box-shadow: 0 0 0 3px rgba(201, 151, 58, 0.12);
 }
 
 .success {
   margin-top: 1rem;
-  color: #166534;
+  color: #3ddc97;
   font-weight: 600;
   font-size: 0.9375rem;
 }
 
 .error {
   margin-top: 1rem;
-  color: #dc2626;
+  color: #ef6358;
   font-weight: 600;
   font-size: 0.9375rem;
 }
 
 .infoCard {
-  background: var(--white);
+  background: var(--card-bg);
   padding: 2rem;
   border-radius: var(--radius-xl);
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--borders);
   margin-bottom: 1.5rem;
+  transition: all var(--transition);
+}
+
+.infoCard:hover {
+  border-color: rgba(201, 151, 58, 0.25);
 }
 
 .infoCard h3 {
   font-size: 1.125rem;
   font-weight: 700;
   margin-bottom: 1.25rem;
-  color: var(--dark);
+  color: var(--text-primary);
+  font-family: var(--font-heading);
 }
 
 .infoCard p {
@@ -83,12 +98,12 @@
   align-items: center;
   gap: 0.75rem;
   font-size: 0.9375rem;
-  color: var(--gray-600);
+  color: var(--text-muted);
   margin-bottom: 0.75rem;
 }
 
 .infoCard svg {
-  color: var(--primary);
+  color: var(--accent);
   flex-shrink: 0;
 }
 
@@ -104,32 +119,36 @@
   justify-content: center;
   width: 40px;
   height: 40px;
-  background: var(--gray-100);
-  color: var(--gray-600);
+  background: rgba(201, 151, 58, 0.08);
+  color: var(--text-muted);
   border-radius: var(--radius-md);
   font-size: 1.125rem;
   transition: all var(--transition);
+  border: 1px solid var(--borders);
 }
 
 .social a:hover {
   background: var(--primary);
-  color: var(--white);
+  color: var(--text-primary);
+  border-color: var(--primary-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(123, 28, 46, 0.3);
 }
 
 .map {
   border-radius: var(--radius-xl);
   overflow: hidden;
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--borders);
 }
 
 .mapPlaceholder {
   height: 250px;
-  background: var(--gray-100);
+  background: var(--card-bg);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: var(--gray-500);
+  color: var(--text-muted);
 }
 
 .mapPlaceholder svg {
@@ -141,12 +160,14 @@
 .mapPlaceholder p {
   font-weight: 600;
   font-size: 1rem;
-  color: var(--gray-600);
+  color: var(--text-muted);
 }
 
 .mapPlaceholder span {
   font-size: 0.8125rem;
   margin-top: 0.25rem;
+  color: var(--text-muted);
+  opacity: 0.7;
 }
 
 .faqTitle {
@@ -154,14 +175,21 @@
   font-weight: 800;
   text-align: center;
   margin-bottom: 2rem;
+  color: var(--text-primary);
+  font-family: var(--font-heading);
 }
 
 .faqItem {
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--borders);
   border-radius: var(--radius-lg);
   margin-bottom: 0.75rem;
   overflow: hidden;
-  background: var(--white);
+  background: var(--card-bg);
+  transition: border-color var(--transition);
+}
+
+.faqItem:hover {
+  border-color: rgba(201, 151, 58, 0.25);
 }
 
 .faqHeader {
@@ -172,22 +200,24 @@
   padding: 1.125rem 1.5rem;
   font-size: 0.9375rem;
   font-weight: 600;
-  color: var(--dark);
+  color: var(--text-primary);
   text-align: left;
+  transition: background var(--transition);
 }
 
 .faqHeader:hover {
-  background: var(--gray-50);
+  background: rgba(201, 151, 58, 0.06);
 }
 
 .chevron {
   transition: transform var(--transition);
-  color: var(--gray-400);
+  color: var(--text-muted);
   flex-shrink: 0;
 }
 
 .chevron.open {
   transform: rotate(180deg);
+  color: var(--accent);
 }
 
 .faqBody {
@@ -197,7 +227,7 @@
 
 .faqBody p {
   font-size: 0.9375rem;
-  color: var(--gray-600);
+  color: var(--text-muted);
   line-height: 1.7;
 }
 

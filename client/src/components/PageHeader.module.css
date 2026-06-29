@@ -1,20 +1,40 @@
 .header {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background:
+    radial-gradient(circle at 30% 50%, rgba(123, 28, 46, 0.35) 0%, transparent 60%),
+    radial-gradient(circle at 75% 30%, rgba(201, 151, 58, 0.1) 0%, transparent 50%),
+    linear-gradient(135deg, #120709 0%, #0D0507 100%);
   padding: calc(var(--navbar-height) + 3rem) 0 3rem;
   text-align: center;
-  color: var(--white);
+  color: var(--text-primary);
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--borders);
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201, 151, 58, 0.3), transparent);
+  pointer-events: none;
 }
 
 .container {
   max-width: var(--container-max);
   margin: 0 auto;
   padding: 0 1.5rem;
+  position: relative;
+  z-index: 2;
 }
 
 .breadcrumb {
   font-size: 0.8125rem;
-  color: var(--gray-300);
+  color: var(--text-muted);
   margin-bottom: 1rem;
+  opacity: 0.8;
 }
 
 .label {
@@ -22,20 +42,24 @@
   font-size: 0.8125rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--accent-light);
+  letter-spacing: 0.15em;
+  color: var(--accent);
   margin-bottom: 0.75rem;
+  font-family: var(--font-mono);
 }
 
 .header h1 {
   font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 800;
   margin-bottom: 1rem;
+  color: var(--text-primary);
+  font-family: var(--font-heading);
 }
 
 .subtitle {
   font-size: 1.125rem;
-  color: var(--gray-300);
+  color: var(--text-muted);
   max-width: 600px;
   margin: 0 auto;
+  line-height: 1.7;
 }

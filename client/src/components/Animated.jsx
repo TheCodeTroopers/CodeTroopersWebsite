@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 28 },
   visible: (i = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, delay: i * 0.1 }
+    transition: { duration: 0.58, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }
   })
 };
 
@@ -30,7 +30,7 @@ export function PageWrapper({ children }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
     </motion.div>
@@ -46,7 +46,7 @@ export function StaggerContainer({ children, className = '' }) {
       viewport={{ once: true, margin: '-50px' }}
       variants={{
         hidden: {},
-        visible: { transition: { staggerChildren: 0.1 } }
+        visible: { transition: { staggerChildren: 0.075 } }
       }}
     >
       {children}
@@ -66,8 +66,8 @@ export function HoverCard({ children, className = '' }) {
   return (
     <motion.div
       className={className}
-      whileHover={{ y: -8, scale: 1.02 }}
-      transition={{ type: 'spring', stiffness: 300 }}
+      whileHover={{ y: -6, scale: 1.012 }}
+      transition={{ type: 'spring', stiffness: 340, damping: 26 }}
     >
       {children}
     </motion.div>

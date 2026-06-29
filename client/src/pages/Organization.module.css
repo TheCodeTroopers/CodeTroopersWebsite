@@ -27,9 +27,9 @@
   width: 20px;
   height: 20px;
   background: var(--primary);
-  border: 3px solid var(--white);
+  border: 3px solid var(--card-bg);
   border-radius: 50%;
-  box-shadow: 0 0 0 3px var(--primary);
+  box-shadow: 0 0 0 3px var(--primary), var(--shadow-glow-maroon);
   z-index: 1;
 }
 
@@ -40,29 +40,38 @@
 .orgTitle {
   font-size: 1.5rem;
   font-weight: 800;
-  color: var(--primary);
+  color: var(--accent);
   margin-bottom: 1.5rem;
+  font-family: var(--font-heading);
 }
 
 .teamCard {
-  background: var(--white);
+  background: var(--card-bg);
   padding: 1.75rem;
   border-radius: var(--radius-xl);
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--borders);
   box-shadow: var(--shadow-md);
   height: 100%;
+  transition: all var(--transition);
+}
+
+.teamCard:hover {
+  border-color: rgba(201, 151, 58, 0.3);
+  box-shadow: 0 16px 36px rgba(13, 5, 7, 0.6), var(--shadow-glow-gold);
+  transform: translateY(-4px);
 }
 
 .teamHeader {
   margin-bottom: 1.25rem;
   padding-bottom: 1rem;
-  border-bottom: 2px solid var(--gray-100);
+  border-bottom: 2px solid var(--borders);
 }
 
 .teamHeader h3 {
   font-size: 1.125rem;
   font-weight: 700;
-  color: var(--dark);
+  color: var(--text-primary);
+  font-family: var(--font-heading);
 }
 
 .role {
@@ -82,13 +91,14 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--primary);
+  color: var(--primary-light);
   margin-bottom: 0.5rem;
+  font-family: var(--font-mono);
 }
 
 .section p {
   font-size: 0.9375rem;
-  color: var(--gray-600);
+  color: var(--text-muted);
   line-height: 1.6;
 }
 
@@ -99,7 +109,7 @@
 
 .section li {
   font-size: 0.875rem;
-  color: var(--gray-600);
+  color: var(--text-muted);
   margin-bottom: 0.25rem;
   line-height: 1.5;
 }
@@ -112,11 +122,12 @@
 
 .kpi {
   padding: 0.375rem 0.75rem;
-  background: rgba(30, 58, 138, 0.08);
-  color: var(--primary);
+  background: rgba(123, 28, 46, 0.15);
+  color: var(--accent);
   border-radius: 2rem;
   font-size: 0.75rem;
   font-weight: 600;
+  border: 1px solid rgba(201, 151, 58, 0.2);
 }
 
 @media (max-width: 640px) {
