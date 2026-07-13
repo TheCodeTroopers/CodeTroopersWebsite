@@ -8,6 +8,7 @@
     "dev": "node --watch app.js"
   },
   "dependencies": {
+    "codetroopers": "file:..",
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "uuid": "^11.1.0"
