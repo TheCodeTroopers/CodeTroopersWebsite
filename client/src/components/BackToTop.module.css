@@ -8,16 +8,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--primary);
-  color: var(--white);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: var(--text-primary);
   border-radius: 50%;
   font-size: 1.25rem;
-  box-shadow: var(--shadow-lg);
-  transition: background var(--transition);
+  box-shadow: var(--shadow-lg), var(--shadow-glow-maroon);
+  transition: all var(--transition);
+  border: 1px solid rgba(154, 40, 61, 0.35);
 }
 
 .btn:hover {
-  background: var(--primary-light);
+  background: linear-gradient(135deg, var(--primary-light) 0%, #b32f48 100%);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(123, 28, 46, 0.5), var(--shadow-glow-maroon);
 }
 
 @media (max-width: 640px) {

@@ -10,17 +10,24 @@
   padding: 0.5rem 1.25rem;
   font-size: 0.8125rem;
   font-weight: 600;
-  color: var(--gray-600);
-  background: var(--gray-100);
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.04);
   border-radius: 2rem;
+  border: 1px solid var(--borders);
   transition: all var(--transition);
 }
 
-.filterBtn:hover { background: var(--gray-200); }
+.filterBtn:hover {
+  background: rgba(201, 151, 58, 0.08);
+  border-color: rgba(201, 151, 58, 0.25);
+  color: var(--accent);
+}
 
 .filterBtn.active {
-  background: var(--primary);
-  color: var(--white);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: var(--text-primary);
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(123, 28, 46, 0.3);
 }
 
 .grid {
@@ -35,6 +42,13 @@
   overflow: hidden;
   cursor: pointer;
   aspect-ratio: 4/3;
+  border: 1px solid var(--borders);
+  transition: all var(--transition);
+}
+
+.item:hover {
+  border-color: rgba(201, 151, 58, 0.35);
+  box-shadow: 0 12px 28px rgba(13, 5, 7, 0.5), var(--shadow-glow-gold);
 }
 
 .item img {
@@ -51,7 +65,7 @@
 .overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(transparent 50%, rgba(15, 23, 42, 0.85));
+  background: linear-gradient(transparent 45%, rgba(13, 5, 7, 0.92));
   display: flex;
   align-items: flex-end;
   padding: 1.25rem;
@@ -64,20 +78,22 @@
 }
 
 .overlay span {
-  color: var(--white);
+  color: var(--text-primary);
   font-weight: 600;
   font-size: 0.9375rem;
+  font-family: var(--font-heading);
 }
 
 .lightbox {
   position: fixed;
   inset: 0;
   z-index: 2000;
-  background: rgba(15, 23, 42, 0.92);
+  background: rgba(13, 5, 7, 0.95);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem;
+  backdrop-filter: blur(8px);
 }
 
 .closeBtn {
@@ -85,8 +101,15 @@
   top: 1.5rem;
   right: 1.5rem;
   font-size: 2rem;
-  color: var(--white);
+  color: var(--text-primary);
   z-index: 2001;
+  opacity: 0.8;
+  transition: opacity var(--transition);
+}
+
+.closeBtn:hover {
+  opacity: 1;
+  color: var(--accent);
 }
 
 .lightboxContent {
@@ -100,11 +123,14 @@
   width: auto;
   margin: 0 auto;
   border-radius: var(--radius-lg);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(201, 151, 58, 0.2);
 }
 
 .lightboxContent p {
-  color: var(--white);
+  color: var(--text-primary);
   font-size: 1.0625rem;
   font-weight: 600;
   margin-top: 1rem;
+  font-family: var(--font-heading);
 }

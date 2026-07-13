@@ -8,22 +8,28 @@
   font-size: 1.75rem;
   font-weight: 800;
   margin-bottom: 1.5rem;
-  color: var(--primary);
+  color: var(--accent);
 }
 
 .intro p {
   font-size: 1.0625rem;
   line-height: 1.8;
-  color: var(--gray-600);
+  color: var(--text-muted);
 }
 
 .card {
-  background: var(--white);
+  background: var(--card-bg);
   padding: 2rem;
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-md);
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--borders);
   height: 100%;
+  transition: all var(--transition);
+}
+
+.card:hover {
+  border-color: rgba(201, 151, 58, 0.35);
+  box-shadow: 0 16px 36px rgba(13, 5, 7, 0.6), var(--shadow-glow-gold);
 }
 
 .cardIcon {
@@ -34,12 +40,13 @@
 .card h3 {
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--primary);
+  color: var(--accent);
   margin-bottom: 1rem;
+  font-family: var(--font-heading);
 }
 
 .card p, .card li {
-  color: var(--gray-600);
+  color: var(--text-muted);
   line-height: 1.7;
 }
 
@@ -53,13 +60,20 @@
 }
 
 .valueCard {
-  background: var(--white);
+  background: var(--card-bg);
   padding: 2rem;
   border-radius: var(--radius-xl);
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--borders);
   text-align: center;
   height: 100%;
   box-shadow: var(--shadow-sm);
+  transition: all var(--transition);
+}
+
+.valueCard:hover {
+  border-color: rgba(201, 151, 58, 0.35);
+  box-shadow: 0 16px 36px rgba(13, 5, 7, 0.6), var(--shadow-glow-gold);
+  transform: translateY(-4px);
 }
 
 .valueIcon {
@@ -72,12 +86,13 @@
   font-size: 1.125rem;
   font-weight: 700;
   margin-bottom: 0.75rem;
-  color: var(--dark);
+  color: var(--text-primary);
+  font-family: var(--font-heading);
 }
 
 .valueCard p {
   font-size: 0.9375rem;
-  color: var(--gray-500);
+  color: var(--text-muted);
   line-height: 1.6;
 }
 
@@ -92,20 +107,28 @@
   align-items: center;
   gap: 1rem;
   padding: 1.25rem 1.5rem;
-  background: var(--gray-50);
+  background: var(--card-bg);
   border-radius: var(--radius-lg);
+  border: 1px solid var(--borders);
   border-left: 4px solid var(--primary);
+  transition: all var(--transition);
+}
+
+.rule:hover {
+  border-color: rgba(201, 151, 58, 0.35);
+  border-left-color: var(--accent);
+  transform: translateX(4px);
 }
 
 .ruleNum {
   font-size: 1.5rem;
   font-weight: 800;
-  color: var(--primary);
-  opacity: 0.3;
+  color: var(--accent);
+  opacity: 0.45;
   flex-shrink: 0;
 }
 
 .rule p {
   font-weight: 600;
-  color: var(--dark);
+  color: var(--text-primary);
 }

@@ -1,33 +1,56 @@
 :root {
-  --primary: #1e3a8a;
-  --primary-light: #2563eb;
-  --primary-dark: #1e40af;
-  --accent: #0ea5e9;
-  --accent-light: #38bdf8;
-  --dark: #0f172a;
-  --dark-light: #1e293b;
-  --white: #ffffff;
-  --gray-50: #f8fafc;
-  --gray-100: #f1f5f9;
-  --gray-200: #e2e8f0;
-  --gray-300: #cbd5e1;
-  --gray-400: #94a3b8;
-  --gray-500: #64748b;
-  --gray-600: #475569;
-  --gray-700: #334155;
-  --gray-800: #1e293b;
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  /* Stitch Design System - Color Palette */
+  --background: #0D0507;
+  --card-bg: #180B0E;
+  --primary: #7B1C2E;
+  --primary-light: #9A283D;
+  --primary-dark: #5A1220;
+  --secondary: #C9973A;
+  --accent: #E8B85A;
+  --accent-light: #F6D492;
+  --dark: #0D0507;
+  --dark-light: #180B0E;
+  --white: #FDF6EE;
+  --text-primary: #FDF6EE;
+  --text-muted: #A38D80;
+  --text-secondary: #C4A99A;
+  --borders: #2D1B20;
+
+  /* Legacy/compatibility aliases — resolve undefined gray-* vars */
+  --gray-50:  #1A0C10;
+  --gray-100: #231117;
+  --gray-200: #2D1B20;
+  --gray-300: #A38D80;
+  --gray-400: #8A7265;
+  --gray-500: #6E5A52;
+  --gray-600: #B09888;
+  --gray-700: #C4A99A;
+  --gray-900: #FDF6EE;
+
+  /* Typography */
+  --font: 'DM Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', 'Inter', sans-serif;
+  --font-mono: 'DM Mono', 'Courier New', monospace;
+
+  /* Shadows & Glows */
+  --shadow-sm: 0 2px 4px rgba(13, 5, 7, 0.4);
+  --shadow-md: 0 8px 16px rgba(13, 5, 7, 0.6), 0 0 1px rgba(201, 151, 58, 0.15);
+  --shadow-lg: 0 16px 32px rgba(13, 5, 7, 0.7), 0 0 4px rgba(201, 151, 58, 0.2);
+  --shadow-xl: 0 28px 56px rgba(13, 5, 7, 0.8), 0 0 8px rgba(201, 151, 58, 0.3);
+  --shadow-glow-gold: 0 0 24px rgba(201, 151, 58, 0.25);
+  --shadow-glow-maroon: 0 0 24px rgba(123, 28, 46, 0.35);
+
+  /* Border Radii */
   --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
-  --radius-2xl: 1.5rem;
-  --transition: 0.3s ease;
-  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --navbar-height: 72px;
-  --container-max: 1200px;
-  --section-padding: 5rem 0;
+  --radius-md: 0.625rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2.25rem;
+
+  /* Layout & Animation */
+  --transition: 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --navbar-height: 84px;
+  --container-max: 1280px;
+  --section-padding: 6.5rem 0;
 }

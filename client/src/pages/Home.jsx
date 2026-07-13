@@ -30,7 +30,8 @@ export default function Home() {
   return (
     <>
       <SEOHead title="Home" description="Code Troopers — Learn. Build. Lead. Join our student developer community." path="/" />
-      <Hero />
+      <div className={styles.home}>
+        <Hero />
 
       <section className={`section ${styles.aboutPreview}`}>
         <div className="container">
@@ -203,11 +204,12 @@ export default function Home() {
             <div className={styles.joinContent}>
               <h2>Join Code Troopers</h2>
               <p>Ready to learn, build, and lead? Become part of our developer community and transform your career.</p>
-              <Link to="/contact" className="btn btn-white">Get Started <HiArrowRight /></Link>
+              <Link to="/contact" className="btn btn-primary">Get Started <HiArrowRight /></Link>
             </div>
           </FadeIn>
         </div>
       </section>
+      </div>
     </>
   );
 }

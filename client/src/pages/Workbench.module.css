@@ -7,15 +7,16 @@
 .overview p {
   font-size: 1.125rem;
   line-height: 1.8;
-  color: var(--gray-600);
+  color: var(--text-muted);
 }
 
 .sectionTitle {
   font-size: 1.75rem;
   font-weight: 800;
-  color: var(--dark);
+  color: var(--text-primary);
   margin-bottom: 2rem;
   text-align: center;
+  font-family: var(--font-heading);
 }
 
 .roadmapGrid {
@@ -25,28 +26,38 @@
 }
 
 .roadmapCard {
-  background: var(--white);
+  background: var(--card-bg);
   padding: 1.75rem;
   border-radius: var(--radius-xl);
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--borders);
   height: 100%;
+  transition: all var(--transition);
+}
+
+.roadmapCard:hover {
+  border-color: rgba(201, 151, 58, 0.3);
+  box-shadow: 0 12px 28px rgba(13, 5, 7, 0.5), var(--shadow-glow-gold);
+  transform: translateY(-4px);
 }
 
 .phaseNum {
   display: inline-block;
   padding: 0.25rem 0.75rem;
-  background: var(--primary);
-  color: var(--white);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: var(--text-primary);
   border-radius: 2rem;
   font-size: 0.75rem;
   font-weight: 600;
   margin-bottom: 0.75rem;
+  border: 1px solid rgba(154, 40, 61, 0.3);
 }
 
 .roadmapCard h3 {
   font-size: 1.0625rem;
   font-weight: 700;
   margin-bottom: 1rem;
+  color: var(--text-primary);
+  font-family: var(--font-heading);
 }
 
 .roadmapCard ul {
@@ -56,23 +67,31 @@
 
 .roadmapCard li {
   font-size: 0.875rem;
-  color: var(--gray-600);
+  color: var(--text-muted);
   margin-bottom: 0.25rem;
 }
 
 .trackCard {
-  background: var(--white);
+  background: var(--card-bg);
   padding: 1.75rem;
   border-radius: var(--radius-xl);
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--borders);
   height: 100%;
+  transition: all var(--transition);
+}
+
+.trackCard:hover {
+  border-color: rgba(201, 151, 58, 0.3);
+  box-shadow: 0 12px 28px rgba(13, 5, 7, 0.5);
+  transform: translateY(-4px);
 }
 
 .trackCard h3 {
   font-size: 1.125rem;
   font-weight: 700;
-  color: var(--primary);
+  color: var(--accent);
   margin-bottom: 1.25rem;
+  font-family: var(--font-heading);
 }
 
 .levels {
@@ -86,16 +105,18 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.625rem;
-  background: var(--gray-50);
+  background: rgba(255, 255, 255, 0.03);
   border-radius: var(--radius-md);
   font-size: 0.875rem;
+  color: var(--text-muted);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .levelNum {
   width: 28px;
   height: 28px;
-  background: var(--primary);
-  color: var(--white);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: var(--text-primary);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -106,24 +127,30 @@
 }
 
 .policyCard {
-  background: var(--white);
+  background: var(--card-bg);
   padding: 2rem;
   border-radius: var(--radius-xl);
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--borders);
   height: 100%;
+  transition: all var(--transition);
+}
+
+.policyCard:hover {
+  border-color: rgba(201, 151, 58, 0.25);
 }
 
 .policyCard h3 {
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--primary);
+  color: var(--accent);
   margin-bottom: 1rem;
+  font-family: var(--font-heading);
 }
 
 .policyCard h4 {
   font-size: 0.875rem;
   font-weight: 700;
-  color: var(--dark);
+  color: var(--text-primary);
   margin: 1rem 0 0.5rem;
 }
 
@@ -134,29 +161,31 @@
 
 .policyCard li {
   font-size: 0.875rem;
-  color: var(--gray-600);
+  color: var(--text-muted);
   margin-bottom: 0.25rem;
 }
 
 .branchList code {
   display: block;
   padding: 0.375rem 0.75rem;
-  background: var(--dark);
+  background: rgba(0, 0, 0, 0.4);
   color: #a5f3fc;
   border-radius: var(--radius-sm);
   font-size: 0.8125rem;
   margin-bottom: 0.375rem;
-  font-family: monospace;
+  font-family: var(--font-mono);
+  border: 1px solid rgba(165, 243, 252, 0.1);
 }
 
 .lifecycle {
   font-size: 0.8125rem;
-  color: var(--gray-600);
+  color: var(--text-muted);
   line-height: 2;
 }
 
 .lifecycle span {
   font-weight: 500;
+  color: var(--text-primary);
 }
 
 .pointsTable {
@@ -169,16 +198,23 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.25rem;
-  background: var(--white);
-  border: 1px solid var(--gray-200);
+  background: var(--card-bg);
+  border: 1px solid var(--borders);
   border-radius: var(--radius-lg);
   margin-bottom: 0.5rem;
   font-size: 0.9375rem;
+  color: var(--text-muted);
+  transition: all var(--transition);
+}
+
+.pointRow:hover {
+  border-color: rgba(201, 151, 58, 0.25);
+  background: rgba(201, 151, 58, 0.04);
 }
 
 .points {
   font-weight: 800;
-  color: var(--primary);
+  color: var(--accent);
   font-size: 1rem;
 }
 
@@ -200,17 +236,24 @@
 .promotionStep > span:first-child {
   width: 100%;
   padding: 0.875rem;
-  background: var(--white);
+  background: var(--card-bg);
   border: 2px solid var(--primary);
   border-radius: var(--radius-lg);
   text-align: center;
   font-weight: 600;
   font-size: 0.9375rem;
+  color: var(--text-primary);
+  transition: all var(--transition);
+}
+
+.promotionStep > span:first-child:hover {
+  border-color: var(--accent);
+  background: rgba(201, 151, 58, 0.05);
 }
 
 .arrow {
   font-size: 1.25rem;
-  color: var(--primary);
+  color: var(--accent);
   padding: 0.375rem 0;
 }
 
@@ -223,39 +266,42 @@
 
 .platform {
   padding: 0.375rem 0.875rem;
-  background: var(--gray-100);
+  background: rgba(123, 28, 46, 0.15);
   border-radius: 2rem;
   font-size: 0.8125rem;
   font-weight: 600;
-  color: var(--primary);
+  color: var(--accent);
+  border: 1px solid rgba(201, 151, 58, 0.2);
 }
 
 .policyNote {
   font-size: 0.875rem;
-  color: var(--gray-600);
+  color: var(--text-muted);
   font-style: italic;
   line-height: 1.6;
 }
 
 .meetingRow {
   padding: 0.75rem 0;
-  border-bottom: 1px solid var(--gray-100);
+  border-bottom: 1px solid var(--borders);
 }
 
 .meetingRow strong {
   display: block;
   font-size: 0.9375rem;
   margin-bottom: 0.25rem;
+  color: var(--text-primary);
 }
 
 .meetingRow span {
   font-size: 0.8125rem;
-  color: var(--gray-500);
+  color: var(--text-muted);
 }
 
 .attendees {
   display: block !important;
   font-size: 0.75rem !important;
-  color: var(--gray-400) !important;
+  color: var(--text-muted) !important;
+  opacity: 0.7;
   margin-top: 0.125rem;
 }
