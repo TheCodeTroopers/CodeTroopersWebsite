@@ -65,15 +65,10 @@ export default function Hero() {
     <section className={styles.hero}>
       <div className={styles.bgPattern} />
       <div className={styles.bgGrid} />
-      
+
       <div className={styles.container}>
         {/* ── Left: Text Content ───────────────────────── */}
         <motion.div className={styles.content} initial="hidden" animate="visible">
-          <motion.span className={styles.kicker} variants={fadeUp} custom={0.1}>
-            We don't just code
-            <span>We create impact.</span>
-          </motion.span>
-
           <motion.h1 className={styles.statement} variants={fadeUp} custom={0.2}>
             <span>Ideate.</span>
             <span>Code.</span>
@@ -100,6 +95,16 @@ export default function Hero() {
               Join Us
             </Link>
           </motion.div>
+          <motion.span className={styles.kicker} variants={fadeUp} custom={0.1} style={{
+            position: 'absolute',
+            bottom: '100px',
+            right: '200px',
+            margin: '0',
+            zIndex: 10
+          }}>
+            We don't just code
+            <span>We create impact.</span>
+          </motion.span>
         </motion.div>
 
         {/* ── Right: Visual Showcase ────────────────────── */}
@@ -110,17 +115,17 @@ export default function Hero() {
           transition={{ duration: 0.82, delay: 0.32, ease: [0.22, 1, 0.36, 1] }}
         >
           {/* ── Ambient Glows ── */}
-          <motion.div 
-            className={styles.glowMaroon} 
+          <motion.div
+            className={styles.glowMaroon}
             variants={pulseGlow}
             animate="animate"
-            aria-hidden="true" 
+            aria-hidden="true"
           />
-          <motion.div 
-            className={styles.glowGold} 
+          <motion.div
+            className={styles.glowGold}
             variants={pulseGlowOffset}
             animate="animate"
-            aria-hidden="true" 
+            aria-hidden="true"
           />
 
           {/* ── Orbit Rings ── */}

@@ -51,6 +51,7 @@
   object-fit: contain;
   filter: drop-shadow(0 2px 8px rgba(201, 151, 58, 0.35));
   transition: transform var(--transition);
+  border-radius: 50px;
 }
 
 .logo:hover .logoImage {

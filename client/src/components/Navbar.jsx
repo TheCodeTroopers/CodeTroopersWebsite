@@ -51,7 +51,7 @@ export default function Navbar() {
           <img src={logoImg} alt="CodeTroopers Logo" className={styles.logoImage} />
           <div>
             <span className={styles.logoText}>CodeTroopers</span>
-            <span className={styles.logoTagline}>Learn. Build. Lead.</span>
+            <span className={styles.logoTagline}>Club</span>
           </div>
         </Link>
 
