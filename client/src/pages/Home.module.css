@@ -228,13 +228,36 @@
   align-items: center;
 }
 
-.achievementCard img {
+.imageContainer {
   width: 120px;
   height: 90px;
-  object-fit: cover;
   border-radius: var(--radius-md);
+  overflow: hidden;
   flex-shrink: 0;
   border: 1px solid var(--borders);
+}
+
+.imageContainer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cardLink {
+  text-decoration: none;
+  display: block;
+}
+
+.multiImage {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.multiImage img {
+  width: 50%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .achievementCard h4 {
@@ -417,7 +440,7 @@
     padding: 1.5rem;
   }
 
-  .achievementCard img {
+  .imageContainer {
     width: 140px;
     height: 105px;
   }

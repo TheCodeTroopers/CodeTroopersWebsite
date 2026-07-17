@@ -127,13 +127,25 @@ export default function Home() {
           <div className="grid-2">
             {achievements.map(a => (
               <FadeIn key={a.id}>
-                <HoverCard className={styles.achievementCard}>
-                  <img src={a.image} alt={a.title} />
-                  <div>
-                    <h4>{a.title}</h4>
-                    <p>{a.description.slice(0, 100)}...</p>
-                  </div>
-                </HoverCard>
+                <Link to={`/achievements/${a.id}`} className={styles.cardLink}>
+                  <HoverCard className={styles.achievementCard}>
+                    <div className={styles.imageContainer}>
+                      {Array.isArray(a.image) ? (
+                        <div className={styles.multiImage}>
+                          {a.image.map((imgUrl, idx) => (
+                            <img key={idx} src={imgUrl} alt={`${a.title} - ${idx + 1}`} />
+                          ))}
+                        </div>
+                      ) : (
+                        <img src={a.image} alt={a.title} />
+                      )}
+                    </div>
+                    <div>
+                      <h4>{a.title}</h4>
+                      <p>{a.description.slice(0, 100)}...</p>
+                    </div>
+                  </HoverCard>
+                </Link>
               </FadeIn>
             ))}
           </div>

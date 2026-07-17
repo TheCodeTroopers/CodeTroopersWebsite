@@ -77,9 +77,82 @@
 }
 
 .valueIcon {
-  font-size: 2.5rem;
-  display: block;
-  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 76px;
+  height: 76px;
+  margin: 0 auto 1.5rem auto;
+  border-radius: var(--radius-lg);
+  background: rgba(253, 246, 238, 0.02);
+  border: 1px solid rgba(253, 246, 238, 0.08);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition);
+}
+
+/* Card hover animation on nested icon container */
+.valueCard:hover .valueIcon {
+  transform: translateY(-2px) scale(1.05);
+}
+
+/* Learning - Blue Theme */
+.learning {
+  border-color: rgba(96, 165, 250, 0.25);
+}
+.valueCard:hover .learning {
+  border-color: rgba(96, 165, 250, 0.6);
+  box-shadow: 0 0 24px rgba(37, 99, 235, 0.4), inset 0 0 12px rgba(96, 165, 250, 0.2);
+  background: rgba(37, 99, 235, 0.08);
+}
+
+/* Ownership - Green Theme */
+.ownership {
+  border-color: rgba(52, 211, 153, 0.25);
+}
+.valueCard:hover .ownership {
+  border-color: rgba(52, 211, 153, 0.6);
+  box-shadow: 0 0 24px rgba(5, 150, 105, 0.4), inset 0 0 12px rgba(52, 211, 153, 0.2);
+  background: rgba(5, 150, 105, 0.08);
+}
+
+/* Collaboration - Gold Theme */
+.collaboration {
+  border-color: rgba(251, 191, 36, 0.25);
+}
+.valueCard:hover .collaboration {
+  border-color: rgba(251, 191, 36, 0.6);
+  box-shadow: 0 0 24px rgba(217, 119, 6, 0.4), inset 0 0 12px rgba(251, 191, 36, 0.2);
+  background: rgba(217, 119, 6, 0.08);
+}
+
+/* Innovation - Yellow Theme */
+.innovation {
+  border-color: rgba(254, 240, 138, 0.25);
+}
+.valueCard:hover .innovation {
+  border-color: rgba(254, 240, 138, 0.6);
+  box-shadow: 0 0 24px rgba(234, 179, 8, 0.4), inset 0 0 12px rgba(254, 240, 138, 0.2);
+  background: rgba(234, 179, 8, 0.08);
+}
+
+/* Professionalism - Purple Theme */
+.professionalism {
+  border-color: rgba(167, 139, 250, 0.25);
+}
+.valueCard:hover .professionalism {
+  border-color: rgba(167, 139, 250, 0.6);
+  box-shadow: 0 0 24px rgba(124, 58, 237, 0.4), inset 0 0 12px rgba(167, 139, 250, 0.2);
+  background: rgba(124, 58, 237, 0.08);
+}
+
+/* Leadership - Red Theme */
+.leadership {
+  border-color: rgba(248, 113, 113, 0.25);
+}
+.valueCard:hover .leadership {
+  border-color: rgba(248, 113, 113, 0.6);
+  box-shadow: 0 0 24px rgba(220, 38, 38, 0.4), inset 0 0 12px rgba(248, 113, 113, 0.2);
+  background: rgba(220, 38, 38, 0.08);
 }
 
 .valueCard h3 {

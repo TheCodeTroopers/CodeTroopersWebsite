@@ -96,6 +96,11 @@
   color: var(--text-muted);
   line-height: 1.6;
   margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .date {
@@ -103,3 +108,387 @@
   color: var(--accent);
   font-weight: 600;
 }
+
+.cardLink {
+  text-decoration: none;
+  display: block;
+  height: 100%;
+}
+
+.multiImage {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.multiImage img {
+  width: 50%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Navigated Overlay Detail View Styles */
+
+.overlayBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(13, 5, 7, 0.7); /* 70% transparent backdrop */
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.overlayLayoutWrapper {
+  width: 100%;
+  max-width: 1140px;
+  height: 82vh;
+  display: flex;
+  gap: 2.5rem;
+  overflow: hidden;
+  justify-content: center;
+  align-items: stretch;
+}
+
+/* Sidebar navigation styles (placed on the right side) */
+.sidebar {
+  width: 320px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.sidebarTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.05em;
+  font-family: var(--font-heading);
+}
+
+.sidebarList {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-right: 0.5rem;
+}
+
+/* Sidebar scrollbar styles */
+.sidebarList::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebarList::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.sidebarList::-webkit-scrollbar-thumb {
+  background: rgba(201, 151, 58, 0.2);
+  border-radius: 4px;
+}
+
+.sidebarList::-webkit-scrollbar-thumb:hover {
+  background: rgba(201, 151, 58, 0.4);
+}
+
+/* Sidebar individual item cards */
+.sidebarItemCard {
+  background: var(--card-bg);
+  border: 1px solid var(--borders);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  transition: all var(--transition);
+  height: 72px;
+  text-decoration: none;
+}
+
+.sidebarItemCard:hover {
+  border-color: rgba(201, 151, 58, 0.35);
+  background: rgba(255, 255, 255, 0.02);
+  transform: translateX(-4px);
+}
+
+.sidebarItemActive {
+  background: rgba(123, 28, 46, 0.2) !important;
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 12px rgba(201, 151, 58, 0.25);
+}
+
+.sidebarItemThumb {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sidebarItemThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sidebarItemContent {
+  flex: 1;
+  overflow: hidden;
+}
+
+.sidebarItemContent h4 {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: var(--font);
+}
+
+/* Wide center details card (scrolling is internal within the card) */
+.detailCard {
+  flex: 1;
+  max-width: 760px;
+  height: 100%;
+  background: var(--card-bg);
+  border: 1px solid rgba(201, 151, 58, 0.2); /* Highlight with subtle border light */
+  border-radius: var(--radius-xl);
+  box-shadow: 0 0 15px rgba(201, 151, 58, 0.08), var(--shadow-lg);
+  overflow-y: auto;
+  position: relative;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.detailCard:hover {
+  border-color: rgba(201, 151, 58, 0.55); /* Become little bright on hover */
+  box-shadow: 0 0 25px rgba(201, 151, 58, 0.25), var(--shadow-xl);
+}
+
+/* Scrollbar inside the detail card */
+.detailCard::-webkit-scrollbar {
+  width: 6px;
+}
+
+.detailCard::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.detailCard::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+}
+
+.detailCard::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.closeBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(13, 5, 7, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+  z-index: 10;
+}
+
+.closeBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--accent);
+  transform: rotate(90deg);
+  border-color: rgba(201, 151, 58, 0.3);
+}
+
+.detailImageStack {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid var(--borders);
+}
+
+.detailImageWrapper {
+  width: 100%;
+  height: 380px;
+  overflow: hidden;
+}
+
+.detailImageWrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.5s ease;
+}
+
+.detailCard:hover .detailImageWrapper img {
+  transform: scale(1.02);
+}
+
+.detailMultiImageGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  height: 380px;
+}
+
+.detailMultiImageGrid .detailImageWrapper {
+  height: 100%;
+}
+
+.detailCardBody {
+  padding: 2.5rem;
+}
+
+.detailHeaderMeta {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.detailCategoryBadge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-family: var(--font-mono);
+}
+
+.detailDateText {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.detailTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  line-height: 1.3;
+  font-family: var(--font-heading);
+}
+
+.detailDescriptionText {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  margin-bottom: 2.25rem;
+  text-align: justify;
+  font-family: var(--font-body);
+}
+
+.detailTagsGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.detailTag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: rgba(201, 151, 58, 0.05);
+  border: 1px solid rgba(201, 151, 58, 0.15);
+  padding: 0.25rem 0.75rem;
+  border-radius: 2rem;
+  transition: all var(--transition);
+}
+
+.detailTag:hover {
+  background: rgba(201, 151, 58, 0.1);
+  border-color: rgba(201, 151, 58, 0.3);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive adjustment */
+@media (max-width: 900px) {
+  .overlayLayoutWrapper {
+    flex-direction: column;
+    height: 90vh;
+    gap: 1.5rem;
+  }
+  
+  .sidebar {
+    width: 100%;
+    height: auto;
+    order: -1; /* Place other cards at the top on small screens */
+  }
+  
+  .sidebarTitle {
+    margin-bottom: 0.5rem;
+  }
+  
+  .sidebarList {
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 0.5rem;
+    gap: 0.75rem;
+  }
+  
+  .sidebarItemCard {
+    width: 260px;
+    height: 64px;
+    flex-shrink: 0;
+  }
+  
+  .detailCard {
+    flex: 1;
+  }
+  
+  .detailCardBody {
+    padding: 1.75rem;
+  }
+  
+  .detailTitle {
+    font-size: 1.6rem;
+  }
+  
+  .detailImageWrapper, .detailMultiImageGrid {
+    height: 280px;
+  }
+}
+
