@@ -1,16 +1,24 @@
 # Unavailable & Placeholder Links Report
 
-This document records all broken external links, placeholder profile URLs, and social channels identified during the code audit. These links need to be collected and updated by the team.
+This document records all external links, placeholder profile URLs, and status updates regarding media assets.
 
 ---
 
-## 1. Broken External Images (404 Not Found)
+## 1. Actual Event Photos (Updated & Completed)
 
-| Asset Location | Original Broken URL | Issue | Status & Action Taken |
+All stock/placeholder image URLs across the website gallery (`server/data/gallery.json`) and events catalog (`server/data/events.json`) have been replaced with the official **Code Troopers event photos** located in `server/uploads/` and `client/public/uploads/`:
+
+| Asset File | Format & Resolution | Gallery / Event Usage | Status |
 | :--- | :--- | :--- | :--- |
-| **Gallery** (`server/data/gallery.json`, Item `gal-011`) | `https://images.unsplash.com/photo-1515187028965-36f2242312da?w=800&q=80` | HTTP 404 Not Found | **Replaced** with high-res working Unsplash image (`photo-1523240795612-9a054b0db644`) |
-| **Events** (`server/data/events.json`, Item `evt-004`) | `https://images.unsplash.com/photo-1515187028965-36f2242312da?w=600&q=80` | HTTP 404 Not Found | **Replaced** with high-res working Unsplash image (`photo-1523240795612-9a054b0db644`) |
-| **Events** (`server/data/events.json`, Item `evt-009`) | `https://images.unsplash.com/photo-1560439513-74b063a55af4?w=600&q=80` | HTTP 404 Not Found | **Replaced** with high-res working Unsplash image (`photo-1517048676732-d65bc937f952`) |
+| `image1.jpeg` | JPEG (959 x 572) | Hackathon Kickoff & Workshops | **In Production** |
+| `image2.jpeg` | JPEG (957 x 771) | Team Collaboration & Git Sessions | **In Production** |
+| `image3.jpeg` | JPEG (1176 x 783) | Web Dev Workshops & Hands-on Labs | **In Production** |
+| `image4.jpeg` | JPEG (1678 x 704) | Guest Lectures & Audience Sessions | **In Production** |
+| `image5.png` | PNG (1600 x 900) | Project Showcase & Competition Finals | **In Production** |
+| `image6.png` | PNG (1600 x 1200) | Coding Championship & Technical Contests | **In Production** |
+| `image7.png` | PNG (1080 x 1041) | Cloud Computing & DevOps Technical Talks | **In Production** |
+| `image8.png` | PNG (1533 x 677) | Club Team Group Photo & Orientation | **In Production** |
+| `image9.png` | PNG (1423 x 643) | Award Ceremony & Recognition Sessions | **In Production** |
 
 ---
 
@@ -41,4 +49,4 @@ The contact details and social media links in `server/data/contact.json` use pla
 
 ---
 
-*Report generated on: July 25, 2026*
+*Report updated on: July 31, 2026*
