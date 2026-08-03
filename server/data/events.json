@@ -9,10 +9,10 @@
       "date": "2026-07-15",
       "time": "09:00 AM - 04:00 PM",
       "organizer": "Learning & Platform Development Team",
-      "banner": "/uploads/image3.jpeg",
+      "banner": "/uploads/event-03.jpg",
       "gallery": [
-        "/uploads/image1.jpeg",
-        "/uploads/image2.jpeg"
+        "/uploads/event-08.jpg",
+        "/uploads/event-10.jpg"
       ],
       "status": "upcoming"
     },
@@ -25,9 +25,9 @@
       "date": "2026-05-20",
       "time": "02:00 PM - 05:00 PM",
       "organizer": "Workbench Team",
-      "banner": "/uploads/image2.jpeg",
+      "banner": "/uploads/event-02.jpg",
       "gallery": [
-        "/uploads/image3.jpeg"
+        "/uploads/event-03.jpg"
       ],
       "status": "past"
     },
@@ -40,10 +40,10 @@
       "date": "2026-08-22",
       "time": "08:00 AM (Day 1) - 06:00 PM (Day 3)",
       "organizer": "Events & Operations Team",
-      "banner": "/uploads/image1.jpeg",
+      "banner": "/uploads/event-01.jpg",
       "gallery": [
-        "/uploads/image4.jpeg",
-        "/uploads/image5.png"
+        "/uploads/event-10.jpg",
+        "/uploads/event-02.jpg"
       ],
       "status": "upcoming"
     },
@@ -56,9 +56,9 @@
       "date": "2025-11-10",
       "time": "09:00 AM - 09:00 AM (Next Day)",
       "organizer": "Events & Operations Team",
-      "banner": "/uploads/image5.png",
+      "banner": "/uploads/event-12.jpg",
       "gallery": [
-        "/uploads/image1.jpeg"
+        "/uploads/event-11.jpg"
       ],
       "status": "past"
     },
@@ -71,10 +71,8 @@
       "date": "2026-06-28",
       "time": "10:00 AM - 01:00 PM",
       "organizer": "Learning & Platform Development Team",
-      "banner": "/uploads/image6.png",
-      "gallery": [
-        "/uploads/image5.png"
-      ],
+      "banner": "/uploads/event-06.jpg",
+      "gallery": [],
       "status": "upcoming"
     },
     {
@@ -86,9 +84,9 @@
       "date": "2025-12-05",
       "time": "11:00 AM - 04:00 PM",
       "organizer": "Project Development Teams",
-      "banner": "/uploads/image5.png",
+      "banner": "/uploads/event-05.jpg",
       "gallery": [
-        "/uploads/image6.png"
+        "/uploads/event-05.jpg"
       ],
       "status": "past"
     },
@@ -101,10 +99,8 @@
       "date": "2026-04-12",
       "time": "03:00 PM - 05:00 PM",
       "organizer": "Workbench Team",
-      "banner": "/uploads/image7.png",
-      "gallery": [
-        "/uploads/image4.jpeg"
-      ],
+      "banner": "/uploads/event-07.jpg",
+      "gallery": [],
       "status": "past"
     },
     {
@@ -116,10 +112,8 @@
       "date": "2026-09-05",
       "time": "02:00 PM - 05:00 PM",
       "organizer": "Learning & Platform Development Team",
-      "banner": "/uploads/image7.png",
-      "gallery": [
-        "/uploads/image3.jpeg"
-      ],
+      "banner": "/uploads/event-07.jpg",
+      "gallery": [],
       "status": "upcoming"
     },
     {
@@ -131,9 +125,9 @@
       "date": "2026-03-18",
       "time": "11:00 AM - 01:00 PM",
       "organizer": "Events & Operations Team",
-      "banner": "/uploads/image4.jpeg",
+      "banner": "/uploads/event-04.jpg",
       "gallery": [
-        "/uploads/image8.png"
+        "/uploads/event-08.jpg"
       ],
       "status": "past"
     },
@@ -146,10 +140,8 @@
       "date": "2026-10-12",
       "time": "10:00 AM - 12:00 PM",
       "organizer": "Club Head Office",
-      "banner": "/uploads/image9.png",
-      "gallery": [
-        "/uploads/image8.png"
-      ],
+      "banner": "/uploads/event-09.jpg",
+      "gallery": [],
       "status": "upcoming"
     }
   ]

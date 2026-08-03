@@ -4,84 +4,84 @@
       "id": "gal-001",
       "title": "Hackathon 2025 Kickoff",
       "category": "hackathons",
-      "image": "/uploads/image1.jpeg",
+      "image": "/uploads/event-01.jpg",
       "date": "2025-11-10"
     },
     {
       "id": "gal-002",
       "title": "Team Collaboration Session",
       "category": "workshops",
-      "image": "/uploads/image2.jpeg",
+      "image": "/uploads/event-02.jpg",
       "date": "2025-10-05"
     },
     {
       "id": "gal-003",
       "title": "Web Dev Workshop Day 1",
       "category": "workshops",
-      "image": "/uploads/image3.jpeg",
+      "image": "/uploads/event-03.jpg",
       "date": "2025-09-15"
     },
     {
       "id": "gal-004",
       "title": "Guest Lecture Audience",
       "category": "guest-lectures",
-      "image": "/uploads/image4.jpeg",
+      "image": "/uploads/event-04.jpg",
       "date": "2025-08-20"
     },
     {
       "id": "gal-005",
       "title": "Project Showcase 2025",
       "category": "competitions",
-      "image": "/uploads/image5.png",
+      "image": "/uploads/event-05.jpg",
       "date": "2025-12-05"
     },
     {
       "id": "gal-006",
       "title": "Coding Competition Finals",
       "category": "competitions",
-      "image": "/uploads/image6.png",
+      "image": "/uploads/event-06.jpg",
       "date": "2025-07-12"
     },
     {
       "id": "gal-007",
       "title": "Technical Talk — Cloud Computing",
       "category": "technical-talks",
-      "image": "/uploads/image7.png",
+      "image": "/uploads/event-07.jpg",
       "date": "2025-06-18"
     },
     {
       "id": "gal-008",
       "title": "Club Group Photo 2025-26",
       "category": "general",
-      "image": "/uploads/image8.png",
+      "image": "/uploads/event-08.jpg",
       "date": "2025-08-01"
     },
     {
       "id": "gal-009",
       "title": "Award Ceremony",
       "category": "general",
-      "image": "/uploads/image9.png",
+      "image": "/uploads/event-09.jpg",
       "date": "2025-12-20"
     },
     {
       "id": "gal-010",
       "title": "Innovation Lab Session",
       "category": "workshops",
-      "image": "/uploads/image1.jpeg",
+      "image": "/uploads/event-10.jpg",
       "date": "2025-11-25"
     },
     {
       "id": "gal-011",
       "title": "Hackathon Winners",
       "category": "hackathons",
-      "image": "/uploads/image5.png",
+      "image": "/uploads/event-11.jpg",
       "date": "2025-11-11"
     },
     {
       "id": "gal-012",
       "title": "Team Building Activity",
       "category": "general",
-      "image": "/uploads/image8.png",
+      "image": "/uploads/event-12.jpg",
       "date": "2025-09-01"
     }
   ]
