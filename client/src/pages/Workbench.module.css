@@ -1,115 +1,145 @@
-.overview {
+.overviewText {
   max-width: 800px;
-  margin: 0 auto;
+  margin: 0 auto 1rem;
   text-align: center;
 }
 
-.overview p {
-  font-size: 1.125rem;
+.overviewText p {
+  font-size: 1.0625rem;
   line-height: 1.8;
   color: var(--text-muted);
 }
 
-.sectionTitle {
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin-bottom: 2rem;
-  text-align: center;
-  font-family: var(--font-heading);
-}
-
-.roadmapGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-}
-
-.roadmapCard {
+/* Feature Cards (What is Workbench) */
+.featureCard {
   background: var(--card-bg);
-  padding: 1.75rem;
+  padding: 2.25rem 2rem;
   border-radius: var(--radius-xl);
   border: 1px solid var(--borders);
   height: 100%;
+  display: flex;
+  flex-direction: column;
   transition: all var(--transition);
 }
 
-.roadmapCard:hover {
-  border-color: rgba(201, 151, 58, 0.3);
-  box-shadow: 0 12px 28px rgba(13, 5, 7, 0.5), var(--shadow-glow-gold);
-  transform: translateY(-4px);
+.featureCard:hover {
+  border-color: rgba(201, 151, 58, 0.35);
+  box-shadow: 0 16px 36px rgba(13, 5, 7, 0.6), var(--shadow-glow-gold);
+  transform: translateY(-5px);
 }
 
-.phaseNum {
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
+.featureHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.featureIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-lg);
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
   color: var(--text-primary);
-  border-radius: 2rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-  border: 1px solid rgba(154, 40, 61, 0.3);
+  border: 1px solid rgba(154, 40, 61, 0.4);
+  box-shadow: 0 6px 16px rgba(123, 28, 46, 0.3);
 }
 
-.roadmapCard h3 {
-  font-size: 1.0625rem;
+.featureNumber {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  color: var(--accent);
+  opacity: 0.8;
+}
+
+.featureCard h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
   color: var(--text-primary);
+  margin-bottom: 0.875rem;
   font-family: var(--font-heading);
 }
 
-.roadmapCard ul {
-  list-style: disc;
-  padding-left: 1.25rem;
-}
-
-.roadmapCard li {
-  font-size: 0.875rem;
+.featureCard p {
+  font-size: 0.9375rem;
   color: var(--text-muted);
-  margin-bottom: 0.25rem;
+  line-height: 1.65;
 }
 
+/* Learning Track Cards */
 .trackCard {
   background: var(--card-bg);
-  padding: 1.75rem;
+  padding: 2.25rem 2rem;
   border-radius: var(--radius-xl);
   border: 1px solid var(--borders);
   height: 100%;
+  display: flex;
+  flex-direction: column;
   transition: all var(--transition);
 }
 
 .trackCard:hover {
-  border-color: rgba(201, 151, 58, 0.3);
-  box-shadow: 0 12px 28px rgba(13, 5, 7, 0.5);
-  transform: translateY(-4px);
+  border-color: rgba(201, 151, 58, 0.35);
+  box-shadow: 0 16px 36px rgba(13, 5, 7, 0.6);
+  transform: translateY(-5px);
+}
+
+.trackBadge {
+  align-self: flex-start;
+  padding: 0.3rem 0.85rem;
+  background: rgba(201, 151, 58, 0.12);
+  border: 1px solid rgba(201, 151, 58, 0.25);
+  color: var(--accent);
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+  margin-bottom: 1.25rem;
 }
 
 .trackCard h3 {
-  font-size: 1.125rem;
+  font-size: 1.35rem;
   font-weight: 700;
-  color: var(--accent);
-  margin-bottom: 1.25rem;
+  color: var(--text-primary);
+  margin-bottom: 0.625rem;
   font-family: var(--font-heading);
+}
+
+.trackDesc {
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
 }
 
 .levels {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem;
+  margin-top: auto;
 }
 
 .level {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.625rem;
-  background: rgba(255, 255, 255, 0.03);
+  gap: 0.875rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.02);
   border-radius: var(--radius-md);
   font-size: 0.875rem;
-  color: var(--text-muted);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.level:hover {
+  background: rgba(201, 151, 58, 0.04);
+  border-color: rgba(201, 151, 58, 0.15);
 }
 
 .levelNum {
@@ -122,186 +152,179 @@
   align-items: center;
   justify-content: center;
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 800;
   flex-shrink: 0;
 }
 
-.policyCard {
+/* Project Based Learning Cards */
+.projectCard {
   background: var(--card-bg);
-  padding: 2rem;
+  padding: 2.25rem 2rem;
   border-radius: var(--radius-xl);
   border: 1px solid var(--borders);
   height: 100%;
   transition: all var(--transition);
 }
 
-.policyCard:hover {
-  border-color: rgba(201, 151, 58, 0.25);
+.projectCard:hover {
+  border-color: rgba(201, 151, 58, 0.35);
+  box-shadow: 0 16px 36px rgba(13, 5, 7, 0.6);
+  transform: translateY(-5px);
 }
 
-.policyCard h3 {
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 1.125rem;
+  margin-bottom: 1.125rem;
+}
+
+.projectIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-lg);
+  background: rgba(201, 151, 58, 0.12);
+  border: 1px solid rgba(201, 151, 58, 0.3);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(201, 151, 58, 0.1);
+}
+
+.projectCard h3 {
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--accent);
-  margin-bottom: 1rem;
+  color: var(--text-primary);
   font-family: var(--font-heading);
 }
 
-.policyCard h4 {
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 1rem 0 0.5rem;
-}
-
-.policyCard ul {
-  list-style: disc;
-  padding-left: 1.25rem;
-}
-
-.policyCard li {
-  font-size: 0.875rem;
+.projectCard p {
+  font-size: 0.9375rem;
   color: var(--text-muted);
-  margin-bottom: 0.25rem;
+  line-height: 1.65;
 }
 
-.branchList code {
-  display: block;
-  padding: 0.375rem 0.75rem;
-  background: rgba(0, 0, 0, 0.4);
-  color: #a5f3fc;
-  border-radius: var(--radius-sm);
-  font-size: 0.8125rem;
-  margin-bottom: 0.375rem;
-  font-family: var(--font-mono);
-  border: 1px solid rgba(165, 243, 252, 0.1);
+/* Mentorship Cards */
+.mentorshipCard {
+  background: var(--card-bg);
+  padding: 2.25rem 2rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--borders);
+  height: 100%;
+  transition: all var(--transition);
 }
 
-.lifecycle {
-  font-size: 0.8125rem;
-  color: var(--text-muted);
-  line-height: 2;
+.mentorshipCard:hover {
+  border-color: rgba(201, 151, 58, 0.35);
+  box-shadow: 0 16px 36px rgba(13, 5, 7, 0.6);
+  transform: translateY(-5px);
 }
 
-.lifecycle span {
-  font-weight: 500;
-  color: var(--text-primary);
-}
-
-.pointsTable {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.pointRow {
+.pillarHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.25rem;
-  background: var(--card-bg);
-  border: 1px solid var(--borders);
+  margin-bottom: 1.25rem;
+}
+
+.mentorshipIcon {
+  width: 48px;
+  height: 48px;
   border-radius: var(--radius-lg);
-  margin-bottom: 0.5rem;
-  font-size: 0.9375rem;
-  color: var(--text-muted);
-  transition: all var(--transition);
-}
-
-.pointRow:hover {
-  border-color: rgba(201, 151, 58, 0.25);
-  background: rgba(201, 151, 58, 0.04);
-}
-
-.points {
-  font-weight: 800;
-  color: var(--accent);
-  font-size: 1rem;
-}
-
-.promotionPath {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 300px;
-  margin: 0 auto;
-}
-
-.promotionStep {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
-
-.promotionStep > span:first-child {
-  width: 100%;
-  padding: 0.875rem;
-  background: var(--card-bg);
-  border: 2px solid var(--primary);
-  border-radius: var(--radius-lg);
-  text-align: center;
-  font-weight: 600;
-  font-size: 0.9375rem;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
   color: var(--text-primary);
-  transition: all var(--transition);
-}
-
-.promotionStep > span:first-child:hover {
-  border-color: var(--accent);
-  background: rgba(201, 151, 58, 0.05);
-}
-
-.arrow {
-  font-size: 1.25rem;
-  color: var(--accent);
-  padding: 0.375rem 0;
-}
-
-.platformTags {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(154, 40, 61, 0.4);
+  box-shadow: 0 6px 16px rgba(123, 28, 46, 0.3);
 }
 
-.platform {
-  padding: 0.375rem 0.875rem;
-  background: rgba(123, 28, 46, 0.15);
+.pillarBadge {
+  padding: 0.3rem 0.85rem;
+  background: rgba(201, 151, 58, 0.12);
+  color: var(--accent);
   border-radius: 2rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--accent);
-  border: 1px solid rgba(201, 151, 58, 0.2);
+  font-size: 0.75rem;
+  font-weight: 700;
+  border: 1px solid rgba(201, 151, 58, 0.25);
+  letter-spacing: 0.05em;
+  font-family: var(--font-mono);
 }
 
-.policyNote {
-  font-size: 0.875rem;
-  color: var(--text-muted);
-  font-style: italic;
-  line-height: 1.6;
-}
-
-.meetingRow {
-  padding: 0.75rem 0;
-  border-bottom: 1px solid var(--borders);
-}
-
-.meetingRow strong {
-  display: block;
-  font-size: 0.9375rem;
-  margin-bottom: 0.25rem;
+.mentorshipCard h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
   color: var(--text-primary);
+  margin-bottom: 0.875rem;
+  font-family: var(--font-heading);
 }
 
-.meetingRow span {
-  font-size: 0.8125rem;
+.mentorshipCard p {
+  font-size: 0.9375rem;
   color: var(--text-muted);
+  line-height: 1.65;
 }
 
-.attendees {
-  display: block !important;
-  font-size: 0.75rem !important;
-  color: var(--text-muted) !important;
-  opacity: 0.7;
-  margin-top: 0.125rem;
+/* Why Join CodeTroopers Cards */
+.whyJoinCard {
+  background: var(--card-bg);
+  padding: 2.25rem 2rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--borders);
+  height: 100%;
+  transition: all var(--transition);
+}
+
+.whyJoinCard:hover {
+  border-color: rgba(201, 151, 58, 0.4);
+  box-shadow: 0 16px 36px rgba(13, 5, 7, 0.6), var(--shadow-glow-gold);
+  transform: translateY(-5px);
+}
+
+.whyJoinHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.whyJoinIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-lg);
+  background: rgba(201, 151, 58, 0.12);
+  color: var(--accent);
+  border: 1px solid rgba(201, 151, 58, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkBadge {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.whyJoinCard h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.875rem;
+  font-family: var(--font-heading);
+}
+
+.whyJoinCard p {
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+  line-height: 1.65;
 }

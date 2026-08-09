@@ -145,70 +145,130 @@ export const organizationStructure = [
 ];
 
 export const workbenchContent = {
-  overview: 'Workbench is Code Troopers\' internal learning ecosystem — a platform where members access structured roadmaps, track skill progress, manage projects, and collaborate on technical initiatives. It serves as the backbone of our sustainable learning culture.',
-  technicalRoadmap: {
-    title: 'Technical Roadmap',
-    phases: [
-      { phase: 'Phase 1 — Foundation', items: ['Platform architecture setup', 'User authentication & profiles', 'Basic roadmap viewer', 'GitHub integration'] },
-      { phase: 'Phase 2 — Learning Engine', items: ['Structured learning paths', 'Assessment modules', 'Progress tracking dashboard', 'Certificate generation'] },
-      { phase: 'Phase 3 — Collaboration', items: ['Project management tools', 'Team workspaces', 'Code review integration', 'Contribution point tracking'] },
-      { phase: 'Phase 4 — Scale', items: ['Analytics & reporting', 'Mobile responsiveness', 'API for external integrations', 'Alumni mentorship portal'] }
+  overview: 'Workbench is Code Troopers\' internal learning ecosystem — a platform where members access structured roadmaps, track skill progress, manage real-world projects, and receive peer mentorship. It serves as the backbone of our sustainable learning culture.',
+  whatIsWorkbench: {
+    title: 'What is Workbench?',
+    subtitle: 'The Core Platform for Student Developers',
+    description: 'Workbench is designed to bridge the gap between academic theory and practical software engineering. Through structured tracks, collaborative project teams, and expert peer mentorship, members build production-ready applications, master modern tech stacks, and prepare for high-impact careers in technology.',
+    features: [
+      {
+        title: 'Structured Progression',
+        description: 'Step-by-step learning tracks tailored to take members from fundamental concepts to advanced architecture.'
+      },
+      {
+        title: 'Hands-on Building',
+        description: 'Shift focus from passive tutorial consumption to active building of real-world products.'
+      },
+      {
+        title: 'Mentorship Ecosystem',
+        description: 'Direct guidance from senior student leads, alumni, and industry professionals.'
+      }
     ]
   },
   learningRoadmap: {
-    title: 'Learning Roadmap',
+    title: 'Learning Tracks',
+    subtitle: 'Choose your path and master industry-relevant skills',
     tracks: [
-      { track: 'Web Development', levels: ['HTML/CSS/JS Basics', 'React & Node.js', 'Full Stack Projects', 'Production Deployment'] },
-      { track: 'Competitive Programming', levels: ['Data Structures', 'Algorithms', 'Advanced CP', 'Contest Preparation'] },
-      { track: 'Cloud & DevOps', levels: ['Linux & Networking', 'Docker & Kubernetes', 'AWS/GCP Fundamentals', 'CI/CD Pipelines'] },
-      { track: 'AI/ML', levels: ['Python & NumPy', 'Machine Learning Basics', 'Deep Learning', 'LLM Applications'] }
+      {
+        track: 'Full-Stack Web Development',
+        description: 'Master modern frontend & backend technologies to build scalable web applications.',
+        levels: ['HTML/CSS/JS & Web Fundamentals', 'React, Next.js & UI Engineering', 'Node.js, Express & Database Design', 'Production Deployment & DevOps']
+      },
+      {
+        track: 'Competitive Programming & DSA',
+        description: 'Strengthen problem-solving abilities, algorithmic thinking, and coding interview skills.',
+        levels: ['Basic Data Structures & C++', 'Algorithms & Time Complexity', 'Advanced Graph & Dynamic Programming', 'Contest Strategies & Mock Interviews']
+      },
+      {
+        track: 'Cloud & DevOps Engineering',
+        description: 'Learn infrastructure, containerization, CI/CD pipelines, and cloud services.',
+        levels: ['Linux CLI & Shell Scripting', 'Docker Containerization & Networking', 'Cloud Architecture (AWS/GCP)', 'CI/CD Pipelines & Kubernetes']
+      },
+      {
+        track: 'AI & Machine Learning',
+        description: 'Explore data science, machine learning models, and cutting-edge AI integrations.',
+        levels: ['Python, NumPy & Data Analysis', 'Machine Learning Algorithms', 'Deep Learning & Neural Networks', 'LLM Integration & AI Applications']
+      }
     ]
   },
-  githubPolicy: {
-    title: 'GitHub Policy',
-    rules: [
-      'All technical teams must use GitHub for version control.',
-      'Follow the branch strategy: main → develop → feature/*',
-      'Create Pull Requests for all code changes.',
-      'Maintain README and documentation in every repository.',
-      'Conduct peer reviews before merging.',
-      'Direct pushes to the main branch are prohibited.'
-    ],
-    branchStructure: ['main — Production-ready code', 'develop — Integration branch', 'feature/* — Individual feature branches']
-  },
-  projectGovernance: {
-    title: 'Project Governance',
-    proposalRequirements: ['Problem Statement', 'Objective & Scope', 'Team Members', 'Timeline', 'Deliverables'],
-    lifecycle: ['Idea Submission', 'Approval', 'Team Formation', 'Development', 'Testing', 'Review', 'Deployment', 'Maintenance']
-  },
-  contributionPoints: {
-    title: 'Contribution Point System',
-    activities: [
-      { activity: 'Event Participation', points: '+10' },
-      { activity: 'Event Organizer', points: '+20' },
-      { activity: 'Workshop Speaker', points: '+25' },
-      { activity: 'Project Contribution', points: '+10 to +50' },
-      { activity: 'Open Source Contribution', points: '+15' },
-      { activity: 'Winning Competitions', points: '+30' },
-      { activity: 'Mentoring Members', points: '+20' }
+  projectBasedLearning: {
+    title: 'Project Based Learning',
+    subtitle: 'Learn by creating real software used by real people',
+    description: 'We believe true engineering competency comes from building, failing, debugging, and shipping code. Every Workbench member works on real projects in a collaborative software development setup.',
+    highlights: [
+      {
+        title: 'Real-World Products',
+        description: 'Work on actual web apps, mobile tools, and community software with real active users.',
+        icon: 'code'
+      },
+      {
+        title: 'Agile Team Collaboration',
+        description: 'Experience industry-standard workflows with sprint planning, peer reviews, and issue tracking.',
+        icon: 'users'
+      },
+      {
+        title: 'Git & Version Control',
+        description: 'Master pull requests, code reviews, branch strategies, and GitHub best practices.',
+        icon: 'git'
+      },
+      {
+        title: 'Production Deployment',
+        description: 'Learn to deploy, monitor, and maintain live applications on modern cloud platforms.',
+        icon: 'rocket'
+      }
     ]
   },
-  promotionPolicy: {
-    title: 'Promotion Policy',
-    criteria: ['Consistency in performance', 'Contribution Points earned', 'Leadership ability demonstrated', 'Technical growth trajectory', 'Positive team feedback'],
-    path: ['Contributor', 'Senior Contributor', 'Co-Lead', 'Lead', 'Workbench Head / Club Head']
+  mentorship: {
+    title: 'Mentorship & Community',
+    subtitle: 'Accelerate your growth with guidance at every step',
+    description: 'You never learn alone at Code Troopers. Our mentorship framework ensures every member receives guidance, code feedback, and personal support from experienced leads.',
+    pillars: [
+      {
+        title: '1-on-1 Guidance',
+        description: 'Get paired with senior members who help guide your learning journey and troubleshoot blockers.'
+      },
+      {
+        title: 'Code Reviews & Audits',
+        description: 'Receive constructve code feedback to write clean, maintainable, and efficient code.'
+      },
+      {
+        title: 'Tech Workshops & Demos',
+        description: 'Participate in regular technical deep dives, live coding sessions, and architecture reviews.'
+      },
+      {
+        title: 'Career & Resume Reviews',
+        description: 'Prepare for internships and full-time roles with mock interviews, resume polishing, and portfolio advice.'
+      }
+    ]
   },
-  communicationPolicy: {
-    title: 'Communication Policy',
-    platforms: ['WhatsApp', 'Discord', 'GitHub', 'Google Drive', 'Workbench Portal'],
-    rule: 'Important decisions must be documented and communicated through official channels only.'
-  },
-  meetingPolicy: {
-    title: 'Meeting Policy',
-    meetings: [
-      { type: 'Leadership Meeting', frequency: 'Weekly', attendees: 'Club Head, Workbench Head, Team Leads' },
-      { type: 'Team Meeting', frequency: 'Weekly', attendees: 'Lead, Co-Lead, Contributors' },
-      { type: 'General Body Meeting', frequency: 'Monthly', attendees: 'All Club Members' }
+  whyJoin: {
+    title: 'Why Join CodeTroopers?',
+    subtitle: 'Unlock your potential as a developer and technology leader',
+    reasons: [
+      {
+        title: 'Industry-Ready Skills',
+        description: 'Gain practical experience with technologies and tools actively used in modern tech companies.'
+      },
+      {
+        title: 'Vibrant Community',
+        description: 'Surround yourself with passionate peers, builders, and aspiring tech leaders.'
+      },
+      {
+        title: 'Hackathons & Events',
+        description: 'Represent CodeTroopers in top-tier hackathons, competitions, and technical conferences.'
+      },
+      {
+        title: 'Portfolio Differentiation',
+        description: 'Stand out to recruiters with verified project contributions and real-world software releases.'
+      },
+      {
+        title: 'Leadership Opportunities',
+        description: 'Grow from a contributor into project leads, workshop speakers, and core club executives.'
+      },
+      {
+        title: 'Alumni Network',
+        description: 'Connect with club alumni working at top tech firms, startups, and research institutions.'
+      }
     ]
   }
 };
