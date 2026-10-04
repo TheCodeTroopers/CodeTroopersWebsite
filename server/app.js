@@ -32,14 +32,22 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
-const server = app.listen(PORT, () => {
-  console.log(`Code Troopers server running on http://localhost:${PORT}`);
-});
+function startServer() {
+  const server = app.listen(PORT, () => {
+    console.log(`Code Troopers server running on http://localhost:${PORT}`);
+  });
 
-server.on('error', (err) => {
-  if (err && err.code === 'EADDRINUSE') {
-    console.error(`Port ${PORT} is already in use. Use a different PORT or stop the process using it.`);
-    process.exit(1);
-  }
-  console.error('Server error:', err);
-});
+  server.on('error', (err) => {
+    if (err && err.code === 'EADDRINUSE') {
+      console.error(`Port ${PORT} is already in use. Use a different PORT or stop the process using it.`);
+      process.exit(1);
+    }
+    console.error('Server error:', err);
+  });
+}
+
+if (require.main === module) {
+  startServer();
+}
+
+module.exports = app;
