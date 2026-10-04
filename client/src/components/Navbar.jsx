@@ -120,10 +120,10 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div className={styles.mobileMenu}
-            initial={{ opacity: 0, height: 0, y: -8 }}
-            animate={{ opacity: 1, height: 'auto', y: 0 }}
-            exit={{ opacity: 0, height: 0, y: -8 }}
-            transition={{ duration: 0.24, ease: 'easeOut' }}>
+            initial={{ opacity: 0, scale: 0.95, y: -8 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: -8 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}>
             {navLinks.map(link =>
               link.children ? (
                 <div key={link.label} className={styles.mobileGroup}>

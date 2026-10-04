@@ -208,7 +208,8 @@
 
 .mobileMenu {
   display: none;
-  overflow: hidden;
+  overflow-y: auto;
+  max-height: calc(100vh - 5.5rem);
   background: rgba(24, 11, 14, 0.98);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
@@ -222,6 +223,7 @@
   right: 1.25rem;
   pointer-events: auto;
   z-index: 999;
+  -webkit-overflow-scrolling: touch;
 }
 
 .mobileMenu a {
