@@ -22,7 +22,7 @@ function AccordionItem({ title, children, defaultOpen = false }) {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.18, ease: 'easeOut' }}
           >
             {children}
           </motion.div>
@@ -74,18 +74,6 @@ export default function EventProtocol() {
       <section className="section">
         <div className="container">
           <FadeIn>
-            <div className={styles.golden}>
-              <span className={styles.goldenIcon}>⭐</span>
-              <h3>Golden Principle</h3>
-              <p>{eventProtocol.goldenPrinciple}</p>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
-
-      <section className="section section-alt">
-        <div className="container">
-          <FadeIn>
             <h2 className={styles.sectionTitle}>Workshop Execution Procedure</h2>
             <p className={styles.sectionDesc}>13-phase framework for conducting workshops and skill development camps.</p>
           </FadeIn>
@@ -93,7 +81,7 @@ export default function EventProtocol() {
         </div>
       </section>
 
-      <section className="section">
+      <section className="section section-alt">
         <div className="container">
           <FadeIn>
             <h2 className={styles.sectionTitle}>Hackathon Execution Procedure</h2>
@@ -103,7 +91,7 @@ export default function EventProtocol() {
         </div>
       </section>
 
-      <section className="section section-alt">
+      <section className="section">
         <div className="container">
           <FadeIn>
             <h2 className={styles.sectionTitle}>Approval Process</h2>
@@ -112,7 +100,7 @@ export default function EventProtocol() {
         </div>
       </section>
 
-      <section className="section">
+      <section className="section section-alt">
         <div className="container">
           <FadeIn>
             <h2 className={styles.sectionTitle}>Key Procedures</h2>
@@ -137,7 +125,7 @@ export default function EventProtocol() {
         </div>
       </section>
 
-      <section className="section section-alt">
+      <section className="section">
         <div className="container">
           <FadeIn>
             <h2 className={styles.sectionTitle}>Detailed Guidelines</h2>
@@ -154,6 +142,18 @@ export default function EventProtocol() {
           <AccordionItem title="Online Events Exception">
             <p>If an event is conducted online and does not use any college resource, the approval process need not be followed — but the faculty coordinator must be informed.</p>
           </AccordionItem>
+        </div>
+      </section>
+
+      <section className="section section-alt">
+        <div className="container">
+          <FadeIn>
+            <div className={styles.golden}>
+              <span className={styles.goldenIcon}>⭐</span>
+              <h3>Golden Principle</h3>
+              <p>{eventProtocol.goldenPrinciple}</p>
+            </div>
+          </FadeIn>
         </div>
       </section>
     </>

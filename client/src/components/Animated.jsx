@@ -1,22 +1,33 @@
 import { motion } from 'framer-motion';
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 28 },
+  hidden: { opacity: 0, y: 16 },
   visible: (i = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.58, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }
+    transition: { duration: 0.32, delay: Math.min(i * 0.035, 0.2), ease: [0.22, 1, 0.36, 1] }
   })
 };
 
-export function FadeIn({ children, delay = 0, className = '' }) {
+export function FadeIn({ children, delay = 0, duration, className = '' }) {
+  const variants = duration
+    ? {
+        hidden: { opacity: 0, y: 16 },
+        visible: (i = 0) => ({
+          opacity: 1,
+          y: 0,
+          transition: { duration, delay: Math.min(i * 0.035, 0.2), ease: [0.22, 1, 0.36, 1] }
+        })
+      }
+    : fadeUp;
+
   return (
     <motion.div
       className={className}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.05 }}
-      variants={fadeUp}
+      variants={variants}
       custom={delay}
     >
       {children}

@@ -31,3 +31,16 @@
   padding: 4rem 2rem;
   font-size: 1.0625rem;
 }
+
+@media (max-width: 640px) {
+  .tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    padding-bottom: 0.25rem;
+  }
+  .tab {
+    padding: 0.65rem 1rem;
+    font-size: 0.875rem;
+  }
+}
