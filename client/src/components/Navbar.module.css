@@ -276,3 +276,29 @@
   .mobileToggle { display: flex; }
   .mobileMenu { display: block; }
 }
+
+@media (max-width: 640px) {
+  .container {
+    padding: 0.45rem 1rem;
+    height: 56px;
+  }
+  .logoImage {
+    height: 32px;
+  }
+  .logoText {
+    font-size: 0.95rem;
+  }
+  .logoTagline {
+    font-size: 0.55rem;
+  }
+  .mobileToggle {
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+  }
+  .mobileMenu {
+    left: 0.75rem;
+    right: 0.75rem;
+    padding: 0.85rem 1.15rem 1rem;
+  }
+}

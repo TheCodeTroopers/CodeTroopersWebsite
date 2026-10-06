@@ -63,9 +63,11 @@
       "date": "2026-04-11",
       "time": "9:30 AM to 4:00 PM",
       "organizer": "CodeTroopers Club of Department of CSE, IEEE Computer Society and IEEE Student Branch of SMVITM",
-      "banner": "https://drive.google.com/file/d/1W9ozVbVtUHqxtNXC5ZskpeCLVDHxSNIc/view?usp=drive_link",
+      "banner": "/uploads/workshops/ai-nexus/1.jpg",
       "gallery": [
-        "https://drive.google.com/file/d/1W9ozVbVtUHqxtNXC5ZskpeCLVDHxSNIc/view?usp=drive_link"
+        "/uploads/workshops/ai-nexus/1.jpg",
+        "/uploads/workshops/ai-nexus/2.jpg",
+        "/uploads/workshops/ai-nexus/3.jpg"
       ],
       "status": "past"
     },
@@ -78,9 +80,11 @@
       "date": "2025-10-10",
       "time": "9:00 AM to 1:00 PM",
       "organizer": "Department of CSE/ ISTE Student Chapter of SMVITM",
-      "banner": "https://drive.google.com/file/d/1rUJSrpq2BKt-tXm3Rk6v3MbC-I0rIHoe/view?usp=drive_link",
+      "banner": "/uploads/image1.jpeg",
       "gallery": [
-        "https://drive.google.com/file/d/1rUJSrpq2BKt-tXm3Rk6v3MbC-I0rIHoe/view?usp=drive_link"
+        "/uploads/image1.jpeg",
+        "/uploads/image4.jpeg",
+        "/uploads/image5.png"
       ],
       "status": "past"
     },
@@ -93,9 +97,11 @@
       "date": "",
       "time": "",
       "organizer": "",
-      "banner": "https://drive.google.com/file/d/1b90mJmEFaIPKqAv0G5tlI0ZPcs2F-Aiz/view?usp=sharing",
+      "banner": "/uploads/image2.jpeg",
       "gallery": [
-        "https://drive.google.com/file/d/1b90mJmEFaIPKqAv0G5tlI0ZPcs2F-Aiz/view?usp=sharing"
+        "/uploads/image2.jpeg",
+        "/uploads/image6.png",
+        "/uploads/image7.png"
       ],
       "status": "past"
     }

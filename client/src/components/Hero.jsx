@@ -69,6 +69,11 @@ export default function Hero() {
       <div className={styles.container}>
         {/* ── Left: Text Content ───────────────────────── */}
         <motion.div className={styles.content} initial="hidden" animate="visible">
+          <motion.span className={styles.kicker} variants={fadeUp} custom={0.1}>
+            We don't just code
+            <span>We create impact.</span>
+          </motion.span>
+
           <motion.h1 className={styles.statement} variants={fadeUp} custom={0.2}>
             <span>Ideate.</span>
             <span>Code.</span>
@@ -95,16 +100,6 @@ export default function Hero() {
               Join Us
             </Link>
           </motion.div>
-          <motion.span className={styles.kicker} variants={fadeUp} custom={0.1} style={{
-            position: 'absolute',
-            bottom: '100px',
-            right: '200px',
-            margin: '0',
-            zIndex: 10
-          }}>
-            We don't just code
-            <span>We create impact.</span>
-          </motion.span>
         </motion.div>
 
         {/* ── Right: Visual Showcase ────────────────────── */}
