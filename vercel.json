@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "installCommand": "npm install --include=dev && npm --prefix server install --include=dev && npm --prefix client install --include=dev",
+  "buildCommand": "npm --prefix client run build",
+  "outputDirectory": "client/dist",
+  "functions": {
+    "api/[...route].js": {
+      "includeFiles": "server/**"
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/[...route].js"
+    },
+    {
+      "src": "/uploads/(.*)",
+      "dest": "/api/[...route].js"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}

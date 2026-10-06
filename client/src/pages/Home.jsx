@@ -132,11 +132,11 @@ export default function Home() {
                         {Array.isArray(a.image) ? (
                           <div className={styles.multiImage}>
                             {a.image.map((imgUrl, idx) => (
-                              <img key={idx} src={imgUrl} alt={`${a.title} - ${idx + 1}`} />
+                              <img key={idx} src={formatImageUrl(imgUrl)} alt={`${a.title} - ${idx + 1}`} />
                             ))}
                           </div>
                         ) : (
-                          <img src={a.image} alt={a.title} />
+                          <img src={formatImageUrl(a.image)} alt={a.title} />
                         )}
                       </div>
                       <div>

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import SEOHead from '../components/SEOHead';
 import { getAchievements } from '../services/api';
 import { achievementCategories } from '../data/staticContent';
+import { formatImageUrl } from '../utils/imageHelper';
 import styles from './AchievementDetail.module.css';
 
 export default function AchievementDetail() {
@@ -177,7 +178,7 @@ export default function AchievementDetail() {
                     achievement.image.map((imgUrl, i) => (
                       <div key={i} className={`${styles.imgWrapper} ${isGyanBit ? styles.gyanBitWrapper : ''}`}>
                         <img
-                          src={imgUrl}
+                          src={formatImageUrl(imgUrl)}
                           alt={`${achievement.title} - ${i + 1}`}
                           className={isGyanBit ? (i === 1 ? styles.gyanBitImg2 : styles.gyanBitImg1) : ''}
                         />
@@ -185,7 +186,7 @@ export default function AchievementDetail() {
                     ))
                   ) : (
                     <div className={styles.imgWrapper}>
-                      <img src={achievement.image} alt={achievement.title} />
+                      <img src={formatImageUrl(achievement.image)} alt={achievement.title} />
                     </div>
                   )}
                 </div>

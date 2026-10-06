@@ -6,6 +6,7 @@ import PageHeader from '../components/PageHeader';
 import { FadeIn, HoverCard } from '../components/Animated';
 import { achievementCategories } from '../data/staticContent';
 import { getAchievements } from '../services/api';
+import { formatImageUrl } from '../utils/imageHelper';
 import styles from './Achievements.module.css';
 
 export default function Achievements() {
@@ -65,11 +66,11 @@ export default function Achievements() {
                       {Array.isArray(a.image) ? (
                         <div className={styles.multiImage}>
                           {a.image.map((imgUrl, idx) => (
-                            <img key={idx} src={imgUrl} alt={`${a.title} - ${idx + 1}`} loading="lazy" />
+                            <img key={idx} src={formatImageUrl(imgUrl)} alt={`${a.title} - ${idx + 1}`} loading="lazy" />
                           ))}
                         </div>
                       ) : (
-                        <img src={a.image} alt={a.title} loading="lazy" />
+                        <img src={formatImageUrl(a.image)} alt={a.title} loading="lazy" />
                       )}
                       <span className={styles.category}>
                         {achievementCategories.find(c => c.slug === a.category)?.label || a.category}
@@ -124,13 +125,13 @@ export default function Achievements() {
                       <div className={styles.detailMultiImageGrid}>
                         {activeItem.image.map((imgUrl, idx) => (
                           <div key={idx} className={styles.detailImageWrapper}>
-                            <img src={imgUrl} alt={`${activeItem.title} - ${idx + 1}`} />
+                            <img src={formatImageUrl(imgUrl)} alt={`${activeItem.title} - ${idx + 1}`} />
                           </div>
                         ))}
                       </div>
                     ) : (
                       <div className={styles.detailImageWrapper}>
-                        <img src={activeItem.image} alt={activeItem.title} />
+                        <img src={formatImageUrl(activeItem.image)} alt={activeItem.title} />
                       </div>
                     )}
                   </div>
@@ -181,9 +182,9 @@ export default function Achievements() {
                     >
                       <div className={styles.sidebarItemThumb}>
                         {Array.isArray(item.image) ? (
-                          <img src={item.image[0]} alt={item.title} />
+                          <img src={formatImageUrl(item.image[0])} alt={item.title} />
                         ) : (
-                          <img src={item.image} alt={item.title} />
+                          <img src={formatImageUrl(item.image)} alt={item.title} />
                         )}
                       </div>
                       <div className={styles.sidebarItemContent}>

@@ -2,15 +2,12 @@ import { useState } from 'react';
 import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
 import { HiUser } from 'react-icons/hi';
 import { HoverCard } from './Animated';
+import { formatImageUrl } from '../utils/imageHelper';
 import styles from './TeamCard.module.css';
 
 function getImageUrl(url) {
   if (!url) return '';
-  const match = url.match(/(?:file\/d\/|folders\/|id=|lh3\.googleusercontent\.com\/d\/)([\w-]+)/);
-  if (match && match[1]) {
-    return `https://lh3.googleusercontent.com/d/${match[1]}`;
-  }
-  return url;
+  return formatImageUrl(url);
 }
 
 export default function TeamCard({ member }) {
