@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
+import { HiOutlineChevronDown } from 'react-icons/hi';
 import styles from './PageHeader.module.css';
 
-export default function PageHeader({ label, title, subtitle, breadcrumb }) {
+export default function PageHeader({ label, title, subtitle, breadcrumb, showScroll }) {
   return (
     <section className={styles.header}>
       <div className={styles.container}>
@@ -9,6 +9,12 @@ export default function PageHeader({ label, title, subtitle, breadcrumb }) {
         {label && <span className={styles.label}>{label}</span>}
         <h1>{title}</h1>
         {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
+        {showScroll && (
+          <div className={styles.scrollIndicator}>
+            <span>Scroll</span>
+            <HiOutlineChevronDown className={styles.scrollIcon} />
+          </div>
+        )}
       </div>
     </section>
   );
