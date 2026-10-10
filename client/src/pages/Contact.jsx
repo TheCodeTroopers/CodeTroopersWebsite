@@ -118,21 +118,23 @@ export default function Contact() {
               </FadeIn>
 
               <FadeIn delay={2}>
-              <div className={styles.map}>
-  <iframe
-    title="SMVITM Bantakal"
-    src="https://www.google.com/maps?q=Shri+Madhwa+Vadiraja+Institute+of+Technology+and+Management,+Bantakal,+Udupi&output=embed"
-    width="100%"
-    height="100%"
-    style={{
-      border: 0,
-      borderRadius: "12px"
-    }}
-    loading="lazy"
-    allowFullScreen
-    referrerPolicy="no-referrer-when-downgrade"
-  />
-</div>
+                <div className={styles.map}>
+                  <iframe
+                    title="SMVITM Bantakal"
+                    src="https://www.google.com/maps/embed?origin=mfe&pb=!1m2!2m1!1sShri+Madhwa+Vadiraja+Institute+of+Technology+and+Management,+Bantakal,+Udupi"
+                    loading="lazy"
+                    allowFullScreen
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                </div>
+                <a
+                  className={styles.mapFallback}
+                  href="https://www.google.com/maps/search/?api=1&query=Shri+Madhwa+Vadiraja+Institute+of+Technology+and+Management,+Bantakal,+Udupi"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Open SMVITM in Google Maps
+                </a>
               </FadeIn>
             </div>
           </div>
