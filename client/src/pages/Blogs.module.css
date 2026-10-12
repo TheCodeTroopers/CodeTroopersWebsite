@@ -1,0 +1,303 @@
+.blogsPage {
+  min-height: 100vh;
+  padding-bottom: 5rem;
+}
+
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.controlsBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.categoryPills {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.pillBtn {
+  padding: 0.5rem 1.15rem;
+  border-radius: 999px;
+  background: rgba(24, 11, 14, 0.7);
+  border: 1px solid rgba(201, 151, 58, 0.18);
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.pillBtn:hover {
+  color: var(--accent);
+  border-color: rgba(201, 151, 58, 0.4);
+}
+
+.activePill {
+  background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+  color: var(--background);
+  border-color: transparent;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(201, 151, 58, 0.25);
+}
+
+.searchWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 280px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 1rem;
+  color: var(--accent);
+  font-size: 1.1rem;
+  pointer-events: none;
+}
+
+.searchWrapper input {
+  width: 100%;
+  padding: 0.65rem 1rem 0.65rem 2.6rem;
+  background: rgba(24, 11, 14, 0.8);
+  border: 1px solid rgba(201, 151, 58, 0.2);
+  border-radius: 999px;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  outline: none;
+  transition: all var(--transition);
+}
+
+.searchWrapper input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(201, 151, 58, 0.15);
+}
+
+.blogsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.blogCard {
+  background: rgba(24, 11, 14, 0.85);
+  border: 1px solid rgba(201, 151, 58, 0.16);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all var(--transition);
+  box-shadow: var(--shadow-md);
+}
+
+.blogCard:hover {
+  transform: translateY(-5px);
+  border-color: rgba(201, 151, 58, 0.45);
+  box-shadow: 0 20px 40px rgba(13, 5, 7, 0.7), var(--shadow-glow-gold);
+}
+
+.imageWrapper {
+  position: relative;
+  height: 210px;
+  overflow: hidden;
+  background: var(--dark-light);
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.blogCard:hover .cardImage {
+  transform: scale(1.05);
+}
+
+.categoryBadge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(13, 5, 7, 0.85);
+  border: 1px solid rgba(201, 151, 58, 0.3);
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  backdrop-filter: blur(8px);
+}
+
+.cardBody {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.cardMeta {
+  display: flex;
+  gap: 1rem;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  margin-bottom: 0.75rem;
+}
+
+.cardMeta span {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.cardTitle {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  line-height: 1.35;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.cardTitle a {
+  color: inherit;
+  transition: color var(--transition);
+}
+
+.cardTitle a:hover {
+  color: var(--accent);
+}
+
+.cardSummary {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex: 1;
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+}
+
+.tagChip {
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  color: var(--accent-light);
+  background: rgba(201, 151, 58, 0.08);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-sm);
+}
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(201, 151, 58, 0.1);
+}
+
+.authorInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.authorName {
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--text-primary);
+}
+
+.authorRole {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.readBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 700;
+  transition: gap var(--transition);
+}
+
+.readBtn:hover {
+  gap: 0.6rem;
+}
+
+.loadingGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.skeletonCard {
+  height: 400px;
+  background: rgba(24, 11, 14, 0.5);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(201, 151, 58, 0.08);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.3; }
+}
+
+.emptyState {
+  text-align: center;
+  padding: 5rem 1rem;
+  background: rgba(24, 11, 14, 0.5);
+  border-radius: var(--radius-xl);
+  border: 1px dashed rgba(201, 151, 58, 0.2);
+}
+
+.emptyIcon {
+  font-size: 3rem;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.emptyState h3 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.emptyState p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .controlsBar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .searchWrapper {
+    width: 100%;
+  }
+  .blogsGrid {
+    grid-template-columns: 1fr;
+  }
+}

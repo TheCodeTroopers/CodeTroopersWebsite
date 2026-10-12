@@ -14,11 +14,22 @@ exports.getAll = async (req, res) => {
   }
 };
 
+exports.getById = async (req, res) => {
+  try {
+    const data = await readJSON('events.json');
+    const event = data.events.find(e => e.id === req.params.id);
+    if (!event) return res.status(404).json({ error: 'Event not found' });
+    res.json(event);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 exports.create = async (req, res) => {
   try {
     const data = await readJSON('events.json');
     const event = { id: uuidv4(), ...req.body };
-    data.events.push(event);
+    data.events.unshift(event);
     await writeJSON('events.json', data);
     res.status(201).json(event);
   } catch (err) {

@@ -10,11 +10,22 @@ exports.getAll = async (req, res) => {
   }
 };
 
+exports.getById = async (req, res) => {
+  try {
+    const data = await readJSON('team.json');
+    const member = data.members.find(m => m.id === req.params.id);
+    if (!member) return res.status(404).json({ error: 'Member not found' });
+    res.json(member);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 exports.create = async (req, res) => {
   try {
     const data = await readJSON('team.json');
     const member = { id: uuidv4(), ...req.body };
-    data.members.push(member);
+    data.members.unshift(member);
     await writeJSON('team.json', data);
     res.status(201).json(member);
   } catch (err) {

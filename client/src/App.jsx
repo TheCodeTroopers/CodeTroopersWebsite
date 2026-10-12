@@ -2,6 +2,8 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import Layout from './components/Layout';
 import { PageWrapper } from './components/Animated';
+import ProtectedRoute from './components/ProtectedRoute';
+
 import Home from './pages/Home';
 import About from './pages/About';
 import Organization from './pages/Organization';
@@ -13,6 +15,10 @@ import AchievementDetail from './pages/AchievementDetail';
 import Workbench from './pages/Workbench';
 import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
+import Login from './pages/Login';
+import Blogs from './pages/Blogs';
+import BlogDetail from './pages/BlogDetail';
+import AdminDashboard from './pages/admin/AdminDashboard';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -20,12 +26,15 @@ function AnimatedRoutes() {
   // Group sub-routes under top-level path so modal overlays don't trigger full-page exit/re-entry
   const getRouteKey = (pathname) => {
     if (pathname.startsWith('/achievements')) return '/achievements';
+    if (pathname.startsWith('/blogs')) return '/blogs';
+    if (pathname.startsWith('/admin')) return '/admin';
     return pathname;
   };
 
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={getRouteKey(location.pathname)}>
+        {/* Public Website Layout */}
         <Route element={<Layout />}>
           <Route index element={<PageWrapper><Home /></PageWrapper>} />
           <Route path="about" element={<PageWrapper><About /></PageWrapper>} />
@@ -40,9 +49,30 @@ function AnimatedRoutes() {
           <Route path="achievements" element={<PageWrapper><Achievements /></PageWrapper>} />
           <Route path="achievements/:id" element={<PageWrapper><Achievements /></PageWrapper>} />
           <Route path="workbench" element={<PageWrapper><Workbench /></PageWrapper>} />
+          <Route path="blogs" element={<PageWrapper><Blogs /></PageWrapper>} />
+          <Route path="blogs/:id" element={<PageWrapper><BlogDetail /></PageWrapper>} />
           <Route path="gallery" element={<PageWrapper><Gallery /></PageWrapper>} />
           <Route path="contact" element={<PageWrapper><Contact /></PageWrapper>} />
+          <Route path="login" element={<PageWrapper><Login /></PageWrapper>} />
         </Route>
+
+        {/* Dedicated Protected Admin Dashboard */}
+        <Route 
+          path="admin" 
+          element={
+            <ProtectedRoute requireAdmin={true}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="admin/*" 
+          element={
+            <ProtectedRoute requireAdmin={true}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } 
+        />
       </Routes>
     </AnimatePresence>
   );
