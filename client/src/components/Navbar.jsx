@@ -24,7 +24,8 @@ const navLinks = [
   { to: '/achievements', label: 'Achievements' },
   { to: '/workbench', label: 'Workbench' },
   { to: '/gallery', label: 'Gallery' },
-  { to: '/contact', label: 'Contact' }
+  { to: '/contact', label: 'Contact' },
+  { to: '/join-us', label: 'Join Us', cta: true }
 ];
 
 export default function Navbar() {
@@ -96,11 +97,11 @@ export default function Navbar() {
                 <NavLink 
                   to={link.to} 
                   className={({ isActive }) => 
-                    `${link.to === '/contact' ? styles.joinUsBtn : ''} ${isActive ? styles.active : ''}`
+                    `${link.cta ? styles.joinUsBtn : ''} ${isActive ? styles.active : ''}`
                   } 
                   end={link.to === '/'}
                 >
-                  {link.to === '/contact' ? 'Join Us' : link.label}
+                  {link.label}
                 </NavLink>
               </li>
             )

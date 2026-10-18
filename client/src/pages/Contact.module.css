@@ -148,6 +148,18 @@
   display: block;
 }
 
+.mapFallback {
+  display: inline-block;
+  margin-top: 0.75rem;
+  color: var(--accent);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.mapFallback:hover {
+  color: var(--accent-light);
+}
+
 .mapPlaceholder {
   height: 250px;
   background: var(--card-bg);

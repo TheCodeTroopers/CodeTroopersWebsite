@@ -1,0 +1,264 @@
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+.form,
+.panel {
+  background: var(--card-bg);
+  border: 1px solid var(--borders);
+  box-shadow: var(--shadow-md);
+}
+
+.form {
+  padding: 2rem;
+  border-radius: var(--radius-xl);
+}
+
+.formHeader {
+  margin-bottom: 1.75rem;
+}
+
+.kicker {
+  display: inline-block;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 0.65rem;
+}
+
+.formHeader h2,
+.panel h3 {
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-weight: 800;
+}
+
+.formHeader h2 {
+  font-size: clamp(1.45rem, 3vw, 2rem);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.25rem;
+}
+
+.field,
+.uploadField {
+  margin-bottom: 1.25rem;
+}
+
+.field label,
+.uploadField label {
+  color: var(--text-secondary, var(--text-muted));
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  min-height: 46px;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--borders);
+  border-radius: var(--radius-md);
+  font-size: 0.9375rem;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.field textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.field select {
+  color-scheme: dark;
+}
+
+.field select:required:invalid {
+  color: var(--text-secondary);
+}
+
+.field select option {
+  background: var(--card-bg);
+  color: var(--text-primary);
+}
+
+.field select option[value=""] {
+  color: var(--accent-light);
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--text-muted);
+  opacity: 0.75;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: rgba(201, 151, 58, 0.5);
+  box-shadow: 0 0 0 3px rgba(201, 151, 58, 0.12);
+}
+
+.uploadField {
+  border: 1px dashed rgba(201, 151, 58, 0.32);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  background: rgba(201, 151, 58, 0.045);
+}
+
+.uploadField label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.uploadField svg {
+  color: var(--accent);
+  font-size: 1.35rem;
+  flex: 0 0 auto;
+}
+
+.uploadField small {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  font-weight: 600;
+  margin-top: 0.1rem;
+}
+
+.uploadField input {
+  width: 100%;
+  color: var(--text-muted);
+}
+
+.uploadField p {
+  color: var(--accent);
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin-top: 0.75rem;
+  overflow-wrap: anywhere;
+}
+
+.status {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.925rem;
+  font-weight: 700;
+}
+
+.status svg {
+  flex: 0 0 auto;
+  font-size: 1.15rem;
+  margin-top: 0.1rem;
+}
+
+.error {
+  color: #ef6358;
+}
+
+.pending {
+  color: var(--accent);
+}
+
+.aside {
+  display: grid;
+  gap: 1rem;
+  position: sticky;
+  top: calc(var(--navbar-height) + 1.5rem);
+}
+
+.panel {
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
+}
+
+.panel h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.panel p {
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.ruleList {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 1.25rem;
+}
+
+.ruleList li {
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.ruleList li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+@media (max-width: 980px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .aside {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .form {
+    padding: 1.25rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .form,
+  .panel {
+    border-radius: var(--radius-lg);
+  }
+
+  .form {
+    padding: 1rem;
+  }
+
+  .uploadField {
+    padding: 0.85rem;
+  }
+}
