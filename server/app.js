@@ -10,6 +10,7 @@ const contactRoutes = require('./routes/contactRoutes');
 const contactController = require('./controllers/contactController');
 const authRoutes = require('./routes/authRoutes');
 const blogsRoutes = require('./routes/blogsRoutes');
+const recruitmentRoutes = require('./routes/recruitmentRoutes');
 const { requireAdmin } = require('./utils/authMiddleware');
 
 const app = express();
@@ -26,6 +27,8 @@ app.use('/api/events', eventsRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/achievements', achievementsRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/recruitment', recruitmentRoutes);
+app.use('/api/applications', recruitmentRoutes);
 app.get('/api/contact-info', contactController.getInfo);
 app.put('/api/contact-info', requireAdmin, contactController.updateInfo);
 

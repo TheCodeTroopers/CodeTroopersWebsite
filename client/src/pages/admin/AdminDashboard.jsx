@@ -23,7 +23,15 @@ import {
   HiExclamationCircle, 
   HiSparkles,
   HiEye,
-  HiMenuAlt2
+  HiMenuAlt2,
+  HiClipboardCheck,
+  HiAcademicCap,
+  HiPhone,
+  HiDocumentDownload,
+  HiClock,
+  HiCheckCircle,
+  HiXCircle,
+  HiUserGroup
 } from 'react-icons/hi';
 import { useAuth } from '../../context/AuthContext';
 import { 
@@ -33,7 +41,8 @@ import {
   getBlogs, createBlog, updateBlog, deleteBlog,
   getGallery, createGalleryItem, updateGalleryItem, deleteGalleryItem,
   getContactInfo, updateContactInfo, getContactSubmissions, deleteContactSubmission,
-  getUsers, updateUserRole
+  getUsers, updateUserRole,
+  getApplications, updateApplicationStatus, deleteApplication
 } from '../../services/api';
 import SEOHead from '../../components/SEOHead';
 import logoImg from '../../assets/codetrooperslogo.png';
@@ -56,17 +65,21 @@ export default function AdminDashboard() {
   const [submissions, setSubmissions] = useState([]);
   const [contactData, setContactData] = useState({ info: {}, faq: [] });
   const [usersList, setUsersList] = useState([]);
+  const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Search & Filter states
   const [searchQuery, setSearchQuery] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
+  const [appStatusFilter, setAppStatusFilter] = useState('all');
+  const [appDomainFilter, setAppDomainFilter] = useState('all');
 
   // Modal states
   const [modalType, setModalType] = useState(null); // 'member', 'event', 'achievement', 'blog', 'gallery', 'deleteConfirm', 'messageView'
   const [editItem, setEditItem] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null); // { type, id, title }
   const [viewMessage, setViewMessage] = useState(null);
+  const [selectedApplication, setSelectedApplication] = useState(null);
 
   // Toast notification
   const [toast, setToast] = useState(null);
@@ -74,6 +87,14 @@ export default function AdminDashboard() {
   const showToast = (message, type = 'success') => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 3500);
+  };
+
+  // Safe tab change that resets tab-specific search & filters to prevent filter bleed
+  const handleTabChange = (newTab) => {
+    setActiveTab(newTab);
+    setSearchQuery('');
+    setFilterCategory('all');
+    setSidebarOpen(false);
   };
 
   // Initial Data Fetch
@@ -88,7 +109,8 @@ export default function AdminDashboard() {
         galleryRes, 
         contactRes, 
         subRes,
-        usersRes
+        usersRes,
+        appsRes
       ] = await Promise.allSettled([
         getTeam(),
         getEvents(),
@@ -97,7 +119,8 @@ export default function AdminDashboard() {
         getGallery(),
         getContactInfo(),
         getContactSubmissions(),
-        getUsers()
+        getUsers(),
+        getApplications()
       ]);
 
       if (teamRes.status === 'fulfilled') setMembers(teamRes.value.data?.members || []);
@@ -108,6 +131,7 @@ export default function AdminDashboard() {
       if (contactRes.status === 'fulfilled') setContactData(contactRes.value.data || { info: {}, faq: [] });
       if (subRes.status === 'fulfilled') setSubmissions(subRes.value.data?.submissions || []);
       if (usersRes.status === 'fulfilled') setUsersList(usersRes.value.data?.users || []);
+      if (appsRes.status === 'fulfilled') setApplications(appsRes.value.data?.applications || []);
     } catch (err) {
       console.error('Error loading dashboard data:', err);
       showToast('Error syncing some records from server', 'error');
@@ -394,10 +418,33 @@ export default function AdminDashboard() {
         await deleteContactSubmission(id);
         setSubmissions(prev => prev.filter(s => s.id !== id));
         showToast('Inquiry deleted');
+      } else if (type === 'application') {
+        await deleteApplication(id);
+        setApplications(prev => prev.filter(a => a.id !== id));
+        if (selectedApplication && selectedApplication.id === id) {
+          setSelectedApplication(null);
+        }
+        showToast(`Candidate application for ${title} deleted`);
       }
       setDeleteTarget(null);
     } catch (err) {
       showToast(err.response?.data?.error || 'Failed to delete item', 'error');
+    }
+  };
+
+  // Update Application Status (Pending, Reviewing, Shortlisted, Accepted, Rejected)
+  const handleUpdateAppStatus = async (appId, newStatus) => {
+    try {
+      await updateApplicationStatus(appId, newStatus);
+      setApplications(prev => prev.map(a => 
+        a.id === appId ? { ...a, status: newStatus, updatedAt: new Date().toISOString() } : a
+      ));
+      if (selectedApplication && selectedApplication.id === appId) {
+        setSelectedApplication(prev => ({ ...prev, status: newStatus, updatedAt: new Date().toISOString() }));
+      }
+      showToast(`Candidate status updated to: ${newStatus.toUpperCase()}`);
+    } catch (err) {
+      showToast(err.response?.data?.error || 'Failed to update application status', 'error');
     }
   };
 
@@ -417,7 +464,10 @@ export default function AdminDashboard() {
   const handleUpdateSettings = async (e) => {
     e.preventDefault();
     try {
-      await updateContactInfo(contactData);
+      const res = await updateContactInfo(contactData);
+      if (res.data) {
+        setContactData(res.data);
+      }
       showToast('Site contact settings successfully updated');
     } catch (err) {
       showToast(err.response?.data?.error || 'Failed to update settings', 'error');
@@ -467,7 +517,7 @@ export default function AdminDashboard() {
           <button
             type="button"
             className={`${styles.navItem} ${activeTab === 'overview' ? styles.activeNav : ''}`}
-            onClick={() => { setActiveTab('overview'); setSidebarOpen(false); }}
+            onClick={() => handleTabChange('overview')}
           >
             <HiViewGrid className={styles.navIcon} />
             <span>Dashboard Overview</span>
@@ -475,8 +525,22 @@ export default function AdminDashboard() {
 
           <button
             type="button"
+            className={`${styles.navItem} ${activeTab === 'applications' ? styles.activeNav : ''}`}
+            onClick={() => handleTabChange('applications')}
+          >
+            <HiClipboardCheck className={styles.navIcon} />
+            <span>Recruitment</span>
+            {applications.length > 0 && (
+              <span className={`${styles.counterBadge} ${applications.some(a => a.status === 'pending') ? styles.counterPending : ''}`}>
+                {applications.length}
+              </span>
+            )}
+          </button>
+
+          <button
+            type="button"
             className={`${styles.navItem} ${activeTab === 'members' ? styles.activeNav : ''}`}
-            onClick={() => { setActiveTab('members'); setSidebarOpen(false); }}
+            onClick={() => handleTabChange('members')}
           >
             <HiUsers className={styles.navIcon} />
             <span>Members</span>
@@ -486,7 +550,7 @@ export default function AdminDashboard() {
           <button
             type="button"
             className={`${styles.navItem} ${activeTab === 'events' ? styles.activeNav : ''}`}
-            onClick={() => { setActiveTab('events'); setSidebarOpen(false); }}
+            onClick={() => handleTabChange('events')}
           >
             <HiCalendar className={styles.navIcon} />
             <span>Events</span>
@@ -496,7 +560,7 @@ export default function AdminDashboard() {
           <button
             type="button"
             className={`${styles.navItem} ${activeTab === 'achievements' ? styles.activeNav : ''}`}
-            onClick={() => { setActiveTab('achievements'); setSidebarOpen(false); }}
+            onClick={() => handleTabChange('achievements')}
           >
             <HiBadgeCheck className={styles.navIcon} />
             <span>Achievements</span>
@@ -506,7 +570,7 @@ export default function AdminDashboard() {
           <button
             type="button"
             className={`${styles.navItem} ${activeTab === 'blogs' ? styles.activeNav : ''}`}
-            onClick={() => { setActiveTab('blogs'); setSidebarOpen(false); }}
+            onClick={() => handleTabChange('blogs')}
           >
             <HiDocumentText className={styles.navIcon} />
             <span>Blogs / Articles</span>
@@ -516,7 +580,7 @@ export default function AdminDashboard() {
           <button
             type="button"
             className={`${styles.navItem} ${activeTab === 'gallery' ? styles.activeNav : ''}`}
-            onClick={() => { setActiveTab('gallery'); setSidebarOpen(false); }}
+            onClick={() => handleTabChange('gallery')}
           >
             <HiPhotograph className={styles.navIcon} />
             <span>Gallery</span>
@@ -526,7 +590,7 @@ export default function AdminDashboard() {
           <button
             type="button"
             className={`${styles.navItem} ${activeTab === 'inquiries' ? styles.activeNav : ''}`}
-            onClick={() => { setActiveTab('inquiries'); setSidebarOpen(false); }}
+            onClick={() => handleTabChange('inquiries')}
           >
             <HiMail className={styles.navIcon} />
             <span>Inquiries</span>
@@ -538,7 +602,7 @@ export default function AdminDashboard() {
           <button
             type="button"
             className={`${styles.navItem} ${activeTab === 'users' ? styles.activeNav : ''}`}
-            onClick={() => { setActiveTab('users'); setSidebarOpen(false); }}
+            onClick={() => handleTabChange('users')}
           >
             <HiShieldCheck className={styles.navIcon} />
             <span>Roles & Access</span>
@@ -548,7 +612,7 @@ export default function AdminDashboard() {
           <button
             type="button"
             className={`${styles.navItem} ${activeTab === 'settings' ? styles.activeNav : ''}`}
-            onClick={() => { setActiveTab('settings'); setSidebarOpen(false); }}
+            onClick={() => handleTabChange('settings')}
           >
             <HiCog className={styles.navIcon} />
             <span>Site Settings</span>
@@ -596,6 +660,7 @@ export default function AdminDashboard() {
             </button>
             <h1 className={styles.sectionHeading}>
               {activeTab === 'overview' && 'Executive Overview'}
+              {activeTab === 'applications' && 'Recruitment & Candidate Applications'}
               {activeTab === 'members' && 'Member Roster Management'}
               {activeTab === 'events' && 'Event Protocols & Calendar'}
               {activeTab === 'achievements' && 'Milestones & Achievements'}
@@ -621,42 +686,51 @@ export default function AdminDashboard() {
             <div className={styles.overviewContainer}>
               {/* Stat Cards */}
               <div className={styles.statsGrid}>
-                <div className={styles.statCard} onClick={() => setActiveTab('members')}>
+                <div className={styles.statCard} onClick={() => handleTabChange('applications')}>
+                  <div className={`${styles.statIconWrapper} ${styles.statRecruitIcon}`}><HiClipboardCheck /></div>
+                  <div className={styles.statNumber}>{applications.length}</div>
+                  <div className={styles.statLabel}>Recruitment Applications</div>
+                  <span className={styles.statHint}>
+                    {applications.filter(a => a.status === 'pending').length} pending review →
+                  </span>
+                </div>
+
+                <div className={styles.statCard} onClick={() => handleTabChange('members')}>
                   <div className={styles.statIconWrapper}><HiUsers /></div>
                   <div className={styles.statNumber}>{members.length}</div>
                   <div className={styles.statLabel}>Total Members</div>
                   <span className={styles.statHint}>Manage roster →</span>
                 </div>
 
-                <div className={styles.statCard} onClick={() => setActiveTab('events')}>
+                <div className={styles.statCard} onClick={() => handleTabChange('events')}>
                   <div className={`${styles.statIconWrapper} ${styles.statEventsIcon}`}><HiCalendar /></div>
                   <div className={styles.statNumber}>{events.length}</div>
                   <div className={styles.statLabel}>Club Events</div>
                   <span className={styles.statHint}>Workshops & talks →</span>
                 </div>
 
-                <div className={styles.statCard} onClick={() => setActiveTab('achievements')}>
+                <div className={styles.statCard} onClick={() => handleTabChange('achievements')}>
                   <div className={`${styles.statIconWrapper} ${styles.statAchieveIcon}`}><HiBadgeCheck /></div>
                   <div className={styles.statNumber}>{achievements.length}</div>
                   <div className={styles.statLabel}>Achievements</div>
                   <span className={styles.statHint}>Milestones & honors →</span>
                 </div>
 
-                <div className={styles.statCard} onClick={() => setActiveTab('blogs')}>
+                <div className={styles.statCard} onClick={() => handleTabChange('blogs')}>
                   <div className={`${styles.statIconWrapper} ${styles.statBlogIcon}`}><HiDocumentText /></div>
                   <div className={styles.statNumber}>{blogs.length}</div>
                   <div className={styles.statLabel}>Published Blogs</div>
                   <span className={styles.statHint}>Articles & news →</span>
                 </div>
 
-                <div className={styles.statCard} onClick={() => setActiveTab('gallery')}>
+                <div className={styles.statCard} onClick={() => handleTabChange('gallery')}>
                   <div className={`${styles.statIconWrapper} ${styles.statGalleryIcon}`}><HiPhotograph /></div>
                   <div className={styles.statNumber}>{gallery.length}</div>
                   <div className={styles.statLabel}>Gallery Albums</div>
                   <span className={styles.statHint}>Photo captures →</span>
                 </div>
 
-                <div className={styles.statCard} onClick={() => setActiveTab('inquiries')}>
+                <div className={styles.statCard} onClick={() => handleTabChange('inquiries')}>
                   <div className={`${styles.statIconWrapper} ${styles.statInqIcon}`}><HiMail /></div>
                   <div className={styles.statNumber}>{submissions.length}</div>
                   <div className={styles.statLabel}>Contact Inquiries</div>
@@ -666,6 +740,105 @@ export default function AdminDashboard() {
 
               {/* Quick Actions & Recent Tables */}
               <div className={styles.overviewGrid}>
+                {/* Recent Applications Card */}
+                <div className={styles.panelCard} style={{ gridColumn: '1 / -1' }}>
+                  <div className={styles.panelHeader}>
+                    <div>
+                      <h3>Recent Candidate Applications (Join Us)</h3>
+                      <p className={styles.panelDesc}>Submissions received for troop recruitments</p>
+                    </div>
+                    <button type="button" className={styles.panelActionBtn} onClick={() => handleTabChange('applications')}>
+                      <HiExternalLink /> Manage All Applications
+                    </button>
+                  </div>
+                  <div className={styles.tableResponsive}>
+                    <table className={styles.adminTable}>
+                      <thead>
+                        <tr>
+                          <th>Candidate</th>
+                          <th>USN / Dept</th>
+                          <th>Domain(s)</th>
+                          <th>Status</th>
+                          <th>Resume</th>
+                          <th style={{ textAlign: 'right' }}>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {applications.length === 0 ? (
+                          <tr>
+                            <td colSpan={6} style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>
+                              No candidate applications received yet.
+                            </td>
+                          </tr>
+                        ) : (
+                          applications.slice(0, 4).map(app => (
+                            <tr key={app.id}>
+                              <td className={styles.strongCell}>
+                                <div className={styles.applicantCell}>
+                                  <div className={styles.applicantAvatar}>
+                                    {app.name.charAt(0)}
+                                  </div>
+                                  <div>
+                                    <div>{app.name}</div>
+                                    <small style={{ color: 'var(--text-muted)' }}>{app.email}</small>
+                                  </div>
+                                </div>
+                              </td>
+                              <td>
+                                <div>{app.usn || '—'}</div>
+                                <small style={{ color: 'var(--text-muted)' }}>{app.branch || '—'}</small>
+                              </td>
+                              <td>
+                                <div className={styles.domainChips}>
+                                  {Array.isArray(app.domains) ? app.domains.slice(0, 2).map(d => (
+                                    <span key={d} className={styles.domainChip}>{d}</span>
+                                  )) : <span className={styles.domainChip}>{app.domain || 'General'}</span>}
+                                </div>
+                              </td>
+                              <td>
+                                <span className={
+                                  app.status === 'shortlisted' ? styles.statusShortlisted :
+                                  app.status === 'accepted' ? styles.statusAccepted :
+                                  app.status === 'reviewing' ? styles.statusReviewing :
+                                  app.status === 'rejected' ? styles.statusRejected :
+                                  styles.statusPending
+                                }>
+                                  {app.status || 'pending'}
+                                </span>
+                              </td>
+                              <td>
+                                {app.resumeUrl ? (
+                                  <a 
+                                    href={app.resumeUrl} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer" 
+                                    className={styles.resumeBtn}
+                                    title="Open resume in Google Drive"
+                                  >
+                                    <HiExternalLink /> Google Drive
+                                  </a>
+                                ) : (
+                                  <span className={styles.resumeBtnDisabled}>No Resume</span>
+                                )}
+                              </td>
+                              <td style={{ textAlign: 'right' }}>
+                                <button 
+                                  type="button" 
+                                  className={styles.editBtn}
+                                  onClick={() => setSelectedApplication(app)}
+                                  title="View Full Application"
+                                >
+                                  <HiEye /> View Profile
+                                </button>
+                              </td>
+                            </tr>
+                          ))
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
                 {/* Recent Events Card */}
                 <div className={styles.panelCard}>
                   <div className={styles.panelHeader}>
@@ -737,6 +910,254 @@ export default function AdminDashboard() {
                     </table>
                   </div>
                 </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: RECRUITMENT & APPLICATIONS */}
+          {activeTab === 'applications' && (
+            <div className={styles.tabContent}>
+              {/* Integration Status Banner */}
+              <div className={styles.integrationBanner}>
+                <div className={styles.bannerContent}>
+                  <div className={styles.bannerBadge}>
+                    <span className={styles.bannerDot}></span>
+                    <span>API Ready</span>
+                  </div>
+                  <div>
+                    <div className={styles.bannerTitle}>Join Us Recruitment API Integration Console</div>
+                    <div className={styles.bannerSubtitle}>
+                      Endpoints <code>/api/recruitment/applications</code> & <code>/api/applications</code> active · Connected to Admin JWT session · Google Drive & Supabase schema ready
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.bannerActions}>
+                  <button 
+                    type="button" 
+                    className={styles.bannerDocBtn}
+                    onClick={() => loadAllData()}
+                    title="Fetch latest candidate applications"
+                  >
+                    <HiClock /> Sync Now
+                  </button>
+                </div>
+              </div>
+
+              {/* Metrics Bar */}
+              <div className={styles.metricsBar}>
+                <div className={styles.metricItem}>
+                  <div className={styles.metricValue}>{applications.length}</div>
+                  <div className={styles.metricLabel}>Total Received</div>
+                </div>
+                <div className={styles.metricItem}>
+                  <div className={styles.metricValue} style={{ color: '#fbbf24' }}>
+                    {applications.filter(a => a.status === 'pending').length}
+                  </div>
+                  <div className={styles.metricLabel}>Pending Review</div>
+                </div>
+                <div className={styles.metricItem}>
+                  <div className={styles.metricValue} style={{ color: '#60a5fa' }}>
+                    {applications.filter(a => a.status === 'reviewing').length}
+                  </div>
+                  <div className={styles.metricLabel}>Under Review</div>
+                </div>
+                <div className={styles.metricItem}>
+                  <div className={styles.metricValue} style={{ color: '#c084fc' }}>
+                    {applications.filter(a => a.status === 'shortlisted').length}
+                  </div>
+                  <div className={styles.metricLabel}>Shortlisted</div>
+                </div>
+                <div className={styles.metricItem}>
+                  <div className={styles.metricValue} style={{ color: '#34d399' }}>
+                    {applications.filter(a => a.status === 'accepted').length}
+                  </div>
+                  <div className={styles.metricLabel}>Accepted</div>
+                </div>
+                <div className={styles.metricItem}>
+                  <div className={styles.metricValue} style={{ color: '#f87171' }}>
+                    {applications.filter(a => a.status === 'rejected').length}
+                  </div>
+                  <div className={styles.metricLabel}>Rejected</div>
+                </div>
+              </div>
+
+              {/* Action Controls & Filters */}
+              <div className={styles.actionHeader}>
+                <div className={styles.filterControls}>
+                  <div className={styles.searchBox}>
+                    <HiSearch className={styles.searchIcon} />
+                    <input 
+                      type="text" 
+                      placeholder="Search applicant name, USN, branch, skills..." 
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </div>
+
+                  <select 
+                    className={styles.selectFilter}
+                    value={appStatusFilter}
+                    onChange={(e) => setAppStatusFilter(e.target.value)}
+                  >
+                    <option value="all">All Application Statuses</option>
+                    <option value="pending">Pending Review</option>
+                    <option value="reviewing">Under Review</option>
+                    <option value="shortlisted">Shortlisted</option>
+                    <option value="accepted">Accepted</option>
+                    <option value="rejected">Rejected</option>
+                  </select>
+
+                  <select 
+                    className={styles.selectFilter}
+                    value={appDomainFilter}
+                    onChange={(e) => setAppDomainFilter(e.target.value)}
+                  >
+                    <option value="all">All Domains</option>
+                    <option value="web">Web Development</option>
+                    <option value="app">App Development</option>
+                    <option value="ai">AI / Machine Learning</option>
+                    <option value="cloud">Cloud / DevOps</option>
+                    <option value="design">UI/UX Design</option>
+                    <option value="competitive">Competitive Programming</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Applications Table */}
+              <div className={styles.tableWrapper}>
+                <table className={styles.adminTable}>
+                  <thead>
+                    <tr>
+                      <th>Candidate</th>
+                      <th>USN / Dept</th>
+                      <th>Year / Sem</th>
+                      <th>Domains of Interest</th>
+                      <th>Resume (Drive)</th>
+                      <th>Date</th>
+                      <th>Status</th>
+                      <th style={{ textAlign: 'right' }}>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {applications
+                      .filter(app => {
+                        const matchStatus = appStatusFilter === 'all' || app.status?.toLowerCase() === appStatusFilter.toLowerCase();
+                        const matchDomain = appDomainFilter === 'all' || 
+                          (Array.isArray(app.domains) && app.domains.some(d => d.toLowerCase().includes(appDomainFilter.toLowerCase()))) ||
+                          (typeof app.domain === 'string' && app.domain.toLowerCase().includes(appDomainFilter.toLowerCase()));
+                        
+                        const q = searchQuery.toLowerCase();
+                        const matchSearch = !q || 
+                          (app.name && app.name.toLowerCase().includes(q)) ||
+                          (app.email && app.email.toLowerCase().includes(q)) ||
+                          (app.usn && app.usn.toLowerCase().includes(q)) ||
+                          (app.branch && app.branch.toLowerCase().includes(q)) ||
+                          (app.skills && app.skills.toLowerCase().includes(q));
+
+                        return matchStatus && matchDomain && matchSearch;
+                      })
+                      .map(app => (
+                        <tr key={app.id}>
+                          <td>
+                            <div className={styles.applicantCell}>
+                              <div className={styles.applicantAvatar}>
+                                {app.name ? app.name.charAt(0).toUpperCase() : 'T'}
+                              </div>
+                              <div>
+                                <div className={styles.strongCell}>{app.name}</div>
+                                <div style={{ fontSize: '0.76rem', color: 'var(--text-muted)' }}>{app.email}</div>
+                                {app.phone && (
+                                  <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{app.phone}</div>
+                                )}
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <span className={styles.applicantUsn}>{app.usn || '—'}</span>
+                            <div className={styles.applicantBranch}>{app.branch || '—'}</div>
+                          </td>
+                          <td>
+                            <div>{app.year || '—'}</div>
+                            <small className={styles.timeText}>{app.semester || ''}</small>
+                          </td>
+                          <td>
+                            <div className={styles.domainChips}>
+                              {Array.isArray(app.domains) && app.domains.length > 0 ? (
+                                app.domains.map(d => (
+                                  <span key={d} className={styles.domainChip}>{d}</span>
+                                ))
+                              ) : (
+                                <span className={styles.domainChip}>{app.domain || 'General'}</span>
+                              )}
+                            </div>
+                          </td>
+                          <td>
+                            {app.resumeUrl ? (
+                              <a 
+                                href={app.resumeUrl} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className={styles.resumeBtn}
+                                title="Open resume file on Google Drive"
+                              >
+                                <HiExternalLink /> Google Drive
+                              </a>
+                            ) : (
+                              <span className={styles.resumeBtnDisabled}>Not Attached</span>
+                            )}
+                          </td>
+                          <td>
+                            <div style={{ fontSize: '0.82rem' }}>
+                              {app.appliedAt ? new Date(app.appliedAt).toLocaleDateString() : 'Recent'}
+                            </div>
+                            <small className={styles.timeText}>
+                              {app.appliedAt ? new Date(app.appliedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
+                            </small>
+                          </td>
+                          <td>
+                            <select 
+                              className={styles.quickStatusSelect}
+                              value={app.status || 'pending'}
+                              onChange={(e) => handleUpdateAppStatus(app.id, e.target.value)}
+                            >
+                              <option value="pending">Pending</option>
+                              <option value="reviewing">Reviewing</option>
+                              <option value="shortlisted">Shortlisted</option>
+                              <option value="accepted">Accepted</option>
+                              <option value="rejected">Rejected</option>
+                            </select>
+                          </td>
+                          <td style={{ textAlign: 'right' }}>
+                            <div className={styles.rowActions}>
+                              <button 
+                                type="button"
+                                className={styles.editBtn} 
+                                onClick={() => setSelectedApplication(app)}
+                                title="View Full Application & Resume"
+                              >
+                                <HiEye />
+                              </button>
+                              <button 
+                                type="button"
+                                className={styles.deleteBtn} 
+                                onClick={() => setDeleteTarget({ type: 'application', id: app.id, title: `${app.name} (${app.usn || app.email})` })}
+                                title="Delete Application Record"
+                              >
+                                <HiTrash />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    {applications.length === 0 && (
+                      <tr>
+                        <td colSpan={8} style={{ textAlign: 'center', padding: '3.5rem 1rem', color: 'var(--text-muted)' }}>
+                          No recruitment applications recorded. Once applicants submit via the Join Us portal, their metadata and Google Drive resumes will appear here.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
               </div>
             </div>
           )}
@@ -2010,6 +2431,249 @@ export default function AdminDashboard() {
                   onClick={() => setViewMessage(null)}
                 >
                   Close Inquiry
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* VIEW APPLICATION & RESUME MODAL */}
+      <AnimatePresence>
+        {selectedApplication && (
+          <div className={styles.modalOverlay} onClick={() => setSelectedApplication(null)}>
+            <motion.div 
+              className={styles.modalDialog}
+              style={{ maxWidth: '780px' }}
+              onClick={(e) => e.stopPropagation()}
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+            >
+              <div className={styles.modalHeader}>
+                <div>
+                  <h3 style={{ margin: 0 }}>Candidate Profile Review</h3>
+                  <small style={{ color: 'var(--text-muted)' }}>
+                    Application ID: {selectedApplication.id} · Applied {selectedApplication.appliedAt ? new Date(selectedApplication.appliedAt).toLocaleString() : 'Recently'}
+                  </small>
+                </div>
+                <button 
+                  type="button" 
+                  className={styles.modalCloseBtn} 
+                  onClick={() => setSelectedApplication(null)}
+                  aria-label="Close modal"
+                >
+                  <HiX />
+                </button>
+              </div>
+
+              <div className={styles.appModalBody}>
+                {/* Profile Header */}
+                <div className={styles.appProfileHeader}>
+                  <div className={styles.appProfileUser}>
+                    <div className={styles.appProfileAvatar}>
+                      {selectedApplication.name ? selectedApplication.name.charAt(0).toUpperCase() : 'T'}
+                    </div>
+                    <div>
+                      <div className={styles.appProfileName}>{selectedApplication.name}</div>
+                      <div className={styles.appProfileUsn}>{selectedApplication.usn || 'No USN provided'}</div>
+                    </div>
+                  </div>
+                  <div>
+                    <span className={
+                      selectedApplication.status === 'shortlisted' ? styles.statusShortlisted :
+                      selectedApplication.status === 'accepted' ? styles.statusAccepted :
+                      selectedApplication.status === 'reviewing' ? styles.statusReviewing :
+                      selectedApplication.status === 'rejected' ? styles.statusRejected :
+                      styles.statusPending
+                    }>
+                      {selectedApplication.status ? selectedApplication.status.toUpperCase() : 'PENDING'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Candidate Resume Highlight Box */}
+                <div className={styles.resumeCardHighlight}>
+                  <div className={styles.resumeCardInfo}>
+                    <h4>Candidate Resume (Google Drive)</h4>
+                    <p>Uploaded via Join Us application portal</p>
+                  </div>
+                  {selectedApplication.resumeUrl ? (
+                    <a 
+                      href={selectedApplication.resumeUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className={styles.resumePrimaryBtn}
+                    >
+                      <HiExternalLink /> Open Resume in Google Drive
+                    </a>
+                  ) : (
+                    <span className={styles.resumeBtnDisabled}>Resume Not Attached</span>
+                  )}
+                </div>
+
+                {/* Academic & Contact Details Grid */}
+                <div className={styles.appDetailsGrid}>
+                  <div className={styles.appDetailCard}>
+                    <div className={styles.appDetailCardLabel}>Email Address</div>
+                    <div className={styles.appDetailCardValue}>
+                      <a href={`mailto:${selectedApplication.email}`}>{selectedApplication.email}</a>
+                    </div>
+                  </div>
+
+                  <div className={styles.appDetailCard}>
+                    <div className={styles.appDetailCardLabel}>Phone Number</div>
+                    <div className={styles.appDetailCardValue}>
+                      {selectedApplication.phone ? (
+                        <a href={`tel:${selectedApplication.phone}`}>{selectedApplication.phone}</a>
+                      ) : 'Not specified'}
+                    </div>
+                  </div>
+
+                  <div className={styles.appDetailCard}>
+                    <div className={styles.appDetailCardLabel}>Branch / Department</div>
+                    <div className={styles.appDetailCardValue}>
+                      {selectedApplication.branch || '—'}
+                    </div>
+                  </div>
+
+                  <div className={styles.appDetailCard}>
+                    <div className={styles.appDetailCardLabel}>Academic Standing</div>
+                    <div className={styles.appDetailCardValue}>
+                      {selectedApplication.year || ''} {selectedApplication.semester ? `(${selectedApplication.semester})` : ''}
+                    </div>
+                  </div>
+
+                  {selectedApplication.github && (
+                    <div className={styles.appDetailCard}>
+                      <div className={styles.appDetailCardLabel}>GitHub Profile</div>
+                      <div className={styles.appDetailCardValue}>
+                        <a href={selectedApplication.github} target="_blank" rel="noopener noreferrer">
+                          {selectedApplication.github.replace('https://', '')}
+                        </a>
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedApplication.linkedin && (
+                    <div className={styles.appDetailCard}>
+                      <div className={styles.appDetailCardLabel}>LinkedIn Profile</div>
+                      <div className={styles.appDetailCardValue}>
+                        <a href={selectedApplication.linkedin} target="_blank" rel="noopener noreferrer">
+                          {selectedApplication.linkedin.replace('https://', '')}
+                        </a>
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedApplication.portfolio && (
+                    <div className={styles.appDetailCard}>
+                      <div className={styles.appDetailCardLabel}>Portfolio / Works</div>
+                      <div className={styles.appDetailCardValue}>
+                        <a href={selectedApplication.portfolio} target="_blank" rel="noopener noreferrer">
+                          {selectedApplication.portfolio.replace('https://', '')}
+                        </a>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Domains of Interest */}
+                <div className={styles.appSectionBox}>
+                  <h4>Domains of Interest</h4>
+                  <div className={styles.domainChips}>
+                    {Array.isArray(selectedApplication.domains) && selectedApplication.domains.length > 0 ? (
+                      selectedApplication.domains.map(d => (
+                        <span key={d} className={styles.domainChip} style={{ fontSize: '0.82rem', padding: '0.25rem 0.65rem' }}>
+                          {d}
+                        </span>
+                      ))
+                    ) : (
+                      <span className={styles.domainChip}>{selectedApplication.domain || 'General Track'}</span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Technical Skills */}
+                {selectedApplication.skills && (
+                  <div className={styles.appSectionBox}>
+                    <h4>Technical Proficiencies & Tools</h4>
+                    <p className={styles.appSectionContent}>{selectedApplication.skills}</p>
+                  </div>
+                )}
+
+                {/* Why Join Code Troopers */}
+                {selectedApplication.whyJoin && (
+                  <div className={styles.appSectionBox}>
+                    <h4>Why Code Troopers?</h4>
+                    <p className={styles.appSectionContent} style={{ fontStyle: 'italic' }}>
+                      "{selectedApplication.whyJoin}"
+                    </p>
+                  </div>
+                )}
+
+                {/* Change Status Decision Toolbar */}
+                <div className={styles.appSectionBox}>
+                  <h4>Decision & Recruitment Status</h4>
+                  <div className={styles.statusButtonToolbar}>
+                    <button 
+                      type="button" 
+                      className={`${styles.actionStatusBtn} ${styles.btnPending}`}
+                      onClick={() => handleUpdateAppStatus(selectedApplication.id, 'pending')}
+                    >
+                      <HiClock /> Mark Pending
+                    </button>
+                    <button 
+                      type="button" 
+                      className={`${styles.actionStatusBtn} ${styles.btnReviewing}`}
+                      onClick={() => handleUpdateAppStatus(selectedApplication.id, 'reviewing')}
+                    >
+                      <HiEye /> Under Review
+                    </button>
+                    <button 
+                      type="button" 
+                      className={`${styles.actionStatusBtn} ${styles.btnShortlist}`}
+                      onClick={() => handleUpdateAppStatus(selectedApplication.id, 'shortlisted')}
+                    >
+                      <HiSparkles /> Shortlist Candidate
+                    </button>
+                    <button 
+                      type="button" 
+                      className={`${styles.actionStatusBtn} ${styles.btnAccept}`}
+                      onClick={() => handleUpdateAppStatus(selectedApplication.id, 'accepted')}
+                    >
+                      <HiCheckCircle /> Accept Candidate
+                    </button>
+                    <button 
+                      type="button" 
+                      className={`${styles.actionStatusBtn} ${styles.btnReject}`}
+                      onClick={() => handleUpdateAppStatus(selectedApplication.id, 'rejected')}
+                    >
+                      <HiXCircle /> Reject
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.modalActions}>
+                <button 
+                  type="button" 
+                  className={styles.cancelBtn} 
+                  onClick={() => setSelectedApplication(null)}
+                >
+                  Close Profile
+                </button>
+                <button 
+                  type="button" 
+                  className={styles.deleteBtn}
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.65rem 1.25rem' }}
+                  onClick={() => {
+                    const app = selectedApplication;
+                    setSelectedApplication(null);
+                    setDeleteTarget({ type: 'application', id: app.id, title: app.name });
+                  }}
+                >
+                  <HiTrash /> Delete Application
                 </button>
               </div>
             </motion.div>

@@ -187,6 +187,11 @@ exports.updateUserRole = async (req, res) => {
       return res.status(400).json({ error: 'Invalid role. Must be admin or member.' });
     }
 
+    // Safety check: Prevent admin from demoting their own active session account
+    if (req.user && req.user.id === id && role !== 'admin') {
+      return res.status(400).json({ error: 'Action denied: You cannot revoke administrator clearance from your own account.' });
+    }
+
     const data = await readJSON('users.json');
     const userIndex = data.users.findIndex(u => u.id === id);
     if (userIndex === -1) {

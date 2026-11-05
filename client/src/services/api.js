@@ -16,6 +16,23 @@ api.interceptors.request.use((config) => {
   return Promise.reject(error);
 });
 
+// Response interceptor: automatically catch expired / revoked sessions
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+      const isAuthRoute = window.location.pathname.startsWith('/admin');
+      const hadToken = Boolean(localStorage.getItem('ct_auth_token'));
+      if (isAuthRoute && hadToken && error.response.status === 401) {
+        localStorage.removeItem('ct_auth_token');
+        localStorage.removeItem('ct_auth_user');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&expired=true`;
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 // Authentication APIs
 export const loginUser = (credentials) => api.post('/auth/login', credentials);
 export const registerUser = (userData) => api.post('/auth/register', userData);
@@ -61,5 +78,12 @@ export const updateContactInfo = (data) => api.put('/contact-info', data);
 export const submitContact = (data) => api.post('/contact', data);
 export const getContactSubmissions = () => api.get('/contact/submissions');
 export const deleteContactSubmission = (id) => api.delete(`/contact/submissions/${id}`);
+
+// Recruitment & Join Us Applications APIs
+export const getApplications = (params) => api.get('/recruitment/applications', { params });
+export const getApplicationById = (id) => api.get(`/recruitment/applications/${id}`);
+export const updateApplicationStatus = (id, status) => api.patch(`/recruitment/applications/${id}/status`, { status });
+export const deleteApplication = (id) => api.delete(`/recruitment/applications/${id}`);
+export const getRecruitmentStats = () => api.get('/recruitment/stats');
 
 export default api;

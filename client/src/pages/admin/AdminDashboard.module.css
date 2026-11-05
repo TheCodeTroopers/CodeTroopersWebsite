@@ -1171,3 +1171,530 @@
     padding: 1.25rem;
   }
 }
+
+/* Recruitment & Application Styles */
+.statRecruitIcon {
+  background: rgba(139, 92, 246, 0.15);
+  color: #a78bfa;
+}
+
+.counterPending {
+  background: rgba(245, 158, 11, 0.9);
+  color: #0b0204;
+  font-weight: 700;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+}
+
+.integrationBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding: 1.15rem 1.5rem;
+  margin-bottom: 1.75rem;
+  background: linear-gradient(135deg, rgba(20, 10, 25, 0.85) 0%, rgba(13, 5, 15, 0.95) 100%);
+  border: 1px solid rgba(139, 92, 246, 0.28);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(12px);
+}
+
+.bannerContent {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.bannerBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  background: rgba(139, 92, 246, 0.18);
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #c084fc;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.bannerDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 8px #34d399;
+  animation: pulseDot 2s infinite ease-in-out;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+.bannerTitle {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  margin-bottom: 0.2rem;
+}
+
+.bannerSubtitle {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.bannerActions {
+  display: flex;
+  gap: 0.65rem;
+}
+
+.bannerDocBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.9rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bannerDocBtn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Metrics Row */
+.metricsBar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+.metricItem {
+  background: rgba(18, 9, 13, 0.7);
+  border: 1px solid rgba(201, 151, 58, 0.12);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+  text-align: center;
+  transition: border-color 0.2s ease;
+}
+
+.metricItem:hover {
+  border-color: rgba(201, 151, 58, 0.35);
+}
+
+.metricValue {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.metricLabel {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 0.25rem;
+}
+
+/* Status Badges */
+.statusPending {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #fbbf24;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.statusReviewing {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: #60a5fa;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.statusShortlisted {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(139, 92, 246, 0.18);
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  color: #c084fc;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.statusAccepted {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.18);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #34d399;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.statusRejected {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Applicant Table Cells */
+.applicantCell {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.applicantAvatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(201, 151, 58, 0.3), rgba(139, 92, 246, 0.3));
+  border: 1px solid rgba(201, 151, 58, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.applicantUsn {
+  display: block;
+  font-size: 0.76rem;
+  font-family: monospace;
+  color: var(--accent);
+  margin-top: 0.15rem;
+}
+
+.applicantBranch {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.domainChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  max-width: 200px;
+}
+
+.domainChip {
+  font-size: 0.7rem;
+  padding: 0.12rem 0.45rem;
+  border-radius: 4px;
+  background: rgba(201, 151, 58, 0.12);
+  color: var(--accent);
+  border: 1px solid rgba(201, 151, 58, 0.2);
+  white-space: nowrap;
+}
+
+.resumeBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-sm);
+  background: rgba(37, 99, 235, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  color: #93c5fd;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.resumeBtn:hover {
+  background: rgba(37, 99, 235, 0.28);
+  border-color: rgba(59, 130, 246, 0.6);
+  color: #bfdbfe;
+  transform: translateY(-1px);
+}
+
+.resumeBtnDisabled {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  cursor: not-allowed;
+}
+
+.quickStatusSelect {
+  padding: 0.35rem 0.65rem;
+  background: rgba(18, 7, 10, 0.85);
+  border: 1px solid rgba(201, 151, 58, 0.2);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+}
+
+.quickStatusSelect:focus {
+  border-color: var(--accent);
+}
+
+/* Detail Modal */
+.appModalBody {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-height: 75vh;
+  overflow-y: auto;
+}
+
+.appProfileHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(201, 151, 58, 0.15);
+}
+
+.appProfileUser {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.appProfileAvatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(201, 151, 58, 0.35), rgba(139, 92, 246, 0.35));
+  border: 2px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: var(--accent);
+}
+
+.appProfileName {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.appProfileUsn {
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: var(--accent);
+}
+
+.appDetailsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.appDetailCard {
+  background: rgba(14, 6, 9, 0.6);
+  border: 1px solid rgba(201, 151, 58, 0.12);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+}
+
+.appDetailCardLabel {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 0.3rem;
+}
+
+.appDetailCardValue {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+.appDetailCardValue a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.appDetailCardValue a:hover {
+  text-decoration: underline;
+}
+
+.appSectionBox {
+  background: rgba(14, 6, 9, 0.6);
+  border: 1px solid rgba(201, 151, 58, 0.12);
+  border-radius: var(--radius-md);
+  padding: 1.15rem;
+}
+
+.appSectionBox h4 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.appSectionContent {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.resumeCardHighlight {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(139, 92, 246, 0.12) 100%);
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  border-radius: var(--radius-md);
+}
+
+.resumeCardInfo h4 {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.resumeCardInfo p {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.resumePrimaryBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #ffffff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.35);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.resumePrimaryBtn:hover {
+  background: linear-gradient(135deg, #1d4ed8, #1e40af);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45);
+}
+
+.statusButtonToolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+}
+
+.actionStatusBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.btnPending {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.35);
+  color: #fbbf24;
+}
+.btnPending:hover {
+  background: rgba(245, 158, 11, 0.28);
+}
+
+.btnReviewing {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.35);
+  color: #60a5fa;
+}
+.btnReviewing:hover {
+  background: rgba(59, 130, 246, 0.28);
+}
+
+.btnShortlist {
+  background: rgba(139, 92, 246, 0.18);
+  border-color: rgba(139, 92, 246, 0.4);
+  color: #c084fc;
+}
+.btnShortlist:hover {
+  background: rgba(139, 92, 246, 0.3);
+}
+
+.btnAccept {
+  background: rgba(16, 185, 129, 0.18);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #34d399;
+}
+.btnAccept:hover {
+  background: rgba(16, 185, 129, 0.3);
+}
+
+.btnReject {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.35);
+  color: #f87171;
+}
+.btnReject:hover {
+  background: rgba(239, 68, 68, 0.28);
+}
