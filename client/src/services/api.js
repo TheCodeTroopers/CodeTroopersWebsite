@@ -20,10 +20,11 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+    if (error.response && error.response.status === 401) {
+      const isAuthCheck = error.config?.url?.includes('/auth/me');
       const isAuthRoute = window.location.pathname.startsWith('/admin');
       const hadToken = Boolean(localStorage.getItem('ct_auth_token'));
-      if (isAuthRoute && hadToken && error.response.status === 401) {
+      if (isAuthCheck && isAuthRoute && hadToken) {
         localStorage.removeItem('ct_auth_token');
         localStorage.removeItem('ct_auth_user');
         window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&expired=true`;

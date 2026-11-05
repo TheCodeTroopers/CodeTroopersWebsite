@@ -84,6 +84,29 @@ export default function AdminDashboard() {
   // Toast notification
   const [toast, setToast] = useState(null);
 
+  // Candidate Field Helpers (compatible with Supabase snake_case, JoinUs camelCase, and legacy schemas)
+  const getCandidateName = (app) => app?.name || app?.fullName || app?.full_name || 'Candidate';
+  const getCandidateEmail = (app) => app?.email || app?.collegeEmail || app?.college_email || '—';
+  const getCandidatePhone = (app) => app?.phone || app?.phone_number || '';
+  const getCandidateUsn = (app) => app?.usn || '—';
+  const getCandidateBranch = (app) => app?.branch || app?.department || '—';
+  const getCandidateSemester = (app) => {
+    if (app?.semester) {
+      return String(app.semester).toLowerCase().includes('sem') ? app.semester : `Sem ${app.semester}`;
+    }
+    return app?.year || '—';
+  };
+  const getCandidateSkills = (app) => app?.skills || app?.skillsExperience || app?.skills_experience || '';
+  const getCandidateMotivation = (app) => app?.whyJoin || app?.motivation || app?.why_join || '';
+  const getCandidateResume = (app) => app?.resumeUrl || app?.resume_url || (typeof app?.resume === 'string' ? app.resume : null);
+  const getCandidateDomains = (app) => {
+    if (Array.isArray(app?.domains) && app.domains.length > 0) return app.domains;
+    if (typeof app?.domain === 'string' && app.domain.trim()) return [app.domain];
+    return ['General Track'];
+  };
+  const getCandidateDate = (app) => app?.appliedAt || app?.created_at || app?.createdAt || null;
+  const getCandidateId = (app) => app?.id || app?._id || app?.application_id || '';
+
   const showToast = (message, type = 'success') => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 3500);
@@ -131,7 +154,11 @@ export default function AdminDashboard() {
       if (contactRes.status === 'fulfilled') setContactData(contactRes.value.data || { info: {}, faq: [] });
       if (subRes.status === 'fulfilled') setSubmissions(subRes.value.data?.submissions || []);
       if (usersRes.status === 'fulfilled') setUsersList(usersRes.value.data?.users || []);
-      if (appsRes.status === 'fulfilled') setApplications(appsRes.value.data?.applications || []);
+      if (appsRes.status === 'fulfilled') {
+        const d = appsRes.value.data;
+        const list = Array.isArray(d) ? d : (d?.applications || d?.data || []);
+        setApplications(list);
+      }
     } catch (err) {
       console.error('Error loading dashboard data:', err);
       showToast('Error syncing some records from server', 'error');
@@ -420,8 +447,8 @@ export default function AdminDashboard() {
         showToast('Inquiry deleted');
       } else if (type === 'application') {
         await deleteApplication(id);
-        setApplications(prev => prev.filter(a => a.id !== id));
-        if (selectedApplication && selectedApplication.id === id) {
+        setApplications(prev => prev.filter(a => getCandidateId(a) !== id));
+        if (selectedApplication && getCandidateId(selectedApplication) === id) {
           setSelectedApplication(null);
         }
         showToast(`Candidate application for ${title} deleted`);
@@ -437,9 +464,9 @@ export default function AdminDashboard() {
     try {
       await updateApplicationStatus(appId, newStatus);
       setApplications(prev => prev.map(a => 
-        a.id === appId ? { ...a, status: newStatus, updatedAt: new Date().toISOString() } : a
+        getCandidateId(a) === appId ? { ...a, status: newStatus, updatedAt: new Date().toISOString() } : a
       ));
-      if (selectedApplication && selectedApplication.id === appId) {
+      if (selectedApplication && getCandidateId(selectedApplication) === appId) {
         setSelectedApplication(prev => ({ ...prev, status: newStatus, updatedAt: new Date().toISOString() }));
       }
       showToast(`Candidate status updated to: ${newStatus.toUpperCase()}`);
@@ -772,27 +799,27 @@ export default function AdminDashboard() {
                           </tr>
                         ) : (
                           applications.slice(0, 4).map(app => (
-                            <tr key={app.id}>
+                            <tr key={getCandidateId(app)}>
                               <td className={styles.strongCell}>
                                 <div className={styles.applicantCell}>
                                   <div className={styles.applicantAvatar}>
-                                    {app.name.charAt(0)}
+                                    {getCandidateName(app).charAt(0).toUpperCase()}
                                   </div>
                                   <div>
-                                    <div>{app.name}</div>
-                                    <small style={{ color: 'var(--text-muted)' }}>{app.email}</small>
+                                    <div>{getCandidateName(app)}</div>
+                                    <small style={{ color: 'var(--text-muted)' }}>{getCandidateEmail(app)}</small>
                                   </div>
                                 </div>
                               </td>
                               <td>
-                                <div>{app.usn || '—'}</div>
-                                <small style={{ color: 'var(--text-muted)' }}>{app.branch || '—'}</small>
+                                <div>{getCandidateUsn(app)}</div>
+                                <small style={{ color: 'var(--text-muted)' }}>{getCandidateBranch(app)}</small>
                               </td>
                               <td>
                                 <div className={styles.domainChips}>
-                                  {Array.isArray(app.domains) ? app.domains.slice(0, 2).map(d => (
+                                  {getCandidateDomains(app).slice(0, 2).map(d => (
                                     <span key={d} className={styles.domainChip}>{d}</span>
-                                  )) : <span className={styles.domainChip}>{app.domain || 'General'}</span>}
+                                  ))}
                                 </div>
                               </td>
                               <td>
@@ -807,9 +834,9 @@ export default function AdminDashboard() {
                                 </span>
                               </td>
                               <td>
-                                {app.resumeUrl ? (
+                                {getCandidateResume(app) ? (
                                   <a 
-                                    href={app.resumeUrl} 
+                                    href={getCandidateResume(app)} 
                                     target="_blank" 
                                     rel="noopener noreferrer" 
                                     className={styles.resumeBtn}
@@ -1042,113 +1069,121 @@ export default function AdminDashboard() {
                     {applications
                       .filter(app => {
                         const matchStatus = appStatusFilter === 'all' || app.status?.toLowerCase() === appStatusFilter.toLowerCase();
+                        const domains = getCandidateDomains(app);
                         const matchDomain = appDomainFilter === 'all' || 
-                          (Array.isArray(app.domains) && app.domains.some(d => d.toLowerCase().includes(appDomainFilter.toLowerCase()))) ||
-                          (typeof app.domain === 'string' && app.domain.toLowerCase().includes(appDomainFilter.toLowerCase()));
+                          domains.some(d => d.toLowerCase().includes(appDomainFilter.toLowerCase()));
                         
                         const q = searchQuery.toLowerCase();
-                        const matchSearch = !q || 
-                          (app.name && app.name.toLowerCase().includes(q)) ||
-                          (app.email && app.email.toLowerCase().includes(q)) ||
-                          (app.usn && app.usn.toLowerCase().includes(q)) ||
-                          (app.branch && app.branch.toLowerCase().includes(q)) ||
-                          (app.skills && app.skills.toLowerCase().includes(q));
+                        const name = getCandidateName(app).toLowerCase();
+                        const email = getCandidateEmail(app).toLowerCase();
+                        const usn = getCandidateUsn(app).toLowerCase();
+                        const branch = getCandidateBranch(app).toLowerCase();
+                        const skills = getCandidateSkills(app).toLowerCase();
+                        const matchSearch = !q || name.includes(q) || email.includes(q) || usn.includes(q) || branch.includes(q) || skills.includes(q);
 
                         return matchStatus && matchDomain && matchSearch;
                       })
-                      .map(app => (
-                        <tr key={app.id}>
-                          <td>
-                            <div className={styles.applicantCell}>
-                              <div className={styles.applicantAvatar}>
-                                {app.name ? app.name.charAt(0).toUpperCase() : 'T'}
+                      .map(app => {
+                        const appId = getCandidateId(app);
+                        const appName = getCandidateName(app);
+                        const appEmail = getCandidateEmail(app);
+                        const appPhone = getCandidatePhone(app);
+                        const appUsn = getCandidateUsn(app);
+                        const appBranch = getCandidateBranch(app);
+                        const appSem = getCandidateSemester(app);
+                        const appDomains = getCandidateDomains(app);
+                        const appResume = getCandidateResume(app);
+                        const appDate = getCandidateDate(app);
+
+                        return (
+                          <tr key={appId}>
+                            <td>
+                              <div className={styles.applicantCell}>
+                                <div className={styles.applicantAvatar}>
+                                  {appName.charAt(0).toUpperCase()}
+                                </div>
+                                <div>
+                                  <div className={styles.strongCell}>{appName}</div>
+                                  <div style={{ fontSize: '0.76rem', color: 'var(--text-muted)' }}>{appEmail}</div>
+                                  {appPhone && (
+                                    <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{appPhone}</div>
+                                  )}
+                                </div>
                               </div>
-                              <div>
-                                <div className={styles.strongCell}>{app.name}</div>
-                                <div style={{ fontSize: '0.76rem', color: 'var(--text-muted)' }}>{app.email}</div>
-                                {app.phone && (
-                                  <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{app.phone}</div>
-                                )}
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <span className={styles.applicantUsn}>{app.usn || '—'}</span>
-                            <div className={styles.applicantBranch}>{app.branch || '—'}</div>
-                          </td>
-                          <td>
-                            <div>{app.year || '—'}</div>
-                            <small className={styles.timeText}>{app.semester || ''}</small>
-                          </td>
-                          <td>
-                            <div className={styles.domainChips}>
-                              {Array.isArray(app.domains) && app.domains.length > 0 ? (
-                                app.domains.map(d => (
+                            </td>
+                            <td>
+                              <span className={styles.applicantUsn}>{appUsn}</span>
+                              <div className={styles.applicantBranch}>{appBranch}</div>
+                            </td>
+                            <td>
+                              <div>{appSem}</div>
+                            </td>
+                            <td>
+                              <div className={styles.domainChips}>
+                                {appDomains.map(d => (
                                   <span key={d} className={styles.domainChip}>{d}</span>
-                                ))
+                                ))}
+                              </div>
+                            </td>
+                            <td>
+                              {appResume ? (
+                                <a 
+                                  href={appResume} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer" 
+                                  className={styles.resumeBtn}
+                                  title="Open resume file on Google Drive"
+                                >
+                                  <HiExternalLink /> Google Drive
+                                </a>
                               ) : (
-                                <span className={styles.domainChip}>{app.domain || 'General'}</span>
+                                <span className={styles.resumeBtnDisabled}>Not Attached</span>
                               )}
-                            </div>
-                          </td>
-                          <td>
-                            {app.resumeUrl ? (
-                              <a 
-                                href={app.resumeUrl} 
-                                target="_blank" 
-                                rel="noopener noreferrer" 
-                                className={styles.resumeBtn}
-                                title="Open resume file on Google Drive"
+                            </td>
+                            <td>
+                              <div style={{ fontSize: '0.82rem' }}>
+                                {appDate ? new Date(appDate).toLocaleDateString() : 'Recent'}
+                              </div>
+                              <small className={styles.timeText}>
+                                {appDate ? new Date(appDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
+                              </small>
+                            </td>
+                            <td>
+                              <select 
+                                className={styles.quickStatusSelect}
+                                value={app.status || 'pending'}
+                                onChange={(e) => handleUpdateAppStatus(appId, e.target.value)}
                               >
-                                <HiExternalLink /> Google Drive
-                              </a>
-                            ) : (
-                              <span className={styles.resumeBtnDisabled}>Not Attached</span>
-                            )}
-                          </td>
-                          <td>
-                            <div style={{ fontSize: '0.82rem' }}>
-                              {app.appliedAt ? new Date(app.appliedAt).toLocaleDateString() : 'Recent'}
-                            </div>
-                            <small className={styles.timeText}>
-                              {app.appliedAt ? new Date(app.appliedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
-                            </small>
-                          </td>
-                          <td>
-                            <select 
-                              className={styles.quickStatusSelect}
-                              value={app.status || 'pending'}
-                              onChange={(e) => handleUpdateAppStatus(app.id, e.target.value)}
-                            >
-                              <option value="pending">Pending</option>
-                              <option value="reviewing">Reviewing</option>
-                              <option value="shortlisted">Shortlisted</option>
-                              <option value="accepted">Accepted</option>
-                              <option value="rejected">Rejected</option>
-                            </select>
-                          </td>
-                          <td style={{ textAlign: 'right' }}>
-                            <div className={styles.rowActions}>
-                              <button 
-                                type="button"
-                                className={styles.editBtn} 
-                                onClick={() => setSelectedApplication(app)}
-                                title="View Full Application & Resume"
-                              >
-                                <HiEye />
-                              </button>
-                              <button 
-                                type="button"
-                                className={styles.deleteBtn} 
-                                onClick={() => setDeleteTarget({ type: 'application', id: app.id, title: `${app.name} (${app.usn || app.email})` })}
-                                title="Delete Application Record"
-                              >
-                                <HiTrash />
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
+                                <option value="pending">Pending</option>
+                                <option value="reviewing">Reviewing</option>
+                                <option value="shortlisted">Shortlisted</option>
+                                <option value="accepted">Accepted</option>
+                                <option value="rejected">Rejected</option>
+                              </select>
+                            </td>
+                            <td style={{ textAlign: 'right' }}>
+                              <div className={styles.rowActions}>
+                                <button 
+                                  type="button"
+                                  className={styles.editBtn} 
+                                  onClick={() => setSelectedApplication(app)}
+                                  title="View Full Application & Resume"
+                                >
+                                  <HiEye />
+                                </button>
+                                <button 
+                                  type="button"
+                                  className={styles.deleteBtn} 
+                                  onClick={() => setDeleteTarget({ type: 'application', id: appId, title: `${appName} (${appUsn !== '—' ? appUsn : appEmail})` })}
+                                  title="Delete Application Record"
+                                >
+                                  <HiTrash />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
                     {applications.length === 0 && (
                       <tr>
                         <td colSpan={8} style={{ textAlign: 'center', padding: '3.5rem 1rem', color: 'var(--text-muted)' }}>
@@ -2440,245 +2475,255 @@ export default function AdminDashboard() {
 
       {/* VIEW APPLICATION & RESUME MODAL */}
       <AnimatePresence>
-        {selectedApplication && (
-          <div className={styles.modalOverlay} onClick={() => setSelectedApplication(null)}>
-            <motion.div 
-              className={styles.modalDialog}
-              style={{ maxWidth: '780px' }}
-              onClick={(e) => e.stopPropagation()}
-              initial={{ opacity: 0, scale: 0.95, y: 15 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 15 }}
-            >
-              <div className={styles.modalHeader}>
-                <div>
-                  <h3 style={{ margin: 0 }}>Candidate Profile Review</h3>
-                  <small style={{ color: 'var(--text-muted)' }}>
-                    Application ID: {selectedApplication.id} · Applied {selectedApplication.appliedAt ? new Date(selectedApplication.appliedAt).toLocaleString() : 'Recently'}
-                  </small>
-                </div>
-                <button 
-                  type="button" 
-                  className={styles.modalCloseBtn} 
-                  onClick={() => setSelectedApplication(null)}
-                  aria-label="Close modal"
-                >
-                  <HiX />
-                </button>
-              </div>
+        {selectedApplication && (() => {
+          const selId = getCandidateId(selectedApplication);
+          const selName = getCandidateName(selectedApplication);
+          const selEmail = getCandidateEmail(selectedApplication);
+          const selPhone = getCandidatePhone(selectedApplication);
+          const selUsn = getCandidateUsn(selectedApplication);
+          const selBranch = getCandidateBranch(selectedApplication);
+          const selSem = getCandidateSemester(selectedApplication);
+          const selSkills = getCandidateSkills(selectedApplication);
+          const selMotivation = getCandidateMotivation(selectedApplication);
+          const selResume = getCandidateResume(selectedApplication);
+          const selDomains = getCandidateDomains(selectedApplication);
+          const selDate = getCandidateDate(selectedApplication);
 
-              <div className={styles.appModalBody}>
-                {/* Profile Header */}
-                <div className={styles.appProfileHeader}>
-                  <div className={styles.appProfileUser}>
-                    <div className={styles.appProfileAvatar}>
-                      {selectedApplication.name ? selectedApplication.name.charAt(0).toUpperCase() : 'T'}
+          return (
+            <div className={styles.modalOverlay} onClick={() => setSelectedApplication(null)}>
+              <motion.div 
+                className={styles.modalDialog}
+                style={{ maxWidth: '780px' }}
+                onClick={(e) => e.stopPropagation()}
+                initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              >
+                <div className={styles.modalHeader}>
+                  <div>
+                    <h3 style={{ margin: 0 }}>Candidate Profile Review</h3>
+                    <small style={{ color: 'var(--text-muted)' }}>
+                      Application ID: {selId} · Applied {selDate ? new Date(selDate).toLocaleString() : 'Recently'}
+                    </small>
+                  </div>
+                  <button 
+                    type="button" 
+                    className={styles.modalCloseBtn} 
+                    onClick={() => setSelectedApplication(null)}
+                    aria-label="Close modal"
+                  >
+                    <HiX />
+                  </button>
+                </div>
+
+                <div className={styles.appModalBody}>
+                  {/* Profile Header */}
+                  <div className={styles.appProfileHeader}>
+                    <div className={styles.appProfileUser}>
+                      <div className={styles.appProfileAvatar}>
+                        {selName.charAt(0).toUpperCase()}
+                      </div>
+                      <div>
+                        <div className={styles.appProfileName}>{selName}</div>
+                        <div className={styles.appProfileUsn}>{selUsn !== '—' ? selUsn : 'No USN provided'}</div>
+                      </div>
                     </div>
                     <div>
-                      <div className={styles.appProfileName}>{selectedApplication.name}</div>
-                      <div className={styles.appProfileUsn}>{selectedApplication.usn || 'No USN provided'}</div>
-                    </div>
-                  </div>
-                  <div>
-                    <span className={
-                      selectedApplication.status === 'shortlisted' ? styles.statusShortlisted :
-                      selectedApplication.status === 'accepted' ? styles.statusAccepted :
-                      selectedApplication.status === 'reviewing' ? styles.statusReviewing :
-                      selectedApplication.status === 'rejected' ? styles.statusRejected :
-                      styles.statusPending
-                    }>
-                      {selectedApplication.status ? selectedApplication.status.toUpperCase() : 'PENDING'}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Candidate Resume Highlight Box */}
-                <div className={styles.resumeCardHighlight}>
-                  <div className={styles.resumeCardInfo}>
-                    <h4>Candidate Resume (Google Drive)</h4>
-                    <p>Uploaded via Join Us application portal</p>
-                  </div>
-                  {selectedApplication.resumeUrl ? (
-                    <a 
-                      href={selectedApplication.resumeUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className={styles.resumePrimaryBtn}
-                    >
-                      <HiExternalLink /> Open Resume in Google Drive
-                    </a>
-                  ) : (
-                    <span className={styles.resumeBtnDisabled}>Resume Not Attached</span>
-                  )}
-                </div>
-
-                {/* Academic & Contact Details Grid */}
-                <div className={styles.appDetailsGrid}>
-                  <div className={styles.appDetailCard}>
-                    <div className={styles.appDetailCardLabel}>Email Address</div>
-                    <div className={styles.appDetailCardValue}>
-                      <a href={`mailto:${selectedApplication.email}`}>{selectedApplication.email}</a>
+                      <span className={
+                        selectedApplication.status === 'shortlisted' ? styles.statusShortlisted :
+                        selectedApplication.status === 'accepted' ? styles.statusAccepted :
+                        selectedApplication.status === 'reviewing' ? styles.statusReviewing :
+                        selectedApplication.status === 'rejected' ? styles.statusRejected :
+                        styles.statusPending
+                      }>
+                        {selectedApplication.status ? selectedApplication.status.toUpperCase() : 'PENDING'}
+                      </span>
                     </div>
                   </div>
 
-                  <div className={styles.appDetailCard}>
-                    <div className={styles.appDetailCardLabel}>Phone Number</div>
-                    <div className={styles.appDetailCardValue}>
-                      {selectedApplication.phone ? (
-                        <a href={`tel:${selectedApplication.phone}`}>{selectedApplication.phone}</a>
-                      ) : 'Not specified'}
+                  {/* Candidate Resume Highlight Box */}
+                  <div className={styles.resumeCardHighlight}>
+                    <div className={styles.resumeCardInfo}>
+                      <h4>Candidate Resume (Google Drive)</h4>
+                      <p>Uploaded via Join Us application portal</p>
                     </div>
+                    {selResume ? (
+                      <a 
+                        href={selResume} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className={styles.resumePrimaryBtn}
+                      >
+                        <HiExternalLink /> Open Resume in Google Drive
+                      </a>
+                    ) : (
+                      <span className={styles.resumeBtnDisabled}>Resume Not Attached</span>
+                    )}
                   </div>
 
-                  <div className={styles.appDetailCard}>
-                    <div className={styles.appDetailCardLabel}>Branch / Department</div>
-                    <div className={styles.appDetailCardValue}>
-                      {selectedApplication.branch || '—'}
-                    </div>
-                  </div>
-
-                  <div className={styles.appDetailCard}>
-                    <div className={styles.appDetailCardLabel}>Academic Standing</div>
-                    <div className={styles.appDetailCardValue}>
-                      {selectedApplication.year || ''} {selectedApplication.semester ? `(${selectedApplication.semester})` : ''}
-                    </div>
-                  </div>
-
-                  {selectedApplication.github && (
+                  {/* Academic & Contact Details Grid */}
+                  <div className={styles.appDetailsGrid}>
                     <div className={styles.appDetailCard}>
-                      <div className={styles.appDetailCardLabel}>GitHub Profile</div>
+                      <div className={styles.appDetailCardLabel}>Email Address</div>
                       <div className={styles.appDetailCardValue}>
-                        <a href={selectedApplication.github} target="_blank" rel="noopener noreferrer">
-                          {selectedApplication.github.replace('https://', '')}
-                        </a>
+                        <a href={`mailto:${selEmail}`}>{selEmail}</a>
                       </div>
                     </div>
-                  )}
 
-                  {selectedApplication.linkedin && (
                     <div className={styles.appDetailCard}>
-                      <div className={styles.appDetailCardLabel}>LinkedIn Profile</div>
+                      <div className={styles.appDetailCardLabel}>Phone Number</div>
                       <div className={styles.appDetailCardValue}>
-                        <a href={selectedApplication.linkedin} target="_blank" rel="noopener noreferrer">
-                          {selectedApplication.linkedin.replace('https://', '')}
-                        </a>
+                        {selPhone ? (
+                          <a href={`tel:${selPhone}`}>{selPhone}</a>
+                        ) : 'Not specified'}
                       </div>
                     </div>
-                  )}
 
-                  {selectedApplication.portfolio && (
                     <div className={styles.appDetailCard}>
-                      <div className={styles.appDetailCardLabel}>Portfolio / Works</div>
+                      <div className={styles.appDetailCardLabel}>Branch / Department</div>
                       <div className={styles.appDetailCardValue}>
-                        <a href={selectedApplication.portfolio} target="_blank" rel="noopener noreferrer">
-                          {selectedApplication.portfolio.replace('https://', '')}
-                        </a>
+                        {selBranch}
                       </div>
                     </div>
-                  )}
-                </div>
 
-                {/* Domains of Interest */}
-                <div className={styles.appSectionBox}>
-                  <h4>Domains of Interest</h4>
-                  <div className={styles.domainChips}>
-                    {Array.isArray(selectedApplication.domains) && selectedApplication.domains.length > 0 ? (
-                      selectedApplication.domains.map(d => (
+                    <div className={styles.appDetailCard}>
+                      <div className={styles.appDetailCardLabel}>Academic Standing</div>
+                      <div className={styles.appDetailCardValue}>
+                        {selSem}
+                      </div>
+                    </div>
+
+                    {selectedApplication.github && (
+                      <div className={styles.appDetailCard}>
+                        <div className={styles.appDetailCardLabel}>GitHub Profile</div>
+                        <div className={styles.appDetailCardValue}>
+                          <a href={selectedApplication.github} target="_blank" rel="noopener noreferrer">
+                            {selectedApplication.github.replace('https://', '')}
+                          </a>
+                        </div>
+                      </div>
+                    )}
+
+                    {selectedApplication.linkedin && (
+                      <div className={styles.appDetailCard}>
+                        <div className={styles.appDetailCardLabel}>LinkedIn Profile</div>
+                        <div className={styles.appDetailCardValue}>
+                          <a href={selectedApplication.linkedin} target="_blank" rel="noopener noreferrer">
+                            {selectedApplication.linkedin.replace('https://', '')}
+                          </a>
+                        </div>
+                      </div>
+                    )}
+
+                    {selectedApplication.portfolio && (
+                      <div className={styles.appDetailCard}>
+                        <div className={styles.appDetailCardLabel}>Portfolio / Works</div>
+                        <div className={styles.appDetailCardValue}>
+                          <a href={selectedApplication.portfolio} target="_blank" rel="noopener noreferrer">
+                            {selectedApplication.portfolio.replace('https://', '')}
+                          </a>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Domains of Interest */}
+                  <div className={styles.appSectionBox}>
+                    <h4>Domains of Interest</h4>
+                    <div className={styles.domainChips}>
+                      {selDomains.map(d => (
                         <span key={d} className={styles.domainChip} style={{ fontSize: '0.82rem', padding: '0.25rem 0.65rem' }}>
                           {d}
                         </span>
-                      ))
-                    ) : (
-                      <span className={styles.domainChip}>{selectedApplication.domain || 'General Track'}</span>
-                    )}
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Technical Skills */}
+                  {selSkills && (
+                    <div className={styles.appSectionBox}>
+                      <h4>Technical Proficiencies & Tools</h4>
+                      <p className={styles.appSectionContent}>{selSkills}</p>
+                    </div>
+                  )}
+
+                  {/* Why Join Code Troopers */}
+                  {selMotivation && (
+                    <div className={styles.appSectionBox}>
+                      <h4>Why Code Troopers?</h4>
+                      <p className={styles.appSectionContent} style={{ fontStyle: 'italic' }}>
+                        "{selMotivation}"
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Change Status Decision Toolbar */}
+                  <div className={styles.appSectionBox}>
+                    <h4>Decision & Recruitment Status</h4>
+                    <div className={styles.statusButtonToolbar}>
+                      <button 
+                        type="button" 
+                        className={`${styles.actionStatusBtn} ${styles.btnPending}`}
+                        onClick={() => handleUpdateAppStatus(selId, 'pending')}
+                      >
+                        <HiClock /> Mark Pending
+                      </button>
+                      <button 
+                        type="button" 
+                        className={`${styles.actionStatusBtn} ${styles.btnReviewing}`}
+                        onClick={() => handleUpdateAppStatus(selId, 'reviewing')}
+                      >
+                        <HiEye /> Under Review
+                      </button>
+                      <button 
+                        type="button" 
+                        className={`${styles.actionStatusBtn} ${styles.btnShortlist}`}
+                        onClick={() => handleUpdateAppStatus(selId, 'shortlisted')}
+                      >
+                        <HiSparkles /> Shortlist Candidate
+                      </button>
+                      <button 
+                        type="button" 
+                        className={`${styles.actionStatusBtn} ${styles.btnAccept}`}
+                        onClick={() => handleUpdateAppStatus(selId, 'accepted')}
+                      >
+                        <HiCheckCircle /> Accept Candidate
+                      </button>
+                      <button 
+                        type="button" 
+                        className={`${styles.actionStatusBtn} ${styles.btnReject}`}
+                        onClick={() => handleUpdateAppStatus(selId, 'rejected')}
+                      >
+                        <HiXCircle /> Reject
+                      </button>
+                    </div>
                   </div>
                 </div>
 
-                {/* Technical Skills */}
-                {selectedApplication.skills && (
-                  <div className={styles.appSectionBox}>
-                    <h4>Technical Proficiencies & Tools</h4>
-                    <p className={styles.appSectionContent}>{selectedApplication.skills}</p>
-                  </div>
-                )}
-
-                {/* Why Join Code Troopers */}
-                {selectedApplication.whyJoin && (
-                  <div className={styles.appSectionBox}>
-                    <h4>Why Code Troopers?</h4>
-                    <p className={styles.appSectionContent} style={{ fontStyle: 'italic' }}>
-                      "{selectedApplication.whyJoin}"
-                    </p>
-                  </div>
-                )}
-
-                {/* Change Status Decision Toolbar */}
-                <div className={styles.appSectionBox}>
-                  <h4>Decision & Recruitment Status</h4>
-                  <div className={styles.statusButtonToolbar}>
-                    <button 
-                      type="button" 
-                      className={`${styles.actionStatusBtn} ${styles.btnPending}`}
-                      onClick={() => handleUpdateAppStatus(selectedApplication.id, 'pending')}
-                    >
-                      <HiClock /> Mark Pending
-                    </button>
-                    <button 
-                      type="button" 
-                      className={`${styles.actionStatusBtn} ${styles.btnReviewing}`}
-                      onClick={() => handleUpdateAppStatus(selectedApplication.id, 'reviewing')}
-                    >
-                      <HiEye /> Under Review
-                    </button>
-                    <button 
-                      type="button" 
-                      className={`${styles.actionStatusBtn} ${styles.btnShortlist}`}
-                      onClick={() => handleUpdateAppStatus(selectedApplication.id, 'shortlisted')}
-                    >
-                      <HiSparkles /> Shortlist Candidate
-                    </button>
-                    <button 
-                      type="button" 
-                      className={`${styles.actionStatusBtn} ${styles.btnAccept}`}
-                      onClick={() => handleUpdateAppStatus(selectedApplication.id, 'accepted')}
-                    >
-                      <HiCheckCircle /> Accept Candidate
-                    </button>
-                    <button 
-                      type="button" 
-                      className={`${styles.actionStatusBtn} ${styles.btnReject}`}
-                      onClick={() => handleUpdateAppStatus(selectedApplication.id, 'rejected')}
-                    >
-                      <HiXCircle /> Reject
-                    </button>
-                  </div>
+                <div className={styles.modalActions}>
+                  <button 
+                    type="button" 
+                    className={styles.cancelBtn} 
+                    onClick={() => setSelectedApplication(null)}
+                  >
+                    Close Profile
+                  </button>
+                  <button 
+                    type="button" 
+                    className={styles.deleteBtn}
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.65rem 1.25rem' }}
+                    onClick={() => {
+                      setSelectedApplication(null);
+                      setDeleteTarget({ type: 'application', id: selId, title: `${selName} (${selUsn !== '—' ? selUsn : selEmail})` });
+                    }}
+                  >
+                    <HiTrash /> Delete Application
+                  </button>
                 </div>
-              </div>
-
-              <div className={styles.modalActions}>
-                <button 
-                  type="button" 
-                  className={styles.cancelBtn} 
-                  onClick={() => setSelectedApplication(null)}
-                >
-                  Close Profile
-                </button>
-                <button 
-                  type="button" 
-                  className={styles.deleteBtn}
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.65rem 1.25rem' }}
-                  onClick={() => {
-                    const app = selectedApplication;
-                    setSelectedApplication(null);
-                    setDeleteTarget({ type: 'application', id: app.id, title: app.name });
-                  }}
-                >
-                  <HiTrash /> Delete Application
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
+              </motion.div>
+            </div>
+          );
+        })()}
       </AnimatePresence>
     </div>
   );

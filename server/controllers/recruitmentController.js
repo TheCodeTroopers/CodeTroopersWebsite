@@ -36,15 +36,20 @@ exports.getAll = async (req, res) => {
       const q = search.toLowerCase();
       applications = applications.filter(a => 
         (a.name && a.name.toLowerCase().includes(q)) ||
+        (a.fullName && a.fullName.toLowerCase().includes(q)) ||
+        (a.full_name && a.full_name.toLowerCase().includes(q)) ||
         (a.email && a.email.toLowerCase().includes(q)) ||
+        (a.collegeEmail && a.collegeEmail.toLowerCase().includes(q)) ||
+        (a.college_email && a.college_email.toLowerCase().includes(q)) ||
         (a.usn && a.usn.toLowerCase().includes(q)) ||
         (a.branch && a.branch.toLowerCase().includes(q)) ||
-        (a.skills && a.skills.toLowerCase().includes(q))
+        (a.skills && a.skills.toLowerCase().includes(q)) ||
+        (a.skillsExperience && a.skillsExperience.toLowerCase().includes(q))
       );
     }
 
     // Sort by most recent application first
-    applications.sort((a, b) => new Date(b.appliedAt || 0) - new Date(a.appliedAt || 0));
+    applications.sort((a, b) => new Date(b.appliedAt || b.created_at || b.createdAt || 0) - new Date(a.appliedAt || a.created_at || a.createdAt || 0));
 
     res.json({ applications, total: applications.length });
   } catch (err) {
@@ -57,7 +62,7 @@ exports.getById = async (req, res) => {
   try {
     const { id } = req.params;
     const data = await readJSON('applications.json');
-    const application = (data.applications || []).find(a => a.id === id);
+    const application = (data.applications || []).find(a => a.id === id || a._id === id || a.application_id === id);
 
     if (!application) {
       return res.status(404).json({ error: 'Application not found' });
@@ -86,7 +91,7 @@ exports.updateStatus = async (req, res) => {
     const data = await readJSON('applications.json');
     if (!data.applications) data.applications = [];
 
-    const index = data.applications.findIndex(a => a.id === id);
+    const index = data.applications.findIndex(a => a.id === id || a._id === id || a.application_id === id);
     if (index === -1) {
       return res.status(404).json({ error: 'Application not found' });
     }
@@ -112,7 +117,7 @@ exports.remove = async (req, res) => {
     const data = await readJSON('applications.json');
     if (!data.applications) data.applications = [];
 
-    const index = data.applications.findIndex(a => a.id === id);
+    const index = data.applications.findIndex(a => a.id === id || a._id === id || a.application_id === id);
     if (index === -1) {
       return res.status(404).json({ error: 'Application not found' });
     }

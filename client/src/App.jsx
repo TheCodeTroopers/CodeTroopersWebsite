@@ -16,6 +16,10 @@ import Workbench from './pages/Workbench';
 import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
 import JoinUs from './pages/JoinUs';
+import Login from './pages/Login';
+import Blogs from './pages/Blogs';
+import BlogDetail from './pages/BlogDetail';
+import AdminDashboard from './pages/admin/AdminDashboard';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -51,6 +55,7 @@ function AnimatedRoutes() {
           <Route path="gallery" element={<PageWrapper><Gallery /></PageWrapper>} />
           <Route path="contact" element={<PageWrapper><Contact /></PageWrapper>} />
           <Route path="join-us" element={<PageWrapper><JoinUs /></PageWrapper>} />
+          <Route path="login" element={<PageWrapper><Login /></PageWrapper>} />
         </Route>
 
         {/* Dedicated Protected Admin Dashboard */}
