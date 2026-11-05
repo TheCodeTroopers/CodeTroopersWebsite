@@ -15,10 +15,7 @@ import AchievementDetail from './pages/AchievementDetail';
 import Workbench from './pages/Workbench';
 import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
-import Login from './pages/Login';
-import Blogs from './pages/Blogs';
-import BlogDetail from './pages/BlogDetail';
-import AdminDashboard from './pages/admin/AdminDashboard';
+import JoinUs from './pages/JoinUs';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -53,25 +50,25 @@ function AnimatedRoutes() {
           <Route path="blogs/:id" element={<PageWrapper><BlogDetail /></PageWrapper>} />
           <Route path="gallery" element={<PageWrapper><Gallery /></PageWrapper>} />
           <Route path="contact" element={<PageWrapper><Contact /></PageWrapper>} />
-          <Route path="login" element={<PageWrapper><Login /></PageWrapper>} />
+          <Route path="join-us" element={<PageWrapper><JoinUs /></PageWrapper>} />
         </Route>
 
         {/* Dedicated Protected Admin Dashboard */}
-        <Route 
-          path="admin" 
+        <Route
+          path="admin"
           element={
             <ProtectedRoute requireAdmin={true}>
               <AdminDashboard />
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="admin/*" 
+        <Route
+          path="admin/*"
           element={
             <ProtectedRoute requireAdmin={true}>
               <AdminDashboard />
             </ProtectedRoute>
-          } 
+          }
         />
       </Routes>
     </AnimatePresence>
