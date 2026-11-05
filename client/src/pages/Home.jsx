@@ -21,7 +21,11 @@ export default function Home() {
   const [gallery, setGallery] = useState([]);
 
   useEffect(() => {
-    getEvents().then(r => setEvents(r.data.events.filter(e => e.status === 'upcoming').slice(0, 3))).catch(() => { });
+    getEvents().then(r => {
+      const list = Array.isArray(r.data) ? r.data : (r.data.events || []);
+      const upcoming = list.filter(e => e.status === 'upcoming');
+      setEvents(upcoming.length > 0 ? upcoming.slice(0, 3) : list.slice(0, 3));
+    }).catch(() => { });
     getAchievements().then(r => setAchievements(r.data.items.slice(0, 4))).catch(() => { });
     getGallery().then(r => setGallery(r.data.items.slice(0, 6))).catch(() => { });
   }, []);

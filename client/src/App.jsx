@@ -13,6 +13,7 @@ import AchievementDetail from './pages/AchievementDetail';
 import Workbench from './pages/Workbench';
 import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
+import JoinUs from './pages/JoinUs';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -42,6 +43,7 @@ function AnimatedRoutes() {
           <Route path="workbench" element={<PageWrapper><Workbench /></PageWrapper>} />
           <Route path="gallery" element={<PageWrapper><Gallery /></PageWrapper>} />
           <Route path="contact" element={<PageWrapper><Contact /></PageWrapper>} />
+          <Route path="join-us" element={<PageWrapper><JoinUs /></PageWrapper>} />
         </Route>
       </Routes>
     </AnimatePresence>

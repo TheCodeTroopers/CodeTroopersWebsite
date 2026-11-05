@@ -225,5 +225,6 @@ a:focus-visible {
 
 @media (max-width: 640px) {
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
-  :root { --section-padding: 3.5rem 0; }
+  :root { --section-padding: 3rem 0; }
+  .container { padding: 0 1rem; }
 }
