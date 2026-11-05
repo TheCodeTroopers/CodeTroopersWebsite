@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { HiDocumentText, HiExclamationCircle, HiInformationCircle } from 'react-icons/hi';
+import { HiDocumentText, HiExclamationCircle, HiInformationCircle, HiCheckCircle } from 'react-icons/hi';
 import SEOHead from '../components/SEOHead';
 import PageHeader from '../components/PageHeader';
 import { FadeIn } from '../components/Animated';
 import { clubInfo } from '../data/staticContent';
+import { submitApplication } from '../services/api';
 import styles from './JoinUs.module.css';
 
 const initialForm = {
@@ -22,6 +23,7 @@ const initialForm = {
 export default function JoinUs() {
   const [form, setForm] = useState(initialForm);
   const [status, setStatus] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const updateField = (field, value) => {
     setForm(current => ({ ...current, [field]: value }));
@@ -39,7 +41,7 @@ export default function JoinUs() {
     updateField('resume', file);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!form.resume) {
@@ -52,10 +54,38 @@ export default function JoinUs() {
       return;
     }
 
-    setStatus({
-      type: 'pending',
-      message: 'Your details look complete. Online submission is not open yet, so this application has not been saved.'
-    });
+    try {
+      setSubmitting(true);
+      setStatus({
+        type: 'pending',
+        message: 'Uploading resume to Google Drive and submitting your application...'
+      });
+
+      const formData = new FormData();
+      Object.keys(form).forEach(key => {
+        if (form[key] !== null && form[key] !== undefined) {
+          formData.append(key, form[key]);
+        }
+      });
+
+      const response = await submitApplication(formData);
+
+      setStatus({
+        type: 'success',
+        message: response.data?.message || 'Application submitted successfully! Your resume has been uploaded.'
+      });
+      setForm(initialForm);
+      const fileInput = document.getElementById('resume');
+      if (fileInput) fileInput.value = '';
+    } catch (err) {
+      console.error(err);
+      setStatus({
+        type: 'error',
+        message: err.response?.data?.error || 'Failed to submit application. Please try again.'
+      });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -208,11 +238,19 @@ export default function JoinUs() {
                   {form.resume && <p>{form.resume.name}</p>}
                 </div>
 
-                <button type="submit" className="btn btn-primary">Check Application</button>
+                <button type="submit" className="btn btn-primary" disabled={submitting}>
+                  {submitting ? 'Submitting Application...' : 'Submit Application'}
+                </button>
 
                 {status && (
                   <p className={`${styles.status} ${styles[status.type]}`}>
-                    {status.type === 'error' ? <HiExclamationCircle /> : <HiInformationCircle />}
+                    {status.type === 'error' ? (
+                      <HiExclamationCircle />
+                    ) : status.type === 'success' ? (
+                      <HiCheckCircle />
+                    ) : (
+                      <HiInformationCircle />
+                    )}
                     {status.message}
                   </p>
                 )}

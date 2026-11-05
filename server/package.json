@@ -10,7 +10,10 @@
   "dependencies": {
     "codetroopers": "file:..",
     "cors": "^2.8.5",
+    "dotenv": "^18.0.9",
     "express": "^4.21.2",
+    "googleapis": "^189.0.0",
+    "multer": "^2.5.0",
     "uuid": "^11.1.0"
   }
 }

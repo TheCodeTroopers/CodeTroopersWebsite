@@ -2,6 +2,7 @@ const app = require('../server/app');
 
 const apiRoutes = new Set([
   'achievements',
+  'applications',
   'contact',
   'contact-info',
   'events',
