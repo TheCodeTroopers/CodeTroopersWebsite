@@ -36,15 +36,6 @@ exports.submit = async (req, res) => {
       mimeType: req.file.mimetype || 'application/pdf'
     });
 
-    // Save record to applications.json
-    let applications = [];
-    try {
-      applications = await readJSON('applications.json');
-      if (!Array.isArray(applications)) applications = [];
-    } catch {
-      applications = [];
-    }
-
     const applicationRecord = {
       id: uuidv4(),
       fullName,
@@ -66,8 +57,21 @@ exports.submit = async (req, res) => {
       submittedAt: new Date().toISOString()
     };
 
-    applications.push(applicationRecord);
-    await writeJSON('applications.json', applications);
+    // Save record to applications.json (best-effort, handles read-only filesystems on Vercel)
+    try {
+      let applications = [];
+      try {
+        applications = await readJSON('applications.json');
+        if (!Array.isArray(applications)) applications = [];
+      } catch {
+        applications = [];
+      }
+
+      applications.push(applicationRecord);
+      await writeJSON('applications.json', applications);
+    } catch (fsErr) {
+      console.warn('Local JSON write skipped (typical in serverless/Vercel):', fsErr.message);
+    }
 
     res.status(201).json({
       success: true,
