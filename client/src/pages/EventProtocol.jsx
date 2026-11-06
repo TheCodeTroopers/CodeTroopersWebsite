@@ -69,7 +69,12 @@ export default function EventProtocol() {
   return (
     <>
       <SEOHead title="Event Protocol" description="Official Code Troopers event planning and execution framework." path="/event-protocol" />
-      <PageHeader label="Official Framework" title="Event Protocol" subtitle="Standard procedure for planning, conducting, and closing all club activities." />
+      <PageHeader 
+        label="Official Framework" 
+        title="Event Protocol" 
+        subtitle="Standard procedure for planning, conducting, and closing all club activities." 
+        showScroll={true} 
+      />
 
       <section className="section">
         <div className="container">

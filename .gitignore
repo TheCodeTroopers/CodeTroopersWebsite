@@ -8,3 +8,5 @@ coverage/
 .env.*
 *.log
 .DS_Store
+server/google-credentials.json
+*credentials*.json

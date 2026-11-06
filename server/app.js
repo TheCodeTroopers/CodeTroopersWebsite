@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const teamRoutes = require('./routes/teamRoutes');
 const eventsRoutes = require('./routes/eventsRoutes');
@@ -11,6 +12,7 @@ const contactController = require('./controllers/contactController');
 const authRoutes = require('./routes/authRoutes');
 const blogsRoutes = require('./routes/blogsRoutes');
 const recruitmentRoutes = require('./routes/recruitmentRoutes');
+const applicationRoutes = require('./routes/applicationRoutes');
 const { requireAdmin } = require('./utils/authMiddleware');
 
 const app = express();
@@ -27,8 +29,9 @@ app.use('/api/events', eventsRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/achievements', achievementsRoutes);
 app.use('/api/contact', contactRoutes);
-app.use('/api/recruitment', recruitmentRoutes);
+app.use('/api/applications', applicationRoutes);
 app.use('/api/applications', recruitmentRoutes);
+app.use('/api/recruitment', recruitmentRoutes);
 app.get('/api/contact-info', contactController.getInfo);
 app.put('/api/contact-info', requireAdmin, contactController.updateInfo);
 

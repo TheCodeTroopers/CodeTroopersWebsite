@@ -14,8 +14,8 @@ const { v4: uuidv4 } = require('uuid');
 // GET /api/recruitment/applications (or /api/applications)
 exports.getAll = async (req, res) => {
   try {
-    const data = await readJSON('applications.json');
-    let applications = data.applications || [];
+    const raw = await readJSON('applications.json');
+    let applications = Array.isArray(raw) ? [...raw] : (raw.applications ? [...raw.applications] : []);
 
     const { status, domain, search } = req.query;
 
@@ -61,8 +61,9 @@ exports.getAll = async (req, res) => {
 exports.getById = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await readJSON('applications.json');
-    const application = (data.applications || []).find(a => a.id === id || a._id === id || a.application_id === id);
+    const raw = await readJSON('applications.json');
+    const applications = Array.isArray(raw) ? raw : (raw.applications || []);
+    const application = applications.find(a => a.id === id || a._id === id || a.application_id === id);
 
     if (!application) {
       return res.status(404).json({ error: 'Application not found' });
@@ -88,22 +89,28 @@ exports.updateStatus = async (req, res) => {
       });
     }
 
-    const data = await readJSON('applications.json');
-    if (!data.applications) data.applications = [];
+    const raw = await readJSON('applications.json');
+    const isRawArray = Array.isArray(raw);
+    const applications = isRawArray ? [...raw] : (raw.applications ? [...raw.applications] : []);
 
-    const index = data.applications.findIndex(a => a.id === id || a._id === id || a.application_id === id);
+    const index = applications.findIndex(a => a.id === id || a._id === id || a.application_id === id);
     if (index === -1) {
       return res.status(404).json({ error: 'Application not found' });
     }
 
-    data.applications[index].status = status.toLowerCase();
-    data.applications[index].updatedAt = new Date().toISOString();
+    applications[index].status = status.toLowerCase();
+    applications[index].updatedAt = new Date().toISOString();
 
-    await writeJSON('applications.json', data);
+    if (isRawArray) {
+      await writeJSON('applications.json', applications);
+    } else {
+      raw.applications = applications;
+      await writeJSON('applications.json', raw);
+    }
 
     res.json({
       message: `Application status updated to ${status}`,
-      application: data.applications[index]
+      application: applications[index]
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -114,16 +121,22 @@ exports.updateStatus = async (req, res) => {
 exports.remove = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await readJSON('applications.json');
-    if (!data.applications) data.applications = [];
+    const raw = await readJSON('applications.json');
+    const isRawArray = Array.isArray(raw);
+    const applications = isRawArray ? [...raw] : (raw.applications ? [...raw.applications] : []);
 
-    const index = data.applications.findIndex(a => a.id === id || a._id === id || a.application_id === id);
+    const index = applications.findIndex(a => a.id === id || a._id === id || a.application_id === id);
     if (index === -1) {
       return res.status(404).json({ error: 'Application not found' });
     }
 
-    const removed = data.applications.splice(index, 1)[0];
-    await writeJSON('applications.json', data);
+    const removed = applications.splice(index, 1)[0];
+    if (isRawArray) {
+      await writeJSON('applications.json', applications);
+    } else {
+      raw.applications = applications;
+      await writeJSON('applications.json', raw);
+    }
 
     res.json({ message: 'Application removed successfully', removed });
   } catch (err) {
@@ -134,16 +147,16 @@ exports.remove = async (req, res) => {
 // GET /api/recruitment/stats
 exports.getStats = async (req, res) => {
   try {
-    const data = await readJSON('applications.json');
-    const apps = data.applications || [];
+    const raw = await readJSON('applications.json');
+    const apps = Array.isArray(raw) ? raw : (raw.applications || []);
 
     const stats = {
       total: apps.length,
-      pending: apps.filter(a => a.status === 'pending').length,
-      reviewing: apps.filter(a => a.status === 'reviewing').length,
-      shortlisted: apps.filter(a => a.status === 'shortlisted').length,
-      accepted: apps.filter(a => a.status === 'accepted').length,
-      rejected: apps.filter(a => a.status === 'rejected').length
+      pending: apps.filter(a => (a.status || 'pending').toLowerCase() === 'pending').length,
+      reviewing: apps.filter(a => a.status?.toLowerCase() === 'reviewing').length,
+      shortlisted: apps.filter(a => a.status?.toLowerCase() === 'shortlisted').length,
+      accepted: apps.filter(a => a.status?.toLowerCase() === 'accepted').length,
+      rejected: apps.filter(a => a.status?.toLowerCase() === 'rejected').length
     };
 
     res.json({ stats });

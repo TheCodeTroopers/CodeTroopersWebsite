@@ -80,6 +80,11 @@ export const submitContact = (data) => api.post('/contact', data);
 export const getContactSubmissions = () => api.get('/contact/submissions');
 export const deleteContactSubmission = (id) => api.delete(`/contact/submissions/${id}`);
 
+// Join Us Public Submission API
+export const submitApplication = (formData) => api.post('/applications', formData, {
+  headers: { 'Content-Type': 'multipart/form-data' }
+});
+
 // Recruitment & Join Us Applications APIs
 export const getApplications = (params) => api.get('/recruitment/applications', { params });
 export const getApplicationById = (id) => api.get(`/recruitment/applications/${id}`);
