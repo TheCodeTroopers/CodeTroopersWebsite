@@ -7,7 +7,7 @@
 The official website of **Code Troopers**, the technical club of SMVITM.
 
 The platform provides a centralized digital presence for showcasing the club's activities, events, achievements, projects, members, learning ecosystem, and technical initiatives.
-
+ 
 ---
 
 ## ✨ Features
