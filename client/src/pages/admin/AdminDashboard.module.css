@@ -264,6 +264,12 @@
   gap: 1rem;
 }
 
+.topBarRight {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .mobileNavToggle {
   display: none;
   background: none;

@@ -209,3 +209,30 @@ exports.updateUserRole = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Safety check: Prevent admin from deleting their own active session account
+    if (req.user && req.user.id === id) {
+      return res.status(400).json({ error: 'Action denied: You cannot delete your own active administrator account.' });
+    }
+
+    const data = await readJSON('users.json');
+    const userIndex = data.users.findIndex(u => u.id === id);
+    if (userIndex === -1) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const deleted = data.users.splice(userIndex, 1)[0];
+    await writeJSON('users.json', data);
+
+    res.json({
+      message: `User ${deleted.name} (${deleted.email}) deleted successfully`,
+      removed: sanitizeUser(deleted)
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

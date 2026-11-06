@@ -21,10 +21,10 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      const isAuthCheck = error.config?.url?.includes('/auth/me');
+      const isLoginRequest = error.config?.url?.includes('/auth/login');
       const isAuthRoute = window.location.pathname.startsWith('/admin');
       const hadToken = Boolean(localStorage.getItem('ct_auth_token'));
-      if (isAuthCheck && isAuthRoute && hadToken) {
+      if (!isLoginRequest && isAuthRoute && hadToken) {
         localStorage.removeItem('ct_auth_token');
         localStorage.removeItem('ct_auth_user');
         window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&expired=true`;
@@ -41,6 +41,7 @@ export const googleAuthUser = (payload) => api.post('/auth/google', payload);
 export const getCurrentUser = () => api.get('/auth/me');
 export const getUsers = () => api.get('/auth/users');
 export const updateUserRole = (id, role) => api.put(`/auth/users/${id}/role`, { role });
+export const deleteUser = (id) => api.delete(`/auth/users/${id}`);
 
 // Team APIs
 export const getTeam = () => api.get('/team');

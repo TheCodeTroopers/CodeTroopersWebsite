@@ -9,5 +9,6 @@ router.post('/google', authController.googleAuth);
 router.get('/me', verifyToken, authController.getMe);
 router.get('/users', requireAdmin, authController.getUsers);
 router.put('/users/:id/role', requireAdmin, authController.updateUserRole);
+router.delete('/users/:id', requireAdmin, authController.deleteUser);
 
 module.exports = router;

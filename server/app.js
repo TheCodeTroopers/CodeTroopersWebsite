@@ -29,7 +29,6 @@ app.use('/api/events', eventsRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/achievements', achievementsRoutes);
 app.use('/api/contact', contactRoutes);
-app.use('/api/applications', applicationRoutes);
 app.use('/api/applications', recruitmentRoutes);
 app.use('/api/recruitment', recruitmentRoutes);
 app.get('/api/contact-info', contactController.getInfo);

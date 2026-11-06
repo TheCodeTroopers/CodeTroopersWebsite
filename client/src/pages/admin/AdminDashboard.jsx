@@ -41,7 +41,7 @@ import {
   getBlogs, createBlog, updateBlog, deleteBlog,
   getGallery, createGalleryItem, updateGalleryItem, deleteGalleryItem,
   getContactInfo, updateContactInfo, getContactSubmissions, deleteContactSubmission,
-  getUsers, updateUserRole,
+  getUsers, updateUserRole, deleteUser,
   getApplications, updateApplicationStatus, deleteApplication
 } from '../../services/api';
 import SEOHead from '../../components/SEOHead';
@@ -98,7 +98,12 @@ export default function AdminDashboard() {
   };
   const getCandidateSkills = (app) => app?.skills || app?.skillsExperience || app?.skills_experience || '';
   const getCandidateMotivation = (app) => app?.whyJoin || app?.motivation || app?.why_join || '';
-  const getCandidateResume = (app) => app?.resumeUrl || app?.resume_url || (typeof app?.resume === 'string' ? app.resume : null);
+  const getCandidateResume = (app) => 
+    app?.resumeUrl || 
+    app?.resume_url || 
+    app?.resume?.driveViewLink ||
+    app?.resume?.webViewLink ||
+    (typeof app?.resume === 'string' ? app.resume : null);
   const getCandidateDomains = (app) => {
     if (Array.isArray(app?.domains) && app.domains.length > 0) return app.domains;
     if (typeof app?.domain === 'string' && app.domain.trim()) return [app.domain];
@@ -321,7 +326,7 @@ export default function AdminDashboard() {
       if (modalType === 'member') {
         const payload = {
           ...formData,
-          position: formData.position.includes(',') ? formData.position.split(',').map(s => s.trim()) : formData.position,
+          position: formData.position ? (formData.position.includes(',') ? formData.position.split(',').map(s => s.trim()) : formData.position) : '',
           team: formData.team ? (formData.team.includes(',') ? formData.team.split(',').map(s => s.trim()) : formData.team) : ''
         };
         if (editItem) {
@@ -445,6 +450,10 @@ export default function AdminDashboard() {
         await deleteContactSubmission(id);
         setSubmissions(prev => prev.filter(s => s.id !== id));
         showToast('Inquiry deleted');
+      } else if (type === 'user') {
+        await deleteUser(id);
+        setUsersList(prev => prev.filter(u => u.id !== id));
+        showToast(`User account deleted: ${title}`);
       } else if (type === 'application') {
         await deleteApplication(id);
         setApplications(prev => prev.filter(a => getCandidateId(a) !== id));
@@ -1687,6 +1696,20 @@ export default function AdminDashboard() {
           {/* TAB 7: INQUIRIES */}
           {activeTab === 'inquiries' && (
             <div className={styles.tabContent}>
+              <div className={styles.actionHeader}>
+                <div className={styles.filterControls}>
+                  <div className={styles.searchBox}>
+                    <HiSearch className={styles.searchIcon} />
+                    <input 
+                      type="text" 
+                      placeholder="Search inquiries by sender, email, subject..." 
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+
               <div className={styles.tableWrapper}>
                 <table className={styles.adminTable}>
                   <thead>
@@ -1707,7 +1730,16 @@ export default function AdminDashboard() {
                         </td>
                       </tr>
                     ) : (
-                      submissions.map(sub => (
+                      submissions
+                        .filter(sub => {
+                          const q = searchQuery.toLowerCase();
+                          return !q || 
+                            sub.name?.toLowerCase().includes(q) || 
+                            sub.email?.toLowerCase().includes(q) || 
+                            sub.subject?.toLowerCase().includes(q) ||
+                            sub.message?.toLowerCase().includes(q);
+                        })
+                        .map(sub => (
                         <tr key={sub.id}>
                           <td className={styles.strongCell}>{sub.name}</td>
                           <td>{sub.email}</td>
@@ -1754,6 +1786,20 @@ export default function AdminDashboard() {
                   </div>
                 </div>
 
+                <div className={styles.actionHeader} style={{ padding: '0 0 1rem 0' }}>
+                  <div className={styles.filterControls}>
+                    <div className={styles.searchBox}>
+                      <HiSearch className={styles.searchIcon} />
+                      <input 
+                        type="text" 
+                        placeholder="Search trooper by name or email..." 
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+
                 <div className={styles.tableWrapper}>
                   <table className={styles.adminTable}>
                     <thead>
@@ -1766,36 +1812,53 @@ export default function AdminDashboard() {
                       </tr>
                     </thead>
                     <tbody>
-                      {usersList.map(u => (
-                        <tr key={u.id}>
-                          <td>
-                            <div className={styles.memberCell}>
-                              <img src={u.avatar} alt={u.name} className={styles.memberAvatar} />
-                              <span className={styles.strongCell}>{u.name}</span>
-                            </div>
-                          </td>
-                          <td>{u.email}</td>
-                          <td>
-                            <span className={u.role === 'admin' ? styles.adminRoleBadge : styles.memberRoleBadge}>
-                              {u.role.toUpperCase()}
-                            </span>
-                          </td>
-                          <td>{new Date(u.createdAt).toLocaleDateString()}</td>
-                          <td style={{ textAlign: 'right' }}>
-                            {u.id === user?.id ? (
-                              <span className={styles.youBadge}>Active You</span>
-                            ) : (
-                              <button
-                                type="button"
-                                className={u.role === 'admin' ? styles.demoteBtn : styles.promoteBtn}
-                                onClick={() => handleToggleUserRole(u)}
-                              >
-                                {u.role === 'admin' ? 'Demote to Member' : 'Promote to Admin'}
-                              </button>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
+                      {usersList
+                        .filter(u => {
+                          const q = searchQuery.toLowerCase();
+                          return !q || 
+                            u.name?.toLowerCase().includes(q) || 
+                            u.email?.toLowerCase().includes(q);
+                        })
+                        .map(u => (
+                          <tr key={u.id}>
+                            <td>
+                              <div className={styles.memberCell}>
+                                <img src={u.avatar} alt={u.name} className={styles.memberAvatar} />
+                                <span className={styles.strongCell}>{u.name}</span>
+                              </div>
+                            </td>
+                            <td>{u.email}</td>
+                            <td>
+                              <span className={u.role === 'admin' ? styles.adminRoleBadge : styles.memberRoleBadge}>
+                                {u.role.toUpperCase()}
+                              </span>
+                            </td>
+                            <td>{u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '—'}</td>
+                            <td style={{ textAlign: 'right' }}>
+                              {u.id === user?.id ? (
+                                <span className={styles.youBadge}>Active You</span>
+                              ) : (
+                                <div style={{ display: 'inline-flex', gap: '0.4rem', alignItems: 'center', justifyContent: 'flex-end' }}>
+                                  <button
+                                    type="button"
+                                    className={u.role === 'admin' ? styles.demoteBtn : styles.promoteBtn}
+                                    onClick={() => handleToggleUserRole(u)}
+                                  >
+                                    {u.role === 'admin' ? 'Demote to Member' : 'Promote to Admin'}
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className={styles.deleteBtn}
+                                    onClick={() => setDeleteTarget({ type: 'user', id: u.id, title: `${u.name} (${u.email})` })}
+                                    title="Delete User Account"
+                                  >
+                                    <HiTrash />
+                                  </button>
+                                </div>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
                     </tbody>
                   </table>
                 </div>
@@ -1821,7 +1884,7 @@ export default function AdminDashboard() {
                         value={contactData.info?.email || ''} 
                         onChange={(e) => setContactData({
                           ...contactData,
-                          info: { ...contactData.info, email: e.target.value }
+                          info: { ...(contactData.info || {}), email: e.target.value }
                         })}
                       />
                     </div>
@@ -1833,7 +1896,7 @@ export default function AdminDashboard() {
                         value={contactData.info?.address || ''} 
                         onChange={(e) => setContactData({
                           ...contactData,
-                          info: { ...contactData.info, address: e.target.value }
+                          info: { ...(contactData.info || {}), address: e.target.value }
                         })}
                       />
                     </div>
@@ -1846,8 +1909,8 @@ export default function AdminDashboard() {
                         onChange={(e) => setContactData({
                           ...contactData,
                           info: {
-                            ...contactData.info,
-                            social: { ...contactData.info?.social, linkedin: e.target.value }
+                            ...(contactData.info || {}),
+                            social: { ...(contactData.info?.social || {}), linkedin: e.target.value }
                           }
                         })}
                       />
@@ -1861,8 +1924,8 @@ export default function AdminDashboard() {
                         onChange={(e) => setContactData({
                           ...contactData,
                           info: {
-                            ...contactData.info,
-                            social: { ...contactData.info?.social, github: e.target.value }
+                            ...(contactData.info || {}),
+                            social: { ...(contactData.info?.social || {}), github: e.target.value }
                           }
                         })}
                       />
@@ -1876,8 +1939,8 @@ export default function AdminDashboard() {
                         onChange={(e) => setContactData({
                           ...contactData,
                           info: {
-                            ...contactData.info,
-                            social: { ...contactData.info?.social, instagram: e.target.value }
+                            ...(contactData.info || {}),
+                            social: { ...(contactData.info?.social || {}), instagram: e.target.value }
                           }
                         })}
                       />
@@ -1891,8 +1954,8 @@ export default function AdminDashboard() {
                         onChange={(e) => setContactData({
                           ...contactData,
                           info: {
-                            ...contactData.info,
-                            social: { ...contactData.info?.social, twitter: e.target.value }
+                            ...(contactData.info || {}),
+                            social: { ...(contactData.info?.social || {}), twitter: e.target.value }
                           }
                         })}
                       />

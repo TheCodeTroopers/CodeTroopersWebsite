@@ -43,8 +43,11 @@ export default function Login() {
   const queryParams = new URLSearchParams(location.search);
   const redirectPath = queryParams.get('redirect') || (isAdmin ? '/admin' : '/');
 
-  // If already authenticated and visits login page, redirect
+  // If session expired or already authenticated, handle state
   useEffect(() => {
+    if (queryParams.get('expired')) {
+      setError('Your admin session has expired. Please sign in again to continue.');
+    }
     if (isAuthenticated) {
       navigate(redirectPath, { replace: true });
     }
