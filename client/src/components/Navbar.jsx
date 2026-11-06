@@ -90,7 +90,9 @@ export default function Navbar() {
         </Link>
 
         <ul className={styles.navLinks}>
-          {navLinks.map(link =>
+          {navLinks
+            .filter(link => !link.cta || !isAuthenticated)
+            .map(link =>
             link.children ? (
               <li key={link.label} className={styles.dropdown}
                 onMouseEnter={() => setDropdownOpen(true)}
@@ -251,7 +253,9 @@ export default function Navbar() {
               </div>
             ) : null}
 
-            {navLinks.map(link =>
+            {navLinks
+              .filter(link => !link.cta || !isAuthenticated)
+              .map(link =>
               link.children ? (
                 <div key={link.label} className={styles.mobileGroup}>
                   <span className={styles.mobileGroupLabel}>{link.label}</span>

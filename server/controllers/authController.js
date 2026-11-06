@@ -37,15 +37,11 @@ exports.login = async (req, res) => {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    let isMatch = false;
-    if (user.passwordHash) {
-      isMatch = await bcrypt.compare(password, user.passwordHash);
-    }
-    // Tolerant check for seed passwords
-    if (!isMatch && (password === 'admin123' || password === 'member123')) {
-      isMatch = true;
+    if (!user.passwordHash) {
+      return res.status(401).json({ error: 'Invalid email or password' });
     }
 
+    const isMatch = await bcrypt.compare(password, user.passwordHash);
     if (!isMatch) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
@@ -77,9 +73,12 @@ exports.register = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
 
-    // If valid admin key is provided or email is admin@codetroopers.org
+    // Role assignment based on admin key or designated root email
+    const ADMIN_REG_KEY = process.env.ADMIN_REGISTRATION_KEY || 'CT_ADMIN_2026';
     let role = 'member';
-    if (adminKey === 'CT_ADMIN_2026' || email.toLowerCase() === 'admin@codetroopers.org') {
+    if (adminKey && adminKey === ADMIN_REG_KEY) {
+      role = 'admin';
+    } else if (email.toLowerCase() === 'admin@codetroopers.org') {
       role = 'admin';
     }
 
@@ -119,9 +118,10 @@ exports.googleAuth = async (req, res) => {
     let user = data.users.find(u => u.email.toLowerCase() === email.toLowerCase());
 
     if (!user) {
-      // Auto-assign admin if email matches admin pattern or first google user
-      const isFirstUserOrAdmin = email.toLowerCase().includes('admin') || email.toLowerCase() === 'swasthik@codetroopers.org';
-      const role = isFirstUserOrAdmin ? 'admin' : 'member';
+      // Restrict default admin access strictly to designated admin accounts
+      const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@codetroopers.org';
+      const isDesignatedAdmin = email.toLowerCase() === ADMIN_EMAIL.toLowerCase() || email.toLowerCase() === 'swasthik@codetroopers.org';
+      const role = isDesignatedAdmin ? 'admin' : 'member';
 
       user = {
         id: `usr-g-${uuidv4().slice(0, 8)}`,
