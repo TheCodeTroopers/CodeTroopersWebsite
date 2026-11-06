@@ -1,0 +1,34 @@
+{
+  "users": [
+    {
+      "id": "usr-admin-001",
+      "name": "CodeTroopers Admin",
+      "email": "admin@codetroopers.org",
+      "passwordHash": "$2b$10$0C3SXwTW.Aw3Iyk7BAl80uk9EYNgoBAgOCQq9DRCKQXrXZ/V.fxV.",
+      "role": "admin",
+      "avatar": "https://api.dicebear.com/7.x/bottts/svg?seed=Admin",
+      "provider": "local",
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "usr-member-001",
+      "name": "Alex Mercer",
+      "email": "member@codetroopers.org",
+      "passwordHash": "$2b$10$0C3SXwTW.Aw3Iyk7BAl80uRkROCyKYI345cA0LGBac7clgBei4Fva",
+      "role": "member",
+      "avatar": "https://api.dicebear.com/7.x/bottts/svg?seed=Alex",
+      "provider": "local",
+      "createdAt": "2026-01-15T00:00:00.000Z"
+    },
+    {
+      "id": "usr-g-a5c6cfb8",
+      "name": "New Trooper",
+      "email": "newtrooper@sode-edu.in",
+      "role": "member",
+      "avatar": "https://api.dicebear.com/7.x/bottts/svg?seed=New%20Trooper",
+      "provider": "google",
+      "googleId": "",
+      "createdAt": "2026-10-12T19:44:25.412Z"
+    }
+  ]
+}

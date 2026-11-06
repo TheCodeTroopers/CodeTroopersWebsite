@@ -1,9 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const achievementsController = require('../controllers/achievementsController');
+const { requireAdmin } = require('../utils/authMiddleware');
 
 router.get('/', achievementsController.getAll);
-router.post('/', achievementsController.create);
-router.delete('/:id', achievementsController.remove);
+router.get('/:id', achievementsController.getById);
+router.post('/', requireAdmin, achievementsController.create);
+router.put('/:id', requireAdmin, achievementsController.update);
+router.delete('/:id', requireAdmin, achievementsController.remove);
 
 module.exports = router;
