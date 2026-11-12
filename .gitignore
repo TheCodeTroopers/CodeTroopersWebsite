@@ -6,6 +6,7 @@ build/
 coverage/
 .env
 .env.*
+!.env.example
 *.log
 .DS_Store
 server/google-credentials.json

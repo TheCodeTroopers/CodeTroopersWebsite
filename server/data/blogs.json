@@ -1,0 +1,67 @@
+{
+  "blogs": [
+    {
+      "id": "blog-001",
+      "title": "Architecting Scalable Web Applications in 2026: The CodeTroopers Blueprint",
+      "slug": "architecting-scalable-web-applications-2026",
+      "author": "Workbench Architecture Team",
+      "authorRole": "Lead Systems Architect",
+      "date": "2026-03-20",
+      "readTime": "6 min read",
+      "category": "Architecture",
+      "coverImage": "/uploads/workshops/full-stack-web-development/cover.jpg",
+      "summary": "A deep dive into our modular tech stack, micro-frontends, edge caching, and how we maintain sub-second response times for student community platforms.",
+      "content": "Building high-performance web systems requires more than picking the latest trendy framework. At CodeTroopers, our philosophy revolves around pragmatic engineering: modular component structures, resilient state synchronization, and aggressive caching at the perimeter.\n\n### Core Tenets of Our Architecture\n\n1. **Zero Unnecessary Rerenders**: Utilizing fine-grained state management and optimistic UI updates for real-time responsiveness.\n2. **Isomorphic Data Flow**: Ensuring seamless handoff between server-rendered hydration and client routing.\n3. **Decoupled API Surfaces**: RESTful and microservice boundaries that allow individual modules—from event tracking to member portfolios—to deploy independently.\n\n### The Road Ahead\nAs our community expands across campuses, we continue iterating on our open-source tools and empowering every trooper to ship production code from day one.",
+      "tags": [
+        "FullStack",
+        "Architecture",
+        "Performance",
+        "WebDev"
+      ],
+      "status": "published",
+      "likes": 42
+    },
+    {
+      "id": "blog-002",
+      "title": "Winning Your First 36-Hour Hackathon: Strategies from Hackothsava Winners",
+      "slug": "winning-first-hackathon-guide",
+      "author": "CodeTroopers Hackathon Squad",
+      "authorRole": "Competitive Coding Wing",
+      "date": "2026-02-14",
+      "readTime": "8 min read",
+      "category": "Competitions",
+      "coverImage": "/uploads/hackathons/hackothsava-2023/cover.jpg",
+      "summary": "From rapid ideation and MVP scoping to pitching judges with confidence—here is the battle-tested playbook that propelled our troopers to the podium.",
+      "content": "Hackathons are high-intensity marathons of engineering grit and creativity. Through years of competing in national and international circuits, our teams have codified a winning formula.\n\n### 1. The 3-Hour Problem Scoping Rule\nNever write a line of code during the first three hours. Validate your target audience, identify the core user journey, and define the absolute minimum viable prototype that tells a cohesive story.\n\n### 2. Divide and Conquer Architecture\nAssign roles clearly:\n- **Lead UI/UX**: Nails the hero presentation and polished Figma-to-code flow.\n- **Core Backend**: Deploys a live mock API within 4 hours.\n- **Data / AI Specialist**: Integrates model endpoints or data pipelines.\n- **Pitch Lead**: Prepares the narrative, live demo script, and slides early.\n\n### 3. The Live Demo Magic\nJudges don't inspect your git commit history; they remember how you made them feel when your product solved a tangible problem in 120 seconds.",
+      "tags": [
+        "Hackathon",
+        "ProductDesign",
+        "Leadership",
+        "CompetitiveCoding"
+      ],
+      "status": "published",
+      "likes": 88
+    },
+    {
+      "id": "blog-003",
+      "title": "Demystifying Modern Artificial Intelligence: From Transformer Math to Local LLMs",
+      "slug": "demystifying-modern-ai-local-llms",
+      "author": "AI Nexus Research Cell",
+      "authorRole": "Machine Learning Lead",
+      "date": "2026-01-28",
+      "readTime": "5 min read",
+      "category": "Artificial Intelligence",
+      "coverImage": "/uploads/technical-talks/cover.jpg",
+      "summary": "Understand self-attention mechanisms, quantization techniques, and how to run inference for privacy-preserving localized AI on consumer hardware.",
+      "content": "The AI landscape has shifted dramatically from monolithic cloud APIs to efficient on-device intelligence. In this guide, we break down the mechanics behind modern generative models.\n\n### Understanding Quantization\nBy mapping 16-bit floating point weights down to 4-bit integer representations (GGUF, AWQ), developers can run 7B and 14B parameter models with minimal perplexity degradation right on standard laptops.\n\n### Hands-On Exploration at CodeTroopers\nOur weekly workshop series 'AI Nexus' gives members direct experience building multimodal agents, vector databases for Retrieval-Augmented Generation (RAG), and zero-latency local voice interfaces.",
+      "tags": [
+        "AI",
+        "LLM",
+        "DeepLearning",
+        "OpenSource"
+      ],
+      "status": "published",
+      "likes": 65
+    }
+  ]
+}
