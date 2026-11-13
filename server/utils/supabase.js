@@ -57,7 +57,7 @@ function normalizeApplication(record) {
   const linkedin = record.linkedin || '';
   const portfolio = record.portfolio || '';
 
-  let resumeUrl = record.resumeUrl || record.resume_url || '';
+  let resumeUrl = record.resumeUrl || record.resume_url || record.resume_drive_url || '';
   let resume = record.resume;
   if (!resumeUrl && typeof resume === 'string') {
     resumeUrl = resume;
@@ -286,8 +286,7 @@ async function updateApplicationStatus(id, newStatus) {
       const { data, error } = await supabase
         .from('applications')
         .update({
-          status: statusLower,
-          updated_at: updatedAt
+          status: statusLower
         })
         .eq('id', id)
         .select();
@@ -387,56 +386,54 @@ async function saveApplication(formData, driveFile, originalFile) {
     submittedAt: now
   });
 
-  let savedInSupabase = false;
-
-  if (isSupabaseConfigured()) {
-    try {
-      const supabase = getSupabaseClient();
-      
-      // Candidate payload containing both snake_case and standard fields for resilient insert
-      const supabasePayload = {
-        id,
-        full_name: formData.fullName,
-        fullName: formData.fullName,
-        college_email: formData.collegeEmail,
-        collegeEmail: formData.collegeEmail,
-        usn: formData.usn,
-        phone: formData.phone,
-        semester: formData.semester,
-        skills_experience: formData.skillsExperience,
-        skillsExperience: formData.skillsExperience,
-        github: formData.github || null,
-        linkedin: formData.linkedin || null,
-        motivation: formData.motivation || null,
-        resume_url: resumeUrl,
-        resumeUrl: resumeUrl,
-        resume_file_id: driveFile?.id || null,
-        resume_metadata: resumeMetadata,
-        status: 'pending',
-        applied_at: now,
-        created_at: now,
-        updated_at: now
-      };
-
-      const { data, error } = await resilientInsert(supabase, 'applications', supabasePayload);
-      if (!error) {
-        savedInSupabase = true;
-      } else {
-        console.warn('Failed to insert into Supabase, saving to JSON fallback:', error.message);
-      }
-    } catch (err) {
-      console.warn('Supabase save error:', err.message);
-    }
+  if (!isSupabaseConfigured()) {
+    throw new Error('Supabase is not configured. The application could not be saved.');
   }
 
-  // Always keep JSON fallback updated
-  const applications = await readApplicationsFromJSON();
-  applications.unshift(normalizedRecord);
-  await writeApplicationsToJSON(applications);
+  const supabase = getSupabaseClient();
+
+  // These names match the actual public.applications table in Supabase.
+  const supabasePayload = {
+    id,
+    full_name: formData.fullName,
+    usn: formData.usn || '',
+    semester: Number.parseInt(formData.semester, 10),
+    college_email: formData.collegeEmail,
+    phone: formData.phone || '',
+    skills_experience: formData.skillsExperience || '',
+    github: formData.github || '',
+    linkedin: formData.linkedin || '',
+    motivation: formData.motivation || '',
+    resume_drive_file_id: driveFile?.id || '',
+    resume_drive_url: resumeUrl,
+    status: 'pending'
+  };
+
+  if (!Number.isInteger(supabasePayload.semester)) {
+    throw new Error('Invalid semester value. Please select a valid semester.');
+  }
+
+  const { data, error } = await supabase
+    .from('applications')
+    .insert([supabasePayload])
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Supabase application insert failed:', {
+      code: error.code,
+      message: error.message,
+      details: error.details,
+      hint: error.hint
+    });
+    throw new Error(`Supabase save failed: ${error.message}`);
+  }
+
+  const savedApplication = normalizeApplication(data);
 
   return {
-    application: normalizedRecord,
-    savedInSupabase
+    application: savedApplication,
+    savedInSupabase: true
   };
 }
 
