@@ -9,6 +9,44 @@ const FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID || '1SaE3GfrbakynHunyvQsX1l
 
 let driveClient = null;
 
+function getServiceAccountCredentials() {
+  const rawValue = process.env.GOOGLE_SERVICE_ACCOUNT_JSON || process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
+  const trimmedValue = typeof rawValue === 'string' ? rawValue.trim() : '';
+  const diagnostics = {
+    exists: Boolean(rawValue),
+    length: typeof rawValue === 'string' ? rawValue.length : 0,
+    startsWithBrace: trimmedValue.startsWith('{'),
+    endsWithBrace: trimmedValue.endsWith('}'),
+    jsonParseSuccess: false
+  };
+
+  if (!trimmedValue) {
+    console.info('[Google Drive] Service account environment diagnostics:', diagnostics);
+    return null;
+  }
+
+  try {
+    let credentials = JSON.parse(trimmedValue);
+
+    // Accept values copied from a dashboard as a JSON-encoded string.
+    if (typeof credentials === 'string') {
+      credentials = JSON.parse(credentials);
+    }
+
+    if (!credentials || typeof credentials !== 'object' || Array.isArray(credentials)) {
+      throw new Error('service account value is not a JSON object');
+    }
+
+    diagnostics.jsonParseSuccess = true;
+    console.info('[Google Drive] Service account environment diagnostics:', diagnostics);
+    return credentials;
+  } catch (err) {
+    console.info('[Google Drive] Service account environment diagnostics:', diagnostics);
+    console.warn('[Google Drive] Service account JSON parse failed:', err.message);
+    return null;
+  }
+}
+
 /**
  * Initializes and returns the Google Drive client.
  * Supports BOTH Google Service Account credentials (codetroopers official account)
@@ -23,13 +61,9 @@ function getDriveClient() {
   ];
 
   // 1. Check for Service Account JSON string in environment variable (Vercel standard)
-  const serviceAccountJsonStr = process.env.GOOGLE_SERVICE_ACCOUNT_JSON || process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
-  if (serviceAccountJsonStr) {
+  const credentials = getServiceAccountCredentials();
+  if (credentials) {
     try {
-      const credentials = typeof serviceAccountJsonStr === 'string' 
-        ? JSON.parse(serviceAccountJsonStr) 
-        : serviceAccountJsonStr;
-
       const auth = new google.auth.GoogleAuth({
         credentials,
         scopes
@@ -38,7 +72,7 @@ function getDriveClient() {
       driveClient = google.drive({ version: 'v3', auth });
       return driveClient;
     } catch (err) {
-      console.warn('Failed to parse GOOGLE_SERVICE_ACCOUNT_JSON:', err.message);
+      console.warn('Failed to initialize Google service account auth:', err.message);
     }
   }
 
