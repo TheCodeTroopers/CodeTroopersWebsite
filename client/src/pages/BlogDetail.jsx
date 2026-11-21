@@ -187,7 +187,7 @@ export default function BlogDetail() {
             <div className={styles.relatedGrid}>
               {recentBlogs.map(rb => (
                 <Link key={rb.id} to={`/blogs/${rb.id}`} className={styles.relatedCard}>
-                  <img src={rb.coverImage || '/images/default-cover.jpg'} alt={rb.title} />
+                  <img loading="lazy" decoding="async" src={rb.coverImage || '/images/default-cover.jpg'} alt={rb.title} />
                   <div className={styles.relatedInfo}>
                     <span className={styles.relatedCat}>{rb.category}</span>
                     <h4>{rb.title}</h4>

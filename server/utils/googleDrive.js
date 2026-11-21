@@ -1,4 +1,6 @@
-const { google } = require('googleapis');
+// googleapis is huge (about 1 s to load). Load it only when a resume upload really needs it, so every
+// other API request (and every cold start) stays fast.
+const getGoogle = () => require('googleapis').google;
 const { Readable } = require('stream');
 const path = require('path');
 const fs = require('fs');
@@ -64,12 +66,12 @@ function getDriveClient() {
   const credentials = getServiceAccountCredentials();
   if (credentials) {
     try {
-      const auth = new google.auth.GoogleAuth({
+      const auth = new (getGoogle().auth.GoogleAuth)({
         credentials,
         scopes
       });
 
-      driveClient = google.drive({ version: 'v3', auth });
+      driveClient = getGoogle().drive({ version: 'v3', auth });
       return driveClient;
     } catch (err) {
       console.warn('Failed to initialize Google service account auth:', err.message);
@@ -82,14 +84,14 @@ function getDriveClient() {
   if (saEmail && saKey) {
     try {
       const formattedKey = saKey.replace(/\\n/g, '\n');
-      const auth = new google.auth.JWT(
+      const auth = new (getGoogle().auth.JWT)(
         saEmail,
         null,
         formattedKey,
         scopes
       );
 
-      driveClient = google.drive({ version: 'v3', auth });
+      driveClient = getGoogle().drive({ version: 'v3', auth });
       return driveClient;
     } catch (err) {
       console.warn('Failed to initialize Service Account JWT auth:', err.message);
@@ -105,12 +107,12 @@ function getDriveClient() {
 
   if (targetKeyFile) {
     try {
-      const auth = new google.auth.GoogleAuth({
+      const auth = new (getGoogle().auth.GoogleAuth)({
         keyFile: targetKeyFile,
         scopes
       });
 
-      driveClient = google.drive({ version: 'v3', auth });
+      driveClient = getGoogle().drive({ version: 'v3', auth });
       return driveClient;
     } catch (err) {
       console.warn(`Failed to initialize GoogleAuth from ${targetKeyFile}:`, err.message);
@@ -124,7 +126,7 @@ function getDriveClient() {
 
   if (CLIENT_ID && CLIENT_SECRET && REFRESH_TOKEN) {
     try {
-      const oauth2Client = new google.auth.OAuth2(
+      const oauth2Client = new (getGoogle().auth.OAuth2)(
         CLIENT_ID,
         CLIENT_SECRET,
         'https://developers.google.com/oauthplayground'
@@ -134,7 +136,7 @@ function getDriveClient() {
         refresh_token: REFRESH_TOKEN
       });
 
-      driveClient = google.drive({ version: 'v3', auth: oauth2Client });
+      driveClient = getGoogle().drive({ version: 'v3', auth: oauth2Client });
       return driveClient;
     } catch (err) {
       console.warn('Failed to initialize Google OAuth2 client:', err.message);

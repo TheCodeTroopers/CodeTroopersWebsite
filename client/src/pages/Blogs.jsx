@@ -110,7 +110,7 @@ export default function Blogs() {
                 transition={{ duration: 0.3, delay: idx * 0.08 }}
               >
                 <div className={styles.imageWrapper}>
-                  <img 
+                  <img loading="lazy" decoding="async" 
                     src={blog.coverImage || '/images/default-cover.jpg'} 
                     alt={blog.title} 
                     className={styles.cardImage}

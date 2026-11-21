@@ -625,3 +625,12 @@
     padding: 0.85rem 1rem 1rem;
   }
 }
+
+
+/* PERF: no backdrop blur on small screens (see globals.css), so make the floating bar solid enough to read. */
+@media (max-width: 900px), (hover: none) {
+  .container,
+  .scrolled .container {
+    background: rgba(24, 11, 14, 0.96);
+  }
+}

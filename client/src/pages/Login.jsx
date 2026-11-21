@@ -1,14 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  HiLockClosed, 
-  HiMail, 
-  HiUser, 
-  HiEye, 
-  HiEyeOff, 
-  HiKey, 
-  HiExclamationCircle, 
+import {
+  HiLockClosed,
+  HiMail,
+  HiUser,
+  HiEye,
+  HiEyeOff,
+  HiExclamationCircle,
   HiCheckCircle,
   HiArrowRight
 } from 'react-icons/hi';
@@ -25,7 +24,6 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [adminKey, setAdminKey] = useState('');
   const [rememberMe, setRememberMe] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
@@ -62,7 +60,7 @@ export default function Login() {
     if (isRegister) {
       if (!name.trim()) return setError('Please enter your full name');
       if (!email.trim()) return setError('Please enter your email');
-      if (password.length < 6) return setError('Password must be at least 6 characters');
+      if (password.length < 8) return setError('Password must be at least 8 characters');
       if (password !== confirmPassword) return setError('Passwords do not match');
 
       setLoading(true);
@@ -70,8 +68,7 @@ export default function Login() {
         const user = await register({
           name: name.trim(),
           email: email.trim(),
-          password,
-          adminKey: adminKey.trim()
+          password
         });
         setSuccess(`Account registered as ${user.role}! Redirecting...`);
         setTimeout(() => {
@@ -170,7 +167,7 @@ export default function Login() {
 
   return (
     <div className={styles.loginPage}>
-      <SEOHead 
+      <SEOHead
         title={`${isRegister ? 'Register' : 'Login'} — CodeTroopers`}
         description="Sign in to CodeTroopers platform with Google or email credentials to access the internal dashboard and member tools."
       />
@@ -178,7 +175,7 @@ export default function Login() {
       <div className={styles.ambientGlow} />
 
       <div className={styles.container}>
-        <motion.div 
+        <motion.div
           className={styles.loginCard}
           initial={{ opacity: 0, y: 24, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -193,8 +190,8 @@ export default function Login() {
               {isRegister ? 'Join CodeTroopers' : 'Welcome to Headquarters'}
             </h1>
             <p className={styles.subtitle}>
-              {isRegister 
-                ? 'Create your member credentials or claim admin clearance' 
+              {isRegister
+                ? 'Create your member account'
                 : 'Access internal management, resources, and administrative control'}
             </p>
           </div>
@@ -231,7 +228,7 @@ export default function Login() {
           {/* Alerts */}
           <AnimatePresence>
             {error && (
-              <motion.div 
+              <motion.div
                 className={styles.errorAlert}
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
@@ -243,7 +240,7 @@ export default function Login() {
             )}
 
             {success && (
-              <motion.div 
+              <motion.div
                 className={styles.successAlert}
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
@@ -325,23 +322,6 @@ export default function Login() {
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       required
-                    />
-                  </div>
-                </div>
-
-                <div className={styles.inputGroup}>
-                  <div className={styles.labelRow}>
-                    <label htmlFor="auth-admin-key">Admin Clearance Key (Optional)</label>
-                    <span className={styles.keyHint}>Key: CT_ADMIN_2026</span>
-                  </div>
-                  <div className={styles.inputWrapper}>
-                    <HiKey className={styles.inputIcon} />
-                    <input
-                      id="auth-admin-key"
-                      type="text"
-                      placeholder="Enter clearance key for Admin role"
-                      value={adminKey}
-                      onChange={(e) => setAdminKey(e.target.value)}
                     />
                   </div>
                 </div>

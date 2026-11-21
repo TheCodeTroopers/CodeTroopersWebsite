@@ -2,7 +2,6 @@ const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { google } = require('googleapis');
 const store = require('../utils/store');
 const { fail } = require('../utils/respond');
 const { getJwtSecret } = require('../utils/authMiddleware');
@@ -137,7 +136,9 @@ exports.googleAuth = async (req, res) => {
 
     let payload;
     try {
-      const client = new google.auth.OAuth2(clientId);
+      // google-auth-library is small and only loaded on first Google sign-in
+      const { OAuth2Client } = require('google-auth-library');
+      const client = new OAuth2Client(clientId);
       const ticket = await client.verifyIdToken({ idToken: credential, audience: clientId });
       payload = ticket.getPayload();
     } catch (err) {

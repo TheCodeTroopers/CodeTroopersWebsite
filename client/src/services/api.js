@@ -10,6 +10,11 @@ api.interceptors.request.use((config) => {
   const token = localStorage.getItem('ct_auth_token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
+    // Visitors get CDN-cached lists (up to ~1 min old). Logged-in admins must always see fresh data
+    // right after saving, so give their GET requests a unique URL that the CDN cannot reuse.
+    if ((config.method || 'get').toLowerCase() === 'get') {
+      config.params = { ...(config.params || {}), _: Date.now() };
+    }
   }
   return config;
 }, (error) => {

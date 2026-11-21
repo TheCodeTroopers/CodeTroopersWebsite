@@ -26,7 +26,7 @@ export default function TeamCard({ member }) {
       <article className={styles.card}>
         <div className={styles.avatar}>
           {photoUrl && !imgError ? (
-            <img
+            <img loading="lazy" decoding="async"
               src={photoUrl}
               alt={member.name}
               onError={() => setImgError(true)}

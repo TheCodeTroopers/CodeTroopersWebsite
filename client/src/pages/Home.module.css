@@ -42,7 +42,6 @@
   height: 50vw;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(123, 28, 46, 0.15) 0%, transparent 70%);
-  filter: blur(40px);
   pointer-events: none;
 }
 
