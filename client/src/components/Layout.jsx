@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
@@ -10,7 +11,9 @@ export default function Layout() {
       <ScrollToTop />
       <Navbar />
       <main>
-        <Outlet />
+        <Suspense fallback={<div style={{ minHeight: '70vh' }} aria-busy="true" />}>
+          <Outlet />
+        </Suspense>
       </main>
       <Footer />
       <BackToTop />

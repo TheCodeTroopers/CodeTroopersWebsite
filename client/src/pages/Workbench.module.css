@@ -33,7 +33,6 @@
   width: 360px;
   height: 180px;
   background: radial-gradient(ellipse at center, rgba(201, 151, 58, 0.18) 0%, rgba(123, 28, 46, 0.12) 50%, transparent 70%);
-  filter: blur(32px);
   pointer-events: none;
 }
 

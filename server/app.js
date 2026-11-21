@@ -15,6 +15,7 @@ const recruitmentRoutes = require('./routes/recruitmentRoutes');
 const applicationRoutes = require('./routes/applicationRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 const { requireAdmin } = require('./utils/authMiddleware');
+const { noStoreByDefault, cachePublic } = require('./utils/cache');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -23,17 +24,19 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+app.use('/api', noStoreByDefault); // safe default; public GET routes below opt in to caching
+
 app.use('/api/auth', authRoutes);
-app.use('/api/blogs', blogsRoutes);
-app.use('/api/team', teamRoutes);
-app.use('/api/events', eventsRoutes);
-app.use('/api/gallery', galleryRoutes);
-app.use('/api/achievements', achievementsRoutes);
+app.use('/api/blogs', cachePublic, blogsRoutes);
+app.use('/api/team', cachePublic, teamRoutes);
+app.use('/api/events', cachePublic, eventsRoutes);
+app.use('/api/gallery', cachePublic, galleryRoutes);
+app.use('/api/achievements', cachePublic, achievementsRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/applications', recruitmentRoutes);
 app.use('/api/recruitment', recruitmentRoutes);
 app.use('/api/upload', uploadRoutes);
-app.get('/api/contact-info', contactController.getInfo);
+app.get('/api/contact-info', cachePublic, contactController.getInfo);
 app.put('/api/contact-info', requireAdmin, contactController.updateInfo);
 
 app.get('/api/health', (req, res) => {
