@@ -111,12 +111,12 @@ export default function Blogs() {
               >
                 <div className={styles.imageWrapper}>
                   <img 
-                    src={blog.coverImage || '/uploads/technical-talks/cover.jpg'} 
+                    src={blog.coverImage || '/images/default-cover.jpg'} 
                     alt={blog.title} 
                     className={styles.cardImage}
                     onError={(e) => {
                       e.target.onerror = null;
-                      e.target.src = '/uploads/technical-talks/cover.jpg';
+                      e.target.src = '/images/default-cover.jpg';
                     }}
                   />
                   <span className={styles.categoryBadge}>{blog.category || 'Article'}</span>

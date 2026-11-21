@@ -13,6 +13,7 @@ const authRoutes = require('./routes/authRoutes');
 const blogsRoutes = require('./routes/blogsRoutes');
 const recruitmentRoutes = require('./routes/recruitmentRoutes');
 const applicationRoutes = require('./routes/applicationRoutes');
+const uploadRoutes = require('./routes/uploadRoutes');
 const { requireAdmin } = require('./utils/authMiddleware');
 
 const app = express();
@@ -31,6 +32,7 @@ app.use('/api/achievements', achievementsRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/applications', recruitmentRoutes);
 app.use('/api/recruitment', recruitmentRoutes);
+app.use('/api/upload', uploadRoutes);
 app.get('/api/contact-info', contactController.getInfo);
 app.put('/api/contact-info', requireAdmin, contactController.updateInfo);
 
@@ -40,7 +42,7 @@ app.get('/api/health', (req, res) => {
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ error: 'Internal server error' });
+  res.status(err.status || 500).json({ error: err.status && err.status < 500 ? err.message : 'Internal server error' });
 });
 
 function startServer() {

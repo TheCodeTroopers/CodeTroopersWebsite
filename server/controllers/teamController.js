@@ -1,60 +1,50 @@
-const { readJSON, writeJSON } = require('../utils/jsonStore');
 const { v4: uuidv4 } = require('uuid');
+const store = require('../utils/store');
+const { fail } = require('../utils/respond');
 
 exports.getAll = async (req, res) => {
   try {
-    const data = await readJSON('team.json');
-    res.json(data);
+    res.json({ members: await store.team.list() });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    fail(res, err);
   }
 };
 
 exports.getById = async (req, res) => {
   try {
-    const data = await readJSON('team.json');
-    const member = data.members.find(m => m.id === req.params.id);
+    const member = await store.team.get(req.params.id);
     if (!member) return res.status(404).json({ error: 'Member not found' });
     res.json(member);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    fail(res, err);
   }
 };
 
 exports.create = async (req, res) => {
   try {
-    const data = await readJSON('team.json');
-    const member = { id: uuidv4(), ...req.body };
-    data.members.unshift(member);
-    await writeJSON('team.json', data);
+    const member = await store.team.insert({ ...req.body, id: uuidv4() });
     res.status(201).json(member);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    fail(res, err);
   }
 };
 
 exports.update = async (req, res) => {
   try {
-    const data = await readJSON('team.json');
-    const index = data.members.findIndex(m => m.id === req.params.id);
-    if (index === -1) return res.status(404).json({ error: 'Member not found' });
-    data.members[index] = { ...data.members[index], ...req.body, id: req.params.id };
-    await writeJSON('team.json', data);
-    res.json(data.members[index]);
+    const member = await store.team.update(req.params.id, req.body);
+    if (!member) return res.status(404).json({ error: 'Member not found' });
+    res.json(member);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    fail(res, err);
   }
 };
 
 exports.remove = async (req, res) => {
   try {
-    const data = await readJSON('team.json');
-    const index = data.members.findIndex(m => m.id === req.params.id);
-    if (index === -1) return res.status(404).json({ error: 'Member not found' });
-    const removed = data.members.splice(index, 1)[0];
-    await writeJSON('team.json', data);
+    const removed = await store.team.remove(req.params.id);
+    if (!removed) return res.status(404).json({ error: 'Member not found' });
     res.json(removed);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    fail(res, err);
   }
 };
