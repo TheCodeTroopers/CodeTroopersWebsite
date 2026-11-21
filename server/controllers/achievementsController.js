@@ -1,60 +1,50 @@
-const { readJSON, writeJSON } = require('../utils/jsonStore');
 const { v4: uuidv4 } = require('uuid');
+const store = require('../utils/store');
+const { fail } = require('../utils/respond');
 
 exports.getAll = async (req, res) => {
   try {
-    const data = await readJSON('achievements.json');
-    res.json(data);
+    res.json({ items: await store.achievements.list() });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    fail(res, err);
   }
 };
 
 exports.getById = async (req, res) => {
   try {
-    const data = await readJSON('achievements.json');
-    const item = data.items.find(i => i.id === req.params.id);
+    const item = await store.achievements.get(req.params.id);
     if (!item) return res.status(404).json({ error: 'Achievement not found' });
     res.json(item);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    fail(res, err);
   }
 };
 
 exports.create = async (req, res) => {
   try {
-    const data = await readJSON('achievements.json');
-    const item = { id: uuidv4(), ...req.body };
-    data.items.unshift(item);
-    await writeJSON('achievements.json', data);
+    const item = await store.achievements.insert({ ...req.body, id: uuidv4() });
     res.status(201).json(item);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    fail(res, err);
   }
 };
 
 exports.update = async (req, res) => {
   try {
-    const data = await readJSON('achievements.json');
-    const index = data.items.findIndex(i => i.id === req.params.id);
-    if (index === -1) return res.status(404).json({ error: 'Achievement not found' });
-    data.items[index] = { ...data.items[index], ...req.body, id: req.params.id };
-    await writeJSON('achievements.json', data);
-    res.json(data.items[index]);
+    const item = await store.achievements.update(req.params.id, req.body);
+    if (!item) return res.status(404).json({ error: 'Achievement not found' });
+    res.json(item);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    fail(res, err);
   }
 };
 
 exports.remove = async (req, res) => {
   try {
-    const data = await readJSON('achievements.json');
-    const index = data.items.findIndex(i => i.id === req.params.id);
-    if (index === -1) return res.status(404).json({ error: 'Achievement not found' });
-    const removed = data.items.splice(index, 1)[0];
-    await writeJSON('achievements.json', data);
+    const removed = await store.achievements.remove(req.params.id);
+    if (!removed) return res.status(404).json({ error: 'Achievement not found' });
     res.json(removed);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    fail(res, err);
   }
 };

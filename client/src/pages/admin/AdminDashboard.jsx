@@ -45,6 +45,7 @@ import {
   getApplications, updateApplicationStatus, deleteApplication
 } from '../../services/api';
 import SEOHead from '../../components/SEOHead';
+import ImageUploadButton from '../../components/ImageUploadButton';
 import logoImg from '../../assets/codetrooperslogo.png';
 import styles from './AdminDashboard.module.css';
 
@@ -1660,7 +1661,7 @@ export default function AdminDashboard() {
                   .map(g => (
                     <div key={g.id} className={styles.galleryCard}>
                       <img 
-                        src={g.cover || (g.images && g.images[0]) || '/uploads/technical-talks/cover.jpg'} 
+                        src={g.cover || (g.images && g.images[0]) || '/images/default-cover.jpg'} 
                         alt={g.title}
                         className={styles.galleryCardCover}
                       />
@@ -2061,6 +2062,7 @@ export default function AdminDashboard() {
                         value={formData.photo || ''} 
                         onChange={(e) => setFormData({ ...formData, photo: e.target.value })}
                       />
+                      <ImageUploadButton folder="team" onUploaded={(urls) => setFormData(prev => ({ ...prev, photo: urls[0] }))} />
                     </div>
 
                     <div className={styles.formRow}>
@@ -2172,6 +2174,7 @@ export default function AdminDashboard() {
                         value={formData.banner || ''} 
                         onChange={(e) => setFormData({ ...formData, banner: e.target.value })}
                       />
+                      <ImageUploadButton folder="events" onUploaded={(urls) => setFormData(prev => ({ ...prev, banner: urls[0] }))} />
                     </div>
 
                     <div className={styles.formGroup}>
@@ -2191,6 +2194,7 @@ export default function AdminDashboard() {
                         value={formData.galleryUrls || ''} 
                         onChange={(e) => setFormData({ ...formData, galleryUrls: e.target.value })}
                       />
+                      <ImageUploadButton folder="events" multiple onUploaded={(urls) => setFormData(prev => ({ ...prev, galleryUrls: [prev.galleryUrls, ...urls].filter(Boolean).join('\n') }))} />
                     </div>
                   </>
                 )}
@@ -2235,6 +2239,7 @@ export default function AdminDashboard() {
                           value={formData.image || ''} 
                           onChange={(e) => setFormData({ ...formData, image: e.target.value })}
                         />
+                        <ImageUploadButton folder="achievements" onUploaded={(urls) => setFormData(prev => ({ ...prev, image: urls[0] }))} />
                       </div>
                     </div>
 
@@ -2351,6 +2356,7 @@ export default function AdminDashboard() {
                         value={formData.coverImage || ''} 
                         onChange={(e) => setFormData({ ...formData, coverImage: e.target.value })}
                       />
+                      <ImageUploadButton folder="blogs" onUploaded={(urls) => setFormData(prev => ({ ...prev, coverImage: urls[0] }))} />
                     </div>
 
                     <div className={styles.formGroup}>
@@ -2419,6 +2425,7 @@ export default function AdminDashboard() {
                         value={formData.cover || ''} 
                         onChange={(e) => setFormData({ ...formData, cover: e.target.value })}
                       />
+                      <ImageUploadButton folder="gallery" label="Upload cover" onUploaded={(urls) => setFormData(prev => ({ ...prev, cover: urls[0] }))} />
                     </div>
 
                     <div className={styles.formGroup}>
@@ -2428,6 +2435,15 @@ export default function AdminDashboard() {
                         placeholder="/uploads/image1.jpeg&#10;/uploads/image2.jpeg" 
                         value={formData.images || ''} 
                         onChange={(e) => setFormData({ ...formData, images: e.target.value })}
+                      />
+                      <ImageUploadButton
+                        folder="gallery"
+                        multiple
+                        onUploaded={(urls) => setFormData(prev => ({
+                          ...prev,
+                          images: [prev.images, ...urls].filter(Boolean).join('\n'),
+                          cover: prev.cover || urls[0]
+                        }))}
                       />
                     </div>
                   </>

@@ -1,5 +1,6 @@
-const { readJSON, writeJSON } = require('../utils/jsonStore');
 const { v4: uuidv4 } = require('uuid');
+const store = require('../utils/store');
+const { fail } = require('../utils/respond');
 
 function slugify(text) {
   return text
@@ -11,14 +12,23 @@ function slugify(text) {
     .replace(/--+/g, '-');
 }
 
+function parseTags(tags, fallback = []) {
+  if (Array.isArray(tags)) return tags;
+  if (typeof tags === 'string') return tags.split(',').map(t => t.trim()).filter(Boolean);
+  return fallback;
+}
+
+const isAdmin = (req) => Boolean(req.user && req.user.role === 'admin');
+
 exports.getAll = async (req, res) => {
   try {
-    const data = await readJSON('blogs.json');
     const { status, category } = req.query;
-    let blogs = data.blogs || [];
+    let blogs = await store.blogs.list();
 
-    // Filter by status if specified, otherwise return all
-    if (status) {
+    // Public visitors only ever see published posts. Admins (valid token) see everything.
+    if (!isAdmin(req)) {
+      blogs = blogs.filter(b => (b.status || 'published') === 'published');
+    } else if (status) {
       blogs = blogs.filter(b => b.status === status);
     }
     if (category) {
@@ -27,51 +37,41 @@ exports.getAll = async (req, res) => {
 
     res.json({ blogs });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    fail(res, err);
   }
 };
 
 exports.getById = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await readJSON('blogs.json');
-    const blog = (data.blogs || []).find(b => b.id === id || b.slug === id);
-
+    let blog = await store.blogs.get(id);
     if (!blog) {
+      // Posts can also be addressed by slug.
+      blog = (await store.blogs.list()).find(b => b.slug === id) || null;
+    }
+
+    if (!blog || (!isAdmin(req) && (blog.status || 'published') !== 'published')) {
       return res.status(404).json({ error: 'Blog post not found' });
     }
 
     res.json(blog);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    fail(res, err);
   }
 };
 
 exports.create = async (req, res) => {
   try {
-    const data = await readJSON('blogs.json');
-    if (!data.blogs) data.blogs = [];
-
     const {
-      title,
-      slug,
-      author,
-      authorRole,
-      date,
-      readTime,
-      category,
-      coverImage,
-      summary,
-      content,
-      tags,
-      status
+      title, slug, author, authorRole, date, readTime, category,
+      coverImage, summary, content, tags, status
     } = req.body;
 
     if (!title) {
       return res.status(400).json({ error: 'Title is required' });
     }
 
-    const newBlog = {
+    const blog = await store.blogs.insert({
       id: `blog-${uuidv4().slice(0, 8)}`,
       title,
       slug: slug || slugify(title),
@@ -80,66 +80,45 @@ exports.create = async (req, res) => {
       date: date || new Date().toISOString().split('T')[0],
       readTime: readTime || '4 min read',
       category: category || 'Engineering',
-      coverImage: coverImage || '/uploads/technical-talks/cover.jpg',
+      coverImage: coverImage || '/images/default-cover.jpg',
       summary: summary || '',
       content: content || '',
-      tags: Array.isArray(tags) ? tags : typeof tags === 'string' ? tags.split(',').map(t => t.trim()).filter(Boolean) : [],
+      tags: parseTags(tags),
       status: status || 'published',
       likes: 0
-    };
+    });
 
-    data.blogs.unshift(newBlog);
-    await writeJSON('blogs.json', data);
-    res.status(201).json(newBlog);
+    res.status(201).json(blog);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    fail(res, err);
   }
 };
 
 exports.update = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await readJSON('blogs.json');
-    const index = (data.blogs || []).findIndex(b => b.id === id);
-
-    if (index === -1) {
+    const current = await store.blogs.get(id);
+    if (!current) {
       return res.status(404).json({ error: 'Blog post not found' });
     }
 
-    const current = data.blogs[index];
-    const tags = req.body.tags;
-    const processedTags = tags !== undefined
-      ? (Array.isArray(tags) ? tags : typeof tags === 'string' ? tags.split(',').map(t => t.trim()).filter(Boolean) : current.tags)
-      : current.tags;
+    const patch = { ...req.body };
+    if (patch.tags !== undefined) patch.tags = parseTags(patch.tags, current.tags);
 
-    data.blogs[index] = {
-      ...current,
-      ...req.body,
-      tags: processedTags,
-      id // preserve id
-    };
-
-    await writeJSON('blogs.json', data);
-    res.json(data.blogs[index]);
+    res.json(await store.blogs.update(id, patch));
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    fail(res, err);
   }
 };
 
 exports.remove = async (req, res) => {
   try {
-    const { id } = req.params;
-    const data = await readJSON('blogs.json');
-    const index = (data.blogs || []).findIndex(b => b.id === id);
-
-    if (index === -1) {
+    const removed = await store.blogs.remove(req.params.id);
+    if (!removed) {
       return res.status(404).json({ error: 'Blog post not found' });
     }
-
-    const removed = data.blogs.splice(index, 1)[0];
-    await writeJSON('blogs.json', data);
     res.json(removed);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    fail(res, err);
   }
 };

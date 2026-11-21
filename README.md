@@ -42,10 +42,10 @@ The platform provides a centralized digital presence for showcasing the club's a
 | Build Tool | Vite |
 | Backend | Node.js, Express.js |
 | Authentication | JWT, bcryptjs |
-| Database | Supabase (recruitment applications) |
-| File Storage | Google Drive (candidate resume PDFs, via `googleapis`) |
+| Database | Supabase Postgres (site content, users, recruitment applications) |
+| File Storage | Supabase Storage (site images), Google Drive (candidate resume PDFs, via `googleapis`) |
 | File Uploads | Multer |
-| Content Storage | JSON files (`server/data/`) |
+| Content Storage | Supabase tables (see `docs/LAUNCH_SETUP.md`) |
 | Hosting | Vercel (static frontend + serverless API) |
 | Version Control | Git, GitHub |
 

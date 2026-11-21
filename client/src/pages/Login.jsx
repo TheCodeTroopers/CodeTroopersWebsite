@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -8,17 +8,16 @@ import {
   HiEye, 
   HiEyeOff, 
   HiKey, 
-  HiShieldCheck, 
-  HiSparkles, 
   HiExclamationCircle, 
   HiCheckCircle,
   HiArrowRight
 } from 'react-icons/hi';
-import { FcGoogle } from 'react-icons/fc';
 import { useAuth } from '../context/AuthContext';
 import SEOHead from '../components/SEOHead';
 import logoImg from '../assets/codetrooperslogo.png';
 import styles from './Login.module.css';
+
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 export default function Login() {
   const [isRegister, setIsRegister] = useState(false);
@@ -37,6 +36,8 @@ export default function Login() {
   const [forgotSuccess, setForgotSuccess] = useState(false);
 
   const { login, register, googleLogin, isAuthenticated, isAdmin } = useAuth();
+  const googleButtonRef = useRef(null);
+  const handleGoogleCredentialRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -100,19 +101,13 @@ export default function Login() {
     }
   };
 
-  const handleGoogleSignIn = async () => {
+  // Real Google sign-in (Google Identity Services). Google returns a signed ID token which the
+  // server verifies; the browser never tells the server who the user is.
+  const handleGoogleCredential = async (response) => {
     setError('');
     setLoading(true);
     try {
-      // Prompt user or use default Google simulation for instant testing
-      const googleMock = {
-        name: isRegister && name ? name : 'Trooper Lead',
-        email: email.includes('@') ? email : 'swasthik@codetroopers.org',
-        picture: 'https://api.dicebear.com/7.x/bottts/svg?seed=GoogleTrooper',
-        googleId: 'g_' + Math.random().toString(36).substring(2, 10)
-      };
-
-      const user = await googleLogin(googleMock);
+      const user = await googleLogin({ credential: response.credential });
       setSuccess(`Signed in with Google as ${user.email}!`);
       setTimeout(() => {
         navigate(user.role === 'admin' ? '/admin' : redirectPath, { replace: true });
@@ -124,16 +119,43 @@ export default function Login() {
     }
   };
 
-  const fillDemoAccount = (role) => {
-    setError('');
-    if (role === 'admin') {
-      setEmail('admin@codetroopers.org');
-      setPassword('admin123');
-    } else {
-      setEmail('member@codetroopers.org');
-      setPassword('member123');
+  handleGoogleCredentialRef.current = handleGoogleCredential;
+
+  useEffect(() => {
+    if (!GOOGLE_CLIENT_ID) return undefined;
+
+    const initialise = () => {
+      if (!window.google?.accounts?.id || !googleButtonRef.current) return;
+      window.google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: (response) => handleGoogleCredentialRef.current(response)
+      });
+      googleButtonRef.current.innerHTML = '';
+      window.google.accounts.id.renderButton(googleButtonRef.current, {
+        theme: 'filled_black',
+        size: 'large',
+        shape: 'pill',
+        text: 'continue_with',
+        width: 320
+      });
+    };
+
+    if (window.google?.accounts?.id) {
+      initialise();
+      return undefined;
     }
-  };
+    let script = document.getElementById('google-identity-script');
+    if (!script) {
+      script = document.createElement('script');
+      script.id = 'google-identity-script';
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+    }
+    script.addEventListener('load', initialise);
+    return () => script.removeEventListener('load', initialise);
+  }, []);
 
   const handleForgotSubmit = (e) => {
     e.preventDefault();
@@ -195,48 +217,16 @@ export default function Login() {
             </button>
           </div>
 
-          {/* Quick Demo Fill Buttons (Sign In mode) */}
-          {!isRegister && (
-            <div className={styles.demoSection}>
-              <div className={styles.demoHeader}>
-                <HiSparkles className={styles.sparkleIcon} />
-                <span>Instant Demo Access</span>
-              </div>
-              <div className={styles.demoButtons}>
-                <button
-                  type="button"
-                  className={styles.demoBtnAdmin}
-                  onClick={() => fillDemoAccount('admin')}
-                  title="Auto-fill admin@codetroopers.org / admin123"
-                >
-                  <HiShieldCheck /> Fill Admin
-                </button>
-                <button
-                  type="button"
-                  className={styles.demoBtnMember}
-                  onClick={() => fillDemoAccount('member')}
-                  title="Auto-fill member@codetroopers.org / member123"
-                >
-                  <HiUser /> Fill Member
-                </button>
-              </div>
-            </div>
+          {/* Google Auth Button (rendered by Google; only shown when VITE_GOOGLE_CLIENT_ID is set) */}
+          {GOOGLE_CLIENT_ID && (
+            <div className={styles.googleSlot} ref={googleButtonRef} />
           )}
 
-          {/* Google Auth Button */}
-          <button
-            type="button"
-            className={styles.googleBtn}
-            onClick={handleGoogleSignIn}
-            disabled={loading}
-          >
-            <FcGoogle className={styles.googleIcon} />
-            <span>Continue with Google</span>
-          </button>
-
-          <div className={styles.divider}>
-            <span>or continue with email</span>
-          </div>
+          {GOOGLE_CLIENT_ID && (
+            <div className={styles.divider}>
+              <span>or continue with email</span>
+            </div>
+          )}
 
           {/* Alerts */}
           <AnimatePresence>

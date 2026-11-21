@@ -138,7 +138,7 @@ export default function BlogDetail() {
             className={styles.coverImg}
             onError={(e) => {
               e.target.onerror = null;
-              e.target.src = '/uploads/technical-talks/cover.jpg';
+              e.target.src = '/images/default-cover.jpg';
             }}
           />
         </div>
@@ -187,7 +187,7 @@ export default function BlogDetail() {
             <div className={styles.relatedGrid}>
               {recentBlogs.map(rb => (
                 <Link key={rb.id} to={`/blogs/${rb.id}`} className={styles.relatedCard}>
-                  <img src={rb.coverImage || '/uploads/technical-talks/cover.jpg'} alt={rb.title} />
+                  <img src={rb.coverImage || '/images/default-cover.jpg'} alt={rb.title} />
                   <div className={styles.relatedInfo}>
                     <span className={styles.relatedCat}>{rb.category}</span>
                     <h4>{rb.title}</h4>

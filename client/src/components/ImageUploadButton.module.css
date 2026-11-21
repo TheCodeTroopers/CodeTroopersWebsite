@@ -1,0 +1,43 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.uploadBtn {
+  padding: 0.45rem 0.95rem;
+  border-radius: 999px;
+  border: 1px solid rgba(212, 160, 60, 0.55);
+  background: rgba(212, 160, 60, 0.12);
+  color: #e8b94f;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+.uploadBtn:hover:not(:disabled) {
+  background: rgba(212, 160, 60, 0.24);
+}
+
+.uploadBtn:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.ok {
+  font-size: 0.8rem;
+  color: #5fd39a;
+}
+
+.err {
+  font-size: 0.8rem;
+  color: #ff7b8a;
+}

@@ -74,6 +74,14 @@ export const createGalleryItem = (data) => api.post('/gallery', data);
 export const updateGalleryItem = (id, data) => api.put(`/gallery/${id}`, data);
 export const deleteGalleryItem = (id) => api.delete(`/gallery/${id}`);
 
+// Image upload (admin). Files should be compressed first (see utils/compressImage.js).
+export const uploadImage = (file, folder = 'misc') => {
+  const formData = new FormData();
+  formData.append('folder', folder); // text fields must come before the file
+  formData.append('image', file, file.name);
+  return api.post('/upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+};
+
 // Contact & Site Settings APIs
 export const getContactInfo = () => api.get('/contact-info');
 export const updateContactInfo = (data) => api.put('/contact-info', data);
