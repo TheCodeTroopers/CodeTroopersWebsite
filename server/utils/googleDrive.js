@@ -22,68 +22,7 @@ function getDriveClient() {
     'https://www.googleapis.com/auth/drive'
   ];
 
-  // 1. Check for Service Account JSON string in environment variable (Vercel standard)
-  const serviceAccountJsonStr = process.env.GOOGLE_SERVICE_ACCOUNT_JSON || process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
-  if (serviceAccountJsonStr) {
-    try {
-      const credentials = typeof serviceAccountJsonStr === 'string' 
-        ? JSON.parse(serviceAccountJsonStr) 
-        : serviceAccountJsonStr;
-
-      const auth = new google.auth.GoogleAuth({
-        credentials,
-        scopes
-      });
-
-      driveClient = google.drive({ version: 'v3', auth });
-      return driveClient;
-    } catch (err) {
-      console.warn('Failed to parse GOOGLE_SERVICE_ACCOUNT_JSON:', err.message);
-    }
-  }
-
-  // 2. Check for individual Service Account email & private key in environment variables
-  const saEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL || process.env.GOOGLE_CLIENT_EMAIL;
-  const saKey = process.env.GOOGLE_PRIVATE_KEY;
-  if (saEmail && saKey) {
-    try {
-      const formattedKey = saKey.replace(/\\n/g, '\n');
-      const auth = new google.auth.JWT(
-        saEmail,
-        null,
-        formattedKey,
-        scopes
-      );
-
-      driveClient = google.drive({ version: 'v3', auth });
-      return driveClient;
-    } catch (err) {
-      console.warn('Failed to initialize Service Account JWT auth:', err.message);
-    }
-  }
-
-  // 3. Check for local or designated Service Account JSON file path
-  const localCredFile = path.join(__dirname, '..', 'google-credentials.json');
-  const appCredsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
-  const targetKeyFile = (appCredsPath && fs.existsSync(appCredsPath)) 
-    ? appCredsPath 
-    : (fs.existsSync(localCredFile) ? localCredFile : null);
-
-  if (targetKeyFile) {
-    try {
-      const auth = new google.auth.GoogleAuth({
-        keyFile: targetKeyFile,
-        scopes
-      });
-
-      driveClient = google.drive({ version: 'v3', auth });
-      return driveClient;
-    } catch (err) {
-      console.warn(`Failed to initialize GoogleAuth from ${targetKeyFile}:`, err.message);
-    }
-  }
-
-  // 4. Check for OAuth2 credentials (CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN)
+  // 1. Check for OAuth2 credentials FIRST (Required for personal Google Drive to avoid Service Account 0-quota errors)
   const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
   const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
   const REFRESH_TOKEN = process.env.GOOGLE_REFRESH_TOKEN;
@@ -107,10 +46,71 @@ function getDriveClient() {
     }
   }
 
+  // 2. Check for Service Account JSON string in environment variable (Vercel standard)
+  const serviceAccountJsonStr = process.env.GOOGLE_SERVICE_ACCOUNT_JSON || process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
+  if (serviceAccountJsonStr) {
+    try {
+      const credentials = typeof serviceAccountJsonStr === 'string' 
+        ? JSON.parse(serviceAccountJsonStr) 
+        : serviceAccountJsonStr;
+
+      const auth = new google.auth.GoogleAuth({
+        credentials,
+        scopes
+      });
+
+      driveClient = google.drive({ version: 'v3', auth });
+      return driveClient;
+    } catch (err) {
+      console.warn('Failed to parse GOOGLE_SERVICE_ACCOUNT_JSON:', err.message);
+    }
+  }
+
+  // 3. Check for individual Service Account email & private key in environment variables
+  const saEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL || process.env.GOOGLE_CLIENT_EMAIL;
+  const saKey = process.env.GOOGLE_PRIVATE_KEY;
+  if (saEmail && saKey) {
+    try {
+      const formattedKey = saKey.replace(/\\n/g, '\n');
+      const auth = new google.auth.JWT(
+        saEmail,
+        null,
+        formattedKey,
+        scopes
+      );
+
+      driveClient = google.drive({ version: 'v3', auth });
+      return driveClient;
+    } catch (err) {
+      console.warn('Failed to initialize Service Account JWT auth:', err.message);
+    }
+  }
+
+  // 4. Check for local or designated Service Account JSON file path
+  const localCredFile = path.join(__dirname, '..', 'google-credentials.json');
+  const appCredsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+  const targetKeyFile = (appCredsPath && fs.existsSync(appCredsPath)) 
+    ? appCredsPath 
+    : (fs.existsSync(localCredFile) ? localCredFile : null);
+
+  if (targetKeyFile) {
+    try {
+      const auth = new google.auth.GoogleAuth({
+        keyFile: targetKeyFile,
+        scopes
+      });
+
+      driveClient = google.drive({ version: 'v3', auth });
+      return driveClient;
+    } catch (err) {
+      console.warn(`Failed to initialize GoogleAuth from ${targetKeyFile}:`, err.message);
+    }
+  }
+
   throw new Error(
     'Google Drive credentials missing! Configure either:\n' +
-    '1) Service Account: GOOGLE_SERVICE_ACCOUNT_JSON (or GOOGLE_SERVICE_ACCOUNT_EMAIL and GOOGLE_PRIVATE_KEY, or server/google-credentials.json)\n' +
-    '2) OAuth2: GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, and GOOGLE_REFRESH_TOKEN'
+    '1) OAuth2: GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, and GOOGLE_REFRESH_TOKEN\n' +
+    '2) Service Account: GOOGLE_SERVICE_ACCOUNT_JSON (or GOOGLE_SERVICE_ACCOUNT_EMAIL and GOOGLE_PRIVATE_KEY, or server/google-credentials.json)'
   );
 }
 

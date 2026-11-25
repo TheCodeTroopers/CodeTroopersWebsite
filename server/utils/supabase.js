@@ -135,14 +135,14 @@ function normalizeApplication(record) {
 async function resilientInsert(supabase, table, payload) {
   let record = { ...payload };
 
-  for (let attempt = 0; attempt < 8; attempt++) {
-    const { data, error } = await supabase
+  for (let attempt = 0; attempt < 15; attempt++) {
+    // Insert without forcing .select() to prevent 42501 RLS errors when only INSERT policy exists
+    const { error } = await supabase
       .from(table)
-      .insert([record])
-      .select();
+      .insert([record]);
 
     if (!error) {
-      return { data: data ? data[0] : record, error: null };
+      return { data: record, error: null };
     }
 
     // Check if error is due to missing column in PostgreSQL / PostgREST schema cache
@@ -393,29 +393,22 @@ async function saveApplication(formData, driveFile, originalFile) {
     try {
       const supabase = getSupabaseClient();
       
-      // Candidate payload containing both snake_case and standard fields for resilient insert
+      // Exact payload matching Supabase applications schema with NOT NULL safety
       const supabasePayload = {
         id,
-        full_name: formData.fullName,
-        fullName: formData.fullName,
-        college_email: formData.collegeEmail,
-        collegeEmail: formData.collegeEmail,
-        usn: formData.usn,
-        phone: formData.phone,
-        semester: formData.semester,
-        skills_experience: formData.skillsExperience,
-        skillsExperience: formData.skillsExperience,
-        github: formData.github || null,
-        linkedin: formData.linkedin || null,
-        motivation: formData.motivation || null,
-        resume_url: resumeUrl,
-        resumeUrl: resumeUrl,
-        resume_file_id: driveFile?.id || null,
-        resume_metadata: resumeMetadata,
+        full_name: (formData.fullName || '').trim(),
+        college_email: (formData.collegeEmail || '').trim(),
+        phone: (formData.phone || '').trim(),
+        usn: (formData.usn || '').trim(),
+        semester: (formData.semester || '').trim(),
+        skills_experience: (formData.skillsExperience || '').trim(),
+        github: (formData.github || '').trim(),
+        linkedin: (formData.linkedin || '').trim(),
+        motivation: (formData.motivation || '').trim(),
+        resume_drive_url: resumeUrl,
+        resume_drive_file_id: driveFile?.id || '',
         status: 'pending',
-        applied_at: now,
-        created_at: now,
-        updated_at: now
+        created_at: now
       };
 
       const { data, error } = await resilientInsert(supabase, 'applications', supabasePayload);

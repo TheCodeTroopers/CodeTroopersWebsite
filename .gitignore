@@ -11,3 +11,6 @@ coverage/
 .DS_Store
 server/google-credentials.json
 *credentials*.json
+*credentials*
+*.bak
+
