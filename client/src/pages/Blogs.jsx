@@ -110,13 +110,13 @@ export default function Blogs() {
                 transition={{ duration: 0.3, delay: idx * 0.08 }}
               >
                 <div className={styles.imageWrapper}>
-                  <img 
-                    src={blog.coverImage || '/uploads/technical-talks/cover.jpg'} 
+                  <img loading="lazy" decoding="async" 
+                    src={blog.coverImage || '/images/default-cover.jpg'} 
                     alt={blog.title} 
                     className={styles.cardImage}
                     onError={(e) => {
                       e.target.onerror = null;
-                      e.target.src = '/uploads/technical-talks/cover.jpg';
+                      e.target.src = '/images/default-cover.jpg';
                     }}
                   />
                   <span className={styles.categoryBadge}>{blog.category || 'Article'}</span>

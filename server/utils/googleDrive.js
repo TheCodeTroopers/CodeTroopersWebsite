@@ -1,4 +1,6 @@
-const { google } = require('googleapis');
+// googleapis is huge (about 1 s to load). Load it only when a resume upload really needs it, so every
+// other API request (and every cold start) stays fast.
+const getGoogle = () => require('googleapis').google;
 const { Readable } = require('stream');
 const path = require('path');
 const fs = require('fs');
@@ -9,10 +11,46 @@ const FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID || '1SaE3GfrbakynHunyvQsX1l
 
 let driveClient = null;
 
+function getServiceAccountCredentials() {
+  const rawValue = process.env.GOOGLE_SERVICE_ACCOUNT_JSON || process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
+  const trimmedValue = typeof rawValue === 'string' ? rawValue.trim() : '';
+  const diagnostics = {
+    exists: Boolean(rawValue),
+    length: typeof rawValue === 'string' ? rawValue.length : 0,
+    startsWithBrace: trimmedValue.startsWith('{'),
+    endsWithBrace: trimmedValue.endsWith('}'),
+    jsonParseSuccess: false
+  };
+
+  if (!trimmedValue) {
+    return null;
+  }
+
+  try {
+    let credentials = JSON.parse(trimmedValue);
+
+    // Accept values copied from a dashboard as a JSON-encoded string.
+    if (typeof credentials === 'string') {
+      credentials = JSON.parse(credentials);
+    }
+
+    if (!credentials || typeof credentials !== 'object' || Array.isArray(credentials)) {
+      throw new Error('service account value is not a JSON object');
+    }
+
+    diagnostics.jsonParseSuccess = true;
+    return credentials;
+  } catch (err) {
+    console.warn('[Google Drive] Service account JSON parse failed:', err.message);
+    return null;
+  }
+}
+
 /**
  * Initializes and returns the Google Drive client.
- * Supports BOTH Google Service Account credentials (codetroopers official account)
- * AND OAuth2 credentials (CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN).
+ * Supports BOTH OAuth2 credentials (CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN)
+ * AND Google Service Account credentials.
+ * OAuth2 is prioritized to avoid personal Drive 0-quota errors with Service Accounts.
  */
 function getDriveClient() {
   if (driveClient) return driveClient;
@@ -29,7 +67,7 @@ function getDriveClient() {
 
   if (CLIENT_ID && CLIENT_SECRET && REFRESH_TOKEN) {
     try {
-      const oauth2Client = new google.auth.OAuth2(
+      const oauth2Client = new (getGoogle().auth.OAuth2)(
         CLIENT_ID,
         CLIENT_SECRET,
         'https://developers.google.com/oauthplayground'
@@ -39,7 +77,7 @@ function getDriveClient() {
         refresh_token: REFRESH_TOKEN
       });
 
-      driveClient = google.drive({ version: 'v3', auth: oauth2Client });
+      driveClient = getGoogle().drive({ version: 'v3', auth: oauth2Client });
       return driveClient;
     } catch (err) {
       console.warn('Failed to initialize Google OAuth2 client:', err.message);
@@ -47,22 +85,18 @@ function getDriveClient() {
   }
 
   // 2. Check for Service Account JSON string in environment variable (Vercel standard)
-  const serviceAccountJsonStr = process.env.GOOGLE_SERVICE_ACCOUNT_JSON || process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
-  if (serviceAccountJsonStr) {
+  const credentials = getServiceAccountCredentials();
+  if (credentials) {
     try {
-      const credentials = typeof serviceAccountJsonStr === 'string' 
-        ? JSON.parse(serviceAccountJsonStr) 
-        : serviceAccountJsonStr;
-
-      const auth = new google.auth.GoogleAuth({
+      const auth = new (getGoogle().auth.GoogleAuth)({
         credentials,
         scopes
       });
 
-      driveClient = google.drive({ version: 'v3', auth });
+      driveClient = getGoogle().drive({ version: 'v3', auth });
       return driveClient;
     } catch (err) {
-      console.warn('Failed to parse GOOGLE_SERVICE_ACCOUNT_JSON:', err.message);
+      console.warn('Failed to initialize Google service account auth:', err.message);
     }
   }
 
@@ -72,14 +106,14 @@ function getDriveClient() {
   if (saEmail && saKey) {
     try {
       const formattedKey = saKey.replace(/\\n/g, '\n');
-      const auth = new google.auth.JWT(
+      const auth = new (getGoogle().auth.JWT)(
         saEmail,
         null,
         formattedKey,
         scopes
       );
 
-      driveClient = google.drive({ version: 'v3', auth });
+      driveClient = getGoogle().drive({ version: 'v3', auth });
       return driveClient;
     } catch (err) {
       console.warn('Failed to initialize Service Account JWT auth:', err.message);
@@ -95,12 +129,12 @@ function getDriveClient() {
 
   if (targetKeyFile) {
     try {
-      const auth = new google.auth.GoogleAuth({
+      const auth = new (getGoogle().auth.GoogleAuth)({
         keyFile: targetKeyFile,
         scopes
       });
 
-      driveClient = google.drive({ version: 'v3', auth });
+      driveClient = getGoogle().drive({ version: 'v3', auth });
       return driveClient;
     } catch (err) {
       console.warn(`Failed to initialize GoogleAuth from ${targetKeyFile}:`, err.message);

@@ -6,25 +6,29 @@
 
 The official website of **Code Troopers**, the technical club of SMVITM.
 
-The platform provides a centralized digital presence for showcasing the club's activities, events, achievements, projects, members, learning ecosystem, and technical initiatives.
- 
+The platform provides a centralized digital presence for showcasing the club's activities, events, achievements, projects, members, blogs, and learning ecosystem, along with a recruitment portal and an admin dashboard for managing everything.
+
+🔗 **Live site:** [code-troopers-website.vercel.app](https://code-troopers-website.vercel.app)
+
 ---
 
 ## ✨ Features
 
 - **Modern Responsive Design** — Optimized for desktop, tablet, and mobile devices
 - **Homepage** — Club introduction, vision, highlights, and featured content
-- **About** — Club story, mission, vision, values, and objectives
-- **Organization** — Overview of the club's structure and teams
-- **Members** — Leadership and member profiles with social links
-- **Events** — Workshops, hackathons, competitions, technical talks, and other activities
+- **About & Organization** — Club story, mission, values, and team structure
+- **Team** — Leadership and member profiles with social links
+- **Events** — Workshops, hackathons, competitions, technical talks, and guest lectures
 - **Event Protocol** — Overview of the club's event execution process
-- **Achievements** — Club accomplishments, awards, and recognitions
+- **Achievements** — Club accomplishments, awards, and detailed achievement views
+- **Blogs** — Technical blogs and editorial posts with detail pages
 - **Workbench** — Internal learning ecosystem and technical learning roadmaps
 - **Gallery** — Photos from Code Troopers activities and events
-- **Contact** — Contact information and communication channels
-- **Responsive Navigation** — Mobile-friendly navigation and layouts
-- **GitHub Integration** — Links to project repositories and developer profiles
+- **Join Us (Recruitment)** — Online application form with PDF resume upload
+- **Contact** — Contact form and club contact information
+- **Authentication** — Login/register with JWT-based sessions and role-based access (member / admin)
+- **Admin Dashboard** — Protected dashboard to manage all site content, applications, and users
+- **SEO & Animations** — Per-page SEO metadata and smooth page transitions
 
 ---
 
@@ -37,33 +41,50 @@ The platform provides a centralized digital presence for showcasing the club's a
 | UI / Animation | Framer Motion, React Icons |
 | Build Tool | Vite |
 | Backend | Node.js, Express.js |
-| Data Storage | JSON files |
+| Authentication | JWT, bcryptjs |
+| Database | Supabase Postgres (site content, users, recruitment applications) |
+| File Storage | Supabase Storage (site images), Google Drive (candidate resume PDFs, via `googleapis`) |
+| File Uploads | Multer |
+| Content Storage | Supabase tables (see `docs/LAUNCH_SETUP.md`) |
+| Hosting | Vercel (static frontend + serverless API) |
 | Version Control | Git, GitHub |
 
 ---
 
 ## 📁 Project Structure
 
-```text
+```
 CodeTroopersWebsite/
+│
+├── api/                       # Vercel serverless entry point for the Express backend
 │
 ├── client/                    # React frontend
 │   ├── public/                # Static assets
 │   └── src/
-│       ├── components/        # Reusable UI components
+│       ├── components/        # Reusable UI components (Navbar, Footer, ProtectedRoute, ...)
+│       ├── context/           # Auth context
+│       ├── data/              # Static frontend content
 │       ├── pages/             # Website pages
-│       ├── data/              # Frontend data/configuration
-│       ├── styles/            # Global styles and variables
+│       │   └── admin/         # Admin dashboard
+│       ├── services/          # API client (Axios)
+│       ├── styles/            # Global styles and design variables
+│       ├── utils/             # Helper utilities
 │       └── main.jsx           # Application entry point
 │
 ├── server/                    # Express backend
-│   ├── data/                  # JSON data files
-│   ├── routes/                # API routes
 │   ├── controllers/           # Request handlers
-│   └── uploads/               # Uploaded/static files
+│   ├── routes/                # API routes
+│   ├── utils/                 # Auth middleware, Supabase, Google Drive, JSON store
+│   ├── data/                  # JSON content files + Supabase SQL schema
+│   ├── scripts/               # Helper scripts
+│   ├── uploads/               # Uploaded/static files
+│   └── .env.example           # Environment variable template
 │
-├── package.json
+├── docs/                      # Club documents (event protocol, constitution/SOP, coordinators list)
+├── vercel.json                # Vercel build, function, and routing config
+├── package.json               # Root scripts (install, dev, build, start)
 └── README.md
+```
 
 ---
 
@@ -71,24 +92,47 @@ CodeTroopersWebsite/
 
 | Page | Route | Description |
 |---|---|---|
-| Home | / | Club introduction, vision, highlights, and featured content |
-| About | /about | Club story, mission, vision, and values |
-| Organization | /organization | Club structure and organizational information |
-| Team | /team | Members, leadership, roles, and profiles |
-| Events | /events/* | Workshops, hackathons, competitions, talks, and lectures |
-| Event Protocol | /event-protocol | Overview of the club's event execution process |
-| Achievements | /achievements | Awards, recognitions, projects, and accomplishments |
-| Workbench | /workbench | Learning ecosystem and technical roadmaps |
-| Gallery | /gallery | Photos from club activities and events |
-| Contact | /contact | Contact information and communication channels |
+| Home | `/` | Club introduction, vision, highlights, and featured content |
+| About | `/about` | Club story, mission, vision, and values |
+| Organization | `/organization` | Club structure and organizational information |
+| Team | `/team` | Members, leadership, roles, and profiles |
+| Events | `/events/workshops`, `/events/hackathons`, `/events/competitions`, `/events/technical-talks`, `/events/guest-lectures` | Events by category |
+| Event Protocol | `/event-protocol` | Overview of the club's event execution process |
+| Achievements | `/achievements`, `/achievements/:id` | Awards, recognitions, and accomplishments |
+| Workbench | `/workbench` | Learning ecosystem and technical roadmaps |
+| Blogs | `/blogs`, `/blogs/:id` | Technical blogs and posts |
+| Gallery | `/gallery` | Photos from club activities and events |
+| Contact | `/contact` | Contact form and information |
+| Join Us | `/join-us` | Recruitment application form |
+| Login | `/login` | Sign in / register |
+| Admin | `/admin` | Admin dashboard (admin access only) |
+
+---
+
+## 🛡️ Admin Dashboard
+
+The dashboard lives at `/admin` and is protected by role-based access (`ProtectedRoute`), so only users with the **admin** role can open it.
+
+| Section | What admins can do |
+|---|---|
+| Overview | Summary stats and recent activity across the site |
+| Recruitment | View applications, open resumes, update status, delete applications |
+| Members | Manage the team roster |
+| Events | Create, edit, and delete events |
+| Achievements | Manage milestones and achievements |
+| Blogs | Write, edit, and delete blog posts |
+| Gallery | Manage gallery albums and media |
+| Inquiries | Read and delete messages from the contact form |
+| Roles & Access | View users, promote/demote admins, delete users |
+| Settings | Update club contact details shown on the site |
+
+Application statuses: `pending` → `reviewing` → `shortlisted` → `accepted` / `rejected`.
 
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-
-Make sure you have the following installed:
 
 - Node.js 18 or higher
 - npm
@@ -97,7 +141,7 @@ Make sure you have the following installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/TheCodeTroopers/CodeTroopersWebsite.git
 cd CodeTroopersWebsite
 ```
 
@@ -109,72 +153,99 @@ From the project root:
 npm run install:all
 ```
 
-### 3. Start the Development Environment
+This installs the root, `server/`, and `client/` dependencies.
+
+### 3. Configure Environment Variables
+
+```bash
+cp server/.env.example server/.env
+```
+
+Then fill in `server/.env`:
+
+| Variable | Purpose |
+|---|---|
+| `PORT` | Backend port (default `5000`) |
+| `JWT_SECRET` | Secret used to sign login tokens |
+| `ADMIN_REGISTRATION_KEY` | Key required to register an admin account |
+| `SUPABASE_URL` | Supabase project URL |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key (backend only) |
+| `GOOGLE_DRIVE_FOLDER_ID` | Drive folder where resume PDFs are stored |
+| `GOOGLE_SERVICE_ACCOUNT_JSON` | Google service account credentials (or use the OAuth2 option in `.env.example`) |
+
+### 4. Set Up Supabase
+
+Run `server/data/supabase_schema.sql` in the Supabase SQL Editor to create the `applications` table, indexes, and Row Level Security policies.
+
+### 5. Start the Development Environment
 
 ```bash
 npm run dev
 ```
 
-This starts both the frontend and backend.
-
-### Typical Development URLs
+This starts both the frontend and backend together.
 
 - **Frontend:** http://localhost:3000
 - **Backend:** http://localhost:5000
 
-If port 3000 is already in use, Vite may start the frontend on another available port.
+The Vite dev server proxies `/api` and `/uploads` to the backend. If port 3000 is already in use, Vite may start on another available port.
 
 ---
 
-## 🔧 Running Services Individually
+## 🔧 Available Scripts
 
-### Backend
+Run from the project root:
 
-```bash
-cd server
-npm install
-npm run dev
-```
-
-### Frontend
-
-```bash
-cd client
-npm install
-npm run dev
-```
+| Script | Description |
+|---|---|
+| `npm run install:all` | Install root, server, and client dependencies |
+| `npm run dev` | Start frontend and backend together |
+| `npm run dev:client` | Start the frontend only |
+| `npm run dev:server` | Start the backend only |
+| `npm run build` | Build the frontend for production |
+| `npm run start` | Start the backend in production mode |
 
 ---
 
-## 📦 Production Build
+## 🔌 API Overview
 
-Build the frontend:
+All routes are prefixed with `/api`. Routes marked 🔒 require an admin token.
 
-```bash
-npm run build
-```
+| Route | Description |
+|---|---|
+| `/auth` | Login, register, current user, 🔒 user management and roles |
+| `/team` | Team members (read public, 🔒 write) |
+| `/events` | Events (read public, 🔒 write) |
+| `/achievements` | Achievements (read public, 🔒 write) |
+| `/blogs` | Blog posts (read public, 🔒 write) |
+| `/gallery` | Gallery items (read public, 🔒 write) |
+| `/contact` | Submit contact form, 🔒 view/delete submissions |
+| `/contact-info` | Club contact details (read public, 🔒 update) |
+| `/applications` | Submit recruitment application (PDF resume, max 10 MB), 🔒 list, view, update status, delete |
+| `/recruitment/stats` | 🔒 Recruitment statistics |
+| `/health` | API health check |
 
-Start the backend:
+---
 
-```bash
-npm run start
-```
+## ☁️ Deployment
+
+The site is deployed on **Vercel**, configured through `vercel.json`:
+
+- **Build command:** `npm --prefix client run build`
+- **Output directory:** `client/dist`
+- **API:** the Express backend runs as a serverless function via `api/[...route].js`, bundled with the `server/` folder
+- **Routing:** `/api/*` and `/uploads/*` are forwarded to the serverless function; all other routes fall back to `index.html` for client-side routing
+- **Environment variables:** set the same variables listed in `server/.env.example` in the Vercel project settings
 
 ---
 
 ## 📊 Data Management
 
-The project currently uses JSON files for application data instead of an external database.
+- **Supabase** — stores recruitment applications (`applications` table)
+- **Google Drive** — stores applicant resume PDFs; the file link is saved with the application
+- **JSON files** — store site content under `server/data/`: team, events, achievements, blogs, gallery, contact, testimonials, and users
 
-Main data files are maintained under: `server/data/`
-
-Typical data includes:
-
-- **team.json** — Team member information
-- **events.json** — Event information
-- **achievements.json** — Achievements and recognitions
-- **gallery.json** — Gallery information and image references
-- **contact.json** — Contact information and related content
+Uploaded images and static files are served from `server/uploads/`.
 
 ---
 
@@ -196,11 +267,12 @@ main
 
 1. Create a feature/fix branch.
 2. Make your changes.
-3. Commit your changes with a meaningful message.
-4. Push the branch to GitHub.
-5. Create a Pull Request.
-6. Get the changes reviewed.
-7. Merge after approval.
+3. Test locally (responsiveness, routing, and UI consistency).
+4. Commit your changes with a meaningful message.
+5. Push the branch to GitHub.
+6. Create a Pull Request.
+7. Get the changes reviewed.
+8. Merge after approval.
 
 **Example:**
 
@@ -213,7 +285,18 @@ git push origin feature/gallery-improvements
 
 Then create a Pull Request on GitHub.
 
-⚠️ Do not push directly to main unless authorized by the project maintainers.
+### Commit Message Standards
+
+Use clean, descriptive messages. Avoid vague names like `update`, `changes`, or `fixed`.
+
+```
+✅ Added responsive navbar
+✅ Improved landing page animations
+❌ update
+❌ fixed stuff
+```
+
+⚠️ Do not push directly to `main` unless authorized by the project maintainers.
 
 ---
 
@@ -225,10 +308,10 @@ The website follows a dark, premium technical-club aesthetic inspired by the Cod
 
 | Element | Color |
 |---|---|
-| Primary Background | #0D0507 |
-| Cream | #FDF6EE |
-| Primary Gold | #C9973A |
-| Highlight Gold | #E8B85A |
+| Primary Background | `#0D0507` |
+| Cream | `#FDF6EE` |
+| Primary Gold | `#C9973A` |
+| Highlight Gold | `#E8B85A` |
 
 The design uses layered burgundy surfaces, cream typography, gold accents, subtle borders, and responsive layouts.
 
@@ -242,20 +325,9 @@ The design uses layered burgundy surfaces, cream typography, gold accents, subtl
 
 ## 📱 Responsive Design
 
-The website is designed to work across:
+The website is designed to work across desktop, laptop, tablet, and mobile.
 
-- Desktop
-- Laptop
-- Tablet
-- Mobile
-
-Responsive testing should include common mobile widths such as:
-
-- 375px
-- 390px
-- 412px
-
-along with tablet and desktop resolutions.
+Responsive testing should include common mobile widths such as **375px**, **390px**, and **412px**, along with tablet and desktop resolutions.
 
 ---
 
@@ -271,7 +343,7 @@ Contributors are encouraged to work through feature branches and Pull Requests s
 
 **Status:** Active Development
 
-The core website structure, pages, responsive layouts, event/gallery content, member information, and branding are implemented.
+The core website, pages, responsive layouts, blogs, recruitment portal, admin dashboard, authentication, and branding are implemented.
 
 Current development primarily focuses on:
 
@@ -284,9 +356,17 @@ Current development primarily focuses on:
 
 ---
 
+## 🔮 Future Scope
+
+- Move all site content from JSON files to Supabase
+- Leaderboard and GitHub activity integration
+- AI chatbot assistant
+- Event registrations and ticketing
+
+---
+
 ## 📄 License
 
 Academic Year 2026–27
 
-Code Troopers Club
-SMVITM
+Code Troopers Club SMVITM

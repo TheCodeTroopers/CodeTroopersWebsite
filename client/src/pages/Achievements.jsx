@@ -182,9 +182,9 @@ export default function Achievements() {
                     >
                       <div className={styles.sidebarItemThumb}>
                         {Array.isArray(item.image) ? (
-                          <img src={formatImageUrl(item.image[0])} alt={item.title} />
+                          <img loading="lazy" decoding="async" src={formatImageUrl(item.image[0])} alt={item.title} />
                         ) : (
-                          <img src={formatImageUrl(item.image)} alt={item.title} />
+                          <img loading="lazy" decoding="async" src={formatImageUrl(item.image)} alt={item.title} />
                         )}
                       </div>
                       <div className={styles.sidebarItemContent}>

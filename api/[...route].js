@@ -11,7 +11,8 @@ const apiRoutes = new Set([
   'gallery',
   'health',
   'recruitment',
-  'team'
+  'team',
+  'upload'
 ]);
 
 module.exports = (req, res) => {

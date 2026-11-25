@@ -228,3 +228,23 @@ a:focus-visible {
   :root { --section-padding: 3rem 0; }
   .container { padding: 0 1rem; }
 }
+
+
+/* PERF: phones and tablets re-blur everything behind a translucent panel on every scroll frame.
+   Dropping backdrop-filter there roughly halves scroll cost; panels get a more opaque background instead. */
+@media (max-width: 900px), (hover: none) {
+  *, *::before, *::after {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
+
+/* PERF: honour the OS "reduce motion" setting (also stops endless background animations). */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

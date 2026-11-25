@@ -1,64 +1,53 @@
-const { readJSON, writeJSON } = require('../utils/jsonStore');
 const { v4: uuidv4 } = require('uuid');
+const store = require('../utils/store');
+const { fail } = require('../utils/respond');
 
 exports.getAll = async (req, res) => {
   try {
-    const data = await readJSON('events.json');
+    let events = await store.events.list();
     const { type } = req.query;
-    if (type) {
-      return res.json({ events: data.events.filter(e => e.type === type) });
-    }
-    res.json(data);
+    if (type) events = events.filter(e => e.type === type);
+    res.json({ events });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    fail(res, err);
   }
 };
 
 exports.getById = async (req, res) => {
   try {
-    const data = await readJSON('events.json');
-    const event = data.events.find(e => e.id === req.params.id);
+    const event = await store.events.get(req.params.id);
     if (!event) return res.status(404).json({ error: 'Event not found' });
     res.json(event);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    fail(res, err);
   }
 };
 
 exports.create = async (req, res) => {
   try {
-    const data = await readJSON('events.json');
-    const event = { id: uuidv4(), ...req.body };
-    data.events.unshift(event);
-    await writeJSON('events.json', data);
+    const event = await store.events.insert({ ...req.body, id: uuidv4() });
     res.status(201).json(event);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    fail(res, err);
   }
 };
 
 exports.update = async (req, res) => {
   try {
-    const data = await readJSON('events.json');
-    const index = data.events.findIndex(e => e.id === req.params.id);
-    if (index === -1) return res.status(404).json({ error: 'Event not found' });
-    data.events[index] = { ...data.events[index], ...req.body, id: req.params.id };
-    await writeJSON('events.json', data);
-    res.json(data.events[index]);
+    const event = await store.events.update(req.params.id, req.body);
+    if (!event) return res.status(404).json({ error: 'Event not found' });
+    res.json(event);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    fail(res, err);
   }
 };
 
 exports.remove = async (req, res) => {
   try {
-    const data = await readJSON('events.json');
-    const index = data.events.findIndex(e => e.id === req.params.id);
-    if (index === -1) return res.status(404).json({ error: 'Event not found' });
-    const removed = data.events.splice(index, 1)[0];
-    await writeJSON('events.json', data);
+    const removed = await store.events.remove(req.params.id);
+    if (!removed) return res.status(404).json({ error: 'Event not found' });
     res.json(removed);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    fail(res, err);
   }
 };

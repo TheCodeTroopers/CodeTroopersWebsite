@@ -96,7 +96,7 @@ export default function Hero() {
             <Link to="/about" className="btn btn-white">
               Explore More <HiArrowRight />
             </Link>
-            <Link to="/contact" className={`btn btn-outline ${styles.outlineBtn}`}>
+            <Link to="/join-us" className={`btn btn-outline ${styles.outlineBtn}`}>
               Join Us
             </Link>
           </motion.div>

@@ -50,7 +50,6 @@
   border-radius: 50%;
   pointer-events: none;
   z-index: 0;
-  filter: blur(140px);
   mix-blend-mode: screen;
   animation: pulseGlow 12s infinite alternate ease-in-out;
 }

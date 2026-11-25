@@ -57,7 +57,7 @@ function normalizeApplication(record) {
   const linkedin = record.linkedin || '';
   const portfolio = record.portfolio || '';
 
-  let resumeUrl = record.resumeUrl || record.resume_url || '';
+  let resumeUrl = record.resumeUrl || record.resume_url || record.resume_drive_url || '';
   let resume = record.resume;
   if (!resumeUrl && typeof resume === 'string') {
     resumeUrl = resume;
@@ -286,8 +286,7 @@ async function updateApplicationStatus(id, newStatus) {
       const { data, error } = await supabase
         .from('applications')
         .update({
-          status: statusLower,
-          updated_at: updatedAt
+          status: statusLower
         })
         .eq('id', id)
         .select();

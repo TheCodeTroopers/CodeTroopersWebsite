@@ -1,27 +1,28 @@
+import { lazy, Suspense } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import Layout from './components/Layout';
 import { PageWrapper } from './components/Animated';
 import ProtectedRoute from './components/ProtectedRoute';
 
-import Home from './pages/Home';
-import About from './pages/About';
-import Organization from './pages/Organization';
-import Team from './pages/Team';
-import Events from './pages/Events';
-import EventProtocol from './pages/EventProtocol';
-import Achievements from './pages/Achievements';
-import AchievementDetail from './pages/AchievementDetail';
-import Workbench from './pages/Workbench';
-import Gallery from './pages/Gallery';
-import Contact from './pages/Contact';
-import JoinUs from './pages/JoinUs';
-import Login from './pages/Login';
-import Blogs from './pages/Blogs';
-import BlogDetail from './pages/BlogDetail';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import TermsOfService from './pages/TermsOfService';
-import AdminDashboard from './pages/admin/AdminDashboard';
+const Home = lazy(() => import('./pages/Home'));
+const About = lazy(() => import('./pages/About'));
+const Organization = lazy(() => import('./pages/Organization'));
+const Team = lazy(() => import('./pages/Team'));
+const Events = lazy(() => import('./pages/Events'));
+const EventProtocol = lazy(() => import('./pages/EventProtocol'));
+const Achievements = lazy(() => import('./pages/Achievements'));
+const AchievementDetail = lazy(() => import('./pages/AchievementDetail'));
+const Workbench = lazy(() => import('./pages/Workbench'));
+const Gallery = lazy(() => import('./pages/Gallery'));
+const Contact = lazy(() => import('./pages/Contact'));
+const JoinUs = lazy(() => import('./pages/JoinUs'));
+const Login = lazy(() => import('./pages/Login'));
+const Blogs = lazy(() => import('./pages/Blogs'));
+const BlogDetail = lazy(() => import('./pages/BlogDetail'));
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
+const TermsOfService = lazy(() => import('./pages/TermsOfService'));
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -67,7 +68,9 @@ function AnimatedRoutes() {
           path="admin"
           element={
             <ProtectedRoute requireAdmin={true}>
-              <AdminDashboard />
+              <Suspense fallback={<div style={{ minHeight: '100vh' }} aria-busy="true" />}>
+                <AdminDashboard />
+              </Suspense>
             </ProtectedRoute>
           }
         />
@@ -75,7 +78,9 @@ function AnimatedRoutes() {
           path="admin/*"
           element={
             <ProtectedRoute requireAdmin={true}>
-              <AdminDashboard />
+              <Suspense fallback={<div style={{ minHeight: '100vh' }} aria-busy="true" />}>
+                <AdminDashboard />
+              </Suspense>
             </ProtectedRoute>
           }
         />
