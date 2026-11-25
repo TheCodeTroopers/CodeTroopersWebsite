@@ -423,6 +423,209 @@
   font-size: 1.1rem;
 }
 
+/* ── "More" button in desktop nav ───────────────────────────────────────── */
+.moreBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.42rem 0.72rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-radius: 999px;
+  transition: all var(--transition);
+  white-space: nowrap;
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+}
+
+.moreBtn:hover,
+.moreBtnActive {
+  color: var(--accent);
+  background: rgba(201, 151, 58, 0.08);
+}
+
+.moreBtn svg {
+  font-size: 1rem;
+}
+
+/* ── Sidebar drawer ─────────────────────────────────────────────────────── */
+.sidebarBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 4, 5, 0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1100;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100dvh;
+  width: 320px;
+  max-width: 90vw;
+  background: rgba(20, 9, 11, 0.98);
+  border-left: 1px solid rgba(201, 151, 58, 0.18);
+  box-shadow: -20px 0 60px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  z-index: 1101;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid rgba(201, 151, 58, 0.12);
+  flex-shrink: 0;
+}
+
+.sidebarTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  letter-spacing: 0.01em;
+}
+
+.sidebarTitleIcon {
+  color: var(--accent);
+  font-size: 1.1rem;
+}
+
+.sidebarClose {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(201, 151, 58, 0.08);
+  border: 1px solid rgba(201, 151, 58, 0.15);
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.sidebarClose:hover {
+  background: rgba(201, 151, 58, 0.18);
+  color: var(--accent);
+  transform: rotate(90deg);
+}
+
+.sidebarBody {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(201, 151, 58, 0.2) transparent;
+}
+
+.sidebarGroup {}
+
+.sidebarGroupLabel {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  padding: 0 0.5rem 0.5rem;
+  opacity: 0.8;
+}
+
+.sidebarGroupLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebarLink {
+  display: block;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-radius: var(--radius-md);
+  transition: all var(--transition);
+  font-family: var(--font-body);
+}
+
+.sidebarLink:hover {
+  color: var(--text-primary);
+  background: rgba(201, 151, 58, 0.07);
+  padding-left: 1.1rem;
+}
+
+.sidebarLinkActive {
+  color: var(--background) !important;
+  background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%) !important;
+  font-weight: 700 !important;
+}
+
+.sidebarLinkActive:hover {
+  padding-left: 0.85rem;
+}
+
+.sidebarFooter {
+  padding: 1rem 1.25rem 1.5rem;
+  border-top: 1px solid rgba(201, 151, 58, 0.12);
+  flex-shrink: 0;
+}
+
+.sidebarJoinBtn {
+  display: block;
+  text-align: center;
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: all var(--transition);
+  border: 1px solid rgba(154, 40, 61, 0.35);
+}
+
+.sidebarJoinBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(123, 28, 46, 0.4), var(--shadow-glow-maroon);
+}
+
+/* Primary links mobile section */
+.mobilePrimaryLinks {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mobile join button */
+.mobileJoinBtn {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem !important;
+  border-radius: 999px !important;
+  font-weight: 700 !important;
+  font-size: 0.9rem !important;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%) !important;
+  color: var(--text-primary) !important;
+}
+
 /* Mobile Styling */
 .mobileToggle {
   display: none;

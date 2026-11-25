@@ -91,7 +91,11 @@ export default function Footer() {
         {/* Bottom */}
         <div className={styles.bottom}>
           <p>&copy; {new Date().getFullYear()} Code Troopers. All rights reserved.</p>
-          <p>Academic Year 2026–27 | Version 2.0</p>
+          <div className={styles.legal}>
+            <Link to="/privacy-policy">Privacy Policy</Link>
+            <span className={styles.dot}>·</span>
+            <Link to="/terms-of-service">Terms of Service</Link>
+          </div>
         </div>
       </div>
     </footer>

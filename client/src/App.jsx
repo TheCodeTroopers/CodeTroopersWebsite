@@ -19,6 +19,8 @@ import JoinUs from './pages/JoinUs';
 import Login from './pages/Login';
 import Blogs from './pages/Blogs';
 import BlogDetail from './pages/BlogDetail';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
 import AdminDashboard from './pages/admin/AdminDashboard';
 
 function AnimatedRoutes() {
@@ -56,6 +58,8 @@ function AnimatedRoutes() {
           <Route path="contact" element={<PageWrapper><Contact /></PageWrapper>} />
           <Route path="join-us" element={<PageWrapper><JoinUs /></PageWrapper>} />
           <Route path="login" element={<PageWrapper><Login /></PageWrapper>} />
+          <Route path="privacy-policy" element={<PageWrapper><PrivacyPolicy /></PageWrapper>} />
+          <Route path="terms-of-service" element={<PageWrapper><TermsOfService /></PageWrapper>} />
         </Route>
 
         {/* Dedicated Protected Admin Dashboard */}
