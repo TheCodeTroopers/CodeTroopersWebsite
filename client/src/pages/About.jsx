@@ -79,6 +79,35 @@ export default function About() {
         </div>
       </section>
 
+      {/* Club Journey & Milestones */}
+      {clubInfo.history && (
+        <section className="section">
+          <div className="container">
+            <FadeIn>
+              <div className="section-header">
+                <span className="section-label">Evolution & Milestones</span>
+                <h2 className="section-title">Our Journey</h2>
+                <p className="section-subtitle">How Code Troopers grew from inception to a structured developer community.</p>
+              </div>
+            </FadeIn>
+            <div className={styles.historyGrid}>
+              {clubInfo.history.map((item, idx) => (
+                <FadeIn key={item.year} delay={idx * 0.15}>
+                  <HoverCard className={styles.historyCard}>
+                    <div className={styles.historyTop}>
+                      <span className={styles.historyYear}>{item.year}</span>
+                      <span className={styles.historyTag}>{item.tag}</span>
+                    </div>
+                    <h3 className={styles.historyTitle}>{item.title}</h3>
+                    <p className={styles.historyDesc}>{item.description}</p>
+                  </HoverCard>
+                </FadeIn>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
 
       <section className="section">
         <div className="container">

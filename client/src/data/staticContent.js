@@ -2,7 +2,30 @@ export const clubInfo = {
   name: 'CODE TROOPERS',
   tagline: 'Learn. Build. Lead.',
   secondaryTagline: 'Transforming Students into Industry-Ready Developers.',
-  introduction: 'The Code Troopers Club is a student-driven technical community established to foster innovation, technical excellence, leadership, collaboration and project-based learning among students. The club serves as a platform where members learn industry-relevant skills, build real-world projects, organize impactful events and prepare themselves for professional careers in technology and entrepreneurship.',
+  establishedYear: '2020',
+  functionalYear: '2022',
+  restructuredYear: '2024',
+  introduction: 'Established in 2020 and fully functional since 2022, Code Troopers is a student-driven technical community that underwent a major organizational restructuring in 2024. The club fosters innovation, technical excellence, leadership, collaboration, and project-based learning, serving as a platform where members learn industry-relevant skills, build real-world projects, organize impactful events, and prepare themselves for professional careers in technology and entrepreneurship.',
+  history: [
+    {
+      year: '2020',
+      tag: 'Inception',
+      title: 'Club Established',
+      description: 'Founded with a bold vision to bridge the gap between academic theory and real-world software engineering through a peer-driven community.'
+    },
+    {
+      year: '2022',
+      tag: 'Launch',
+      title: 'Fully Functional Operations',
+      description: 'Scaled active operations across campus, launching structured bootcamps, workshops, hackathon delegations, and hands-on project sprints.'
+    },
+    {
+      year: '2024',
+      tag: 'Evolution',
+      title: 'Strategic Restructuring',
+      description: 'Underwent an organizational overhaul—formalizing leadership hierarchies, SOPs, specialized event tracks, and the flagship Workbench technical wing.'
+    }
+  ],
   vision: 'To build one of the strongest student developer communities that empowers students to become skilled engineers, innovators, founders and technology leaders.',
   mission: [
     'Promote practical learning beyond academics.',

@@ -42,7 +42,7 @@ export default function Organization() {
       <PageHeader 
         label="Structure" 
         title="Organization Structure" 
-        subtitle="How Code Troopers is organized for maximum impact." 
+        subtitle="Established under the 2024 restructuring — how Code Troopers operates for technical excellence and impact." 
         showScroll={true} 
       />
 
