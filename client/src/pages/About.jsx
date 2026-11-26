@@ -55,6 +55,23 @@ export default function About() {
             <div className={styles.intro}>
               <h2>Club Introduction</h2>
               <p>{clubInfo.introduction}</p>
+
+              <div className={styles.milestoneBadges}>
+                <div className={styles.milestoneBadge}>
+                  <span className={styles.milestoneYear}>2020</span>
+                  <span className={styles.milestoneLabel}>Established</span>
+                </div>
+                <span className={styles.milestoneDivider}>→</span>
+                <div className={styles.milestoneBadge}>
+                  <span className={styles.milestoneYear}>2022</span>
+                  <span className={styles.milestoneLabel}>Functional</span>
+                </div>
+                <span className={styles.milestoneDivider}>→</span>
+                <div className={styles.milestoneBadge}>
+                  <span className={styles.milestoneYear}>2024</span>
+                  <span className={styles.milestoneLabel}>Restructured</span>
+                </div>
+              </div>
             </div>
           </FadeIn>
         </div>
