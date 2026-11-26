@@ -1,0 +1,28 @@
+
+name: Sync Fork with Upstream
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Every hour
+  workflow_dispatch: # Allow manual sync
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout fork
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Sync upstream
+        run: |
+          git remote add upstream https://github.com/TheCodeTroopers/CodeTroopersWebsite.git
+          git fetch upstream main
+          git merge upstream/main --no-edit
+          git push origin main
