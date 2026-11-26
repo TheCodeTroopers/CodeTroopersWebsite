@@ -6,7 +6,7 @@
 .container {
   max-width: var(--container-max);
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 3.5rem 1.5rem 0;
 }
 
 .controlsBar {
@@ -36,17 +36,27 @@
   transition: all var(--transition);
 }
 
-.pillBtn:hover {
+.pillBtn:hover:not(.activePill) {
   color: var(--accent);
   border-color: rgba(201, 151, 58, 0.4);
 }
 
+.pillBtn.activePill,
 .activePill {
   background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
-  color: var(--background);
+  color: #0D0507 !important;
   border-color: transparent;
   font-weight: 700;
   box-shadow: 0 4px 12px rgba(201, 151, 58, 0.25);
+}
+
+.pillBtn.activePill:hover,
+.pillBtn.activePill:focus,
+.activePill:hover,
+.activePill:focus {
+  color: #0D0507 !important;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+  border-color: transparent;
 }
 
 .searchWrapper {
@@ -290,6 +300,9 @@
 }
 
 @media (max-width: 768px) {
+  .container {
+    padding-top: 2rem;
+  }
   .controlsBar {
     flex-direction: column;
     align-items: stretch;

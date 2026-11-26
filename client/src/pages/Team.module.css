@@ -58,15 +58,17 @@
   transition: all var(--transition);
 }
 
-.filterBtn:hover {
+.filterBtn:hover:not(.active) {
   background: rgba(201, 151, 58, 0.08);
   border-color: rgba(201, 151, 58, 0.25);
   color: var(--accent);
 }
 
-.filterBtn.active {
+.filterBtn.active,
+.filterBtn.active:hover,
+.filterBtn.active:focus {
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-  color: var(--text-primary);
+  color: var(--text-primary) !important;
   border-color: transparent;
   box-shadow: 0 4px 12px rgba(123, 28, 46, 0.3);
 }

@@ -39,7 +39,12 @@ export default function Organization() {
   return (
     <>
       <SEOHead title="Organization Structure" description="Code Troopers organizational structure — teams, responsibilities, and KPIs." path="/organization" />
-      <PageHeader label="Structure" title="Organization Structure" subtitle="How Code Troopers is organized for maximum impact." />
+      <PageHeader 
+        label="Structure" 
+        title="Organization Structure" 
+        subtitle="How Code Troopers is organized for maximum impact." 
+        showScroll={true} 
+      />
 
       <section className="section">
         <div className="container">
